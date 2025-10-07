@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bookings - Smart Scheduler</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = { darkMode: "class", theme: { extend: { colors: { primary: "#1173d4", "background-light": "#f6f7f8", "background-dark": "#101922" }, fontFamily: { display: ["Manrope", "sans-serif"] } } } }
+  </script>
+</head>
+<body class="font-display bg-background-light text-slate-900">
+  <div class="max-w-5xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6">Room Bookings</h1>
+    <form id="bookingForm" class="grid grid-cols-1 md:grid-cols-5 gap-3 items-end bg-white rounded-lg p-4 border">
+      <div>
+        <label class="text-sm font-medium">Course</label>
+        <select id="course" class="mt-1 w-full rounded border"></select>
+      </div>
+      <div>
+        <label class="text-sm font-medium">Room</label>
+        <select id="room" class="mt-1 w-full rounded border"></select>
+      </div>
+      <div>
+        <label class="text-sm font-medium">Day</label>
+        <select id="day" class="mt-1 w-full rounded border">
+          <option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-sm font-medium">Start</label>
+        <input id="start" type="time" value="09:00" class="mt-1 w-full rounded border"/>
+      </div>
+      <div>
+        <label class="text-sm font-medium">End</label>
+        <input id="end" type="time" value="10:00" class="mt-1 w-full rounded border"/>
+      </div>
+      <div class="md:col-span-5 text-right">
+        <button class="px-4 py-2 rounded bg-primary text-white">Create Booking</button>
+      </div>
+    </form>
+
+    <h2 class="text-xl font-semibold mt-8 mb-3">Existing Bookings</h2>
+    <div class="bg-white rounded-lg border">
+      <table class="w-full text-left">
+        <thead><tr class="border-b"><th class="p-3">Course</th><th class="p-3">Room</th><th class="p-3">Day</th><th class="p-3">Start</th><th class="p-3">End</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </div>
+  <script type="module">
+    import { api, requireAuth } from '/app.js';
+    requireAuth();
+    async function loadOptions() {
+      const [courses, rooms] = await Promise.all([
+        api('/api/courses').then(j=>j.data),
+        api('/api/rooms').then(j=>j.data)
+      ]);
+      const cSel = document.getElementById('course');
+      courses.forEach(c=>{ const o=document.createElement('option'); o.value=c.id; o.textContent=c.name; cSel.appendChild(o); });
+      const rSel = document.getElementById('room');
+      rooms.forEach(r=>{ const o=document.createElement('option'); o.value=r.id; o.textContent=r.name || r.room_name || (r.id+':room'); rSel.appendChild(o); });
+    }
+    async function loadBookings() {
+      const rows = document.getElementById('rows'); rows.innerHTML='';
+      const entries = await api('/api/bookings').then(j=>j.data);
+      for (const e of entries) {
+        const tr=document.createElement('tr'); tr.className='border-t';
+        tr.innerHTML = `<td class="p-3">${e.courseId}</td><td class="p-3">${e.roomId}</td><td class="p-3">${e.dayOfWeek}</td><td class="p-3">${e.startTime}</td><td class="p-3">${e.endTime}</td>`;
+        rows.appendChild(tr);
+      }
+    }
+    document.getElementById('bookingForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const payload = {
+        courseId: parseInt(document.getElementById('course').value,10),
+        roomId: parseInt(document.getElementById('room').value,10),
+        dayOfWeek: document.getElementById('day').value,
+        startTime: document.getElementById('start').value,
+        endTime: document.getElementById('end').value
+      };
+      try {
+        await api('/api/bookings',{method:'POST', body: JSON.stringify(payload)});
+        await loadBookings();
+      } catch(ex) { alert(ex.message||'Failed'); }
+    });
+    loadOptions().then(loadBookings);
+  </script>
+</body>
+</html>
+
+

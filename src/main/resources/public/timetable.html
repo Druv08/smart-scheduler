@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Scheduler – Timetable</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: { extend: {
+        colors: { primary: "#1173d4" },
+        fontFamily: { display: ["Manrope", "sans-serif"] }
+      }}
+    }
+  </script>
+</head>
+<body class="font-display bg-[#0b1420] text-slate-100">
+  <header class="border-b border-white/5 bg-black/20 backdrop-blur sticky top-0">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="/dashboard.html" class="text-slate-300 hover:text-white">&larr; Back to Dashboard</a>
+      </div>
+      <h1 class="text-2xl font-extrabold">Smart Scheduler — Timetable</h1>
+      <span class="opacity-0">.</span>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+    <!-- Controls -->
+    <section class="bg-white/5 rounded-xl border border-white/10 p-6">
+      <div class="flex flex-wrap gap-4 items-center justify-between">
+        <h2 class="text-lg font-bold">Weekly Timetable</h2>
+        <button id="openModalBtn" class="px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg font-semibold">
+          + Add Entry
+        </button>
+      </div>
+    </section>
+
+    <!-- Timetable -->
+    <section class="bg-white/5 rounded-xl border border-white/10 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead class="bg-white/10 text-slate-300 text-sm uppercase tracking-wide">
+            <tr>
+              <th class="px-4 py-3">Day</th>
+              <th class="px-4 py-3">Course</th>
+              <th class="px-4 py-3">Room</th>
+              <th class="px-4 py-3">Start Time</th>
+              <th class="px-4 py-3">End Time</th>
+            </tr>
+          </thead>
+          <tbody id="timetableBody" class="divide-y divide-white/5">
+            <!-- JS inserts data here -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Add Entry Modal -->
+  <div id="addEntryModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center">
+    <div class="bg-[#1a2530] rounded-xl border border-white/10 w-[480px] p-6">
+      <h3 class="text-xl font-bold mb-6">Add Timetable Entry</h3>
+      <form id="addEntryForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1">Course ID</label>
+          <input type="number" id="courseId" required class="w-full rounded-lg bg-white/5 border-white/10 px-4 py-2"/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1">Room ID</label>
+          <input type="number" id="roomId" required class="w-full rounded-lg bg-white/5 border-white/10 px-4 py-2"/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1">Day of Week</label>
+          <select id="dayOfWeek" required class="w-full rounded-lg bg-white/5 border-white/10 px-4 py-2">
+            <option value="">Select Day</option>
+            <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
+            <option>Thursday</option><option>Friday</option><option>Saturday</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1">Start Time</label>
+          <input type="time" id="startTime" required class="w-full rounded-lg bg-white/5 border-white/10 px-4 py-2"/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1">End Time</label>
+          <input type="time" id="endTime" required class="w-full rounded-lg bg-white/5 border-white/10 px-4 py-2"/>
+        </div>
+        <div class="flex justify-end gap-3 pt-4">
+          <button type="button" id="closeModalBtn" class="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 font-medium">
+            Cancel
+          </button>
+          <button type="submit" class="px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium">
+            Add Entry
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+  <script>
+    const modal = document.getElementById("addEntryModal");
+    const openModalBtn = document.getElementById("openModalBtn");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const addEntryForm = document.getElementById("addEntryForm");
+    const tableBody = document.getElementById("timetableBody");
+
+    openModalBtn.addEventListener("click", () => modal.classList.remove("hidden"));
+    closeModalBtn.addEventListener("click", () => modal.classList.add("hidden"));
+
+    async function loadTimetable() {
+      const res = await api('/api/timetable');
+      if (!res.success) return toast(res.error || 'Failed to load timetable', 'error');
+      tableBody.innerHTML = '';
+      (res.timetable || []).forEach(entry => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-white/5';
+        tr.innerHTML = `
+          <td class="px-4 py-3">${entry.day_of_week}</td>
+          <td class="px-4 py-3">${entry.course_id}</td>
+          <td class="px-4 py-3">${entry.room_id}</td>
+          <td class="px-4 py-3">${entry.start_time}</td>
+          <td class="px-4 py-3">${entry.end_time}</td>`;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    addEntryForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const payload = {
+        course_id: parseInt(document.getElementById("courseId").value),
+        room_id: parseInt(document.getElementById("roomId").value),
+        day_of_week: document.getElementById("dayOfWeek").value,
+        start_time: document.getElementById("startTime").value,
+        end_time: document.getElementById("endTime").value
+      };
+      const res = await api('/api/timetable', 'POST', payload);
+      if (res.success) {
+        toast('Entry added successfully');
+        modal.classList.add("hidden");
+        e.target.reset();
+        loadTimetable();
+      } else {
+        toast(res.error || 'Failed to add entry', 'error');
+      }
+    });
+
+    loadTimetable();
+  </script>
+</body>
+</html>
+
+

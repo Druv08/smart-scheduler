@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Scheduler – Users</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: { extend: {
+        colors: { primary:"#1173d4", "background-dark":"#0f1720" },
+        fontFamily: { display: ["Manrope","sans-serif"] }
+      }}
+    }
+  </script>
+</head>
+<body class="font-display bg-[#0b1420] text-slate-100">
+  <header class="border-b border-white/5 bg-black/20 backdrop-blur sticky top-0">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="/dashboard.html" class="text-slate-300 hover:text-white">&larr; Back to Dashboard</a>
+      <h1 class="text-2xl font-extrabold">Smart Scheduler — Users</h1>
+      <span class="opacity-0">.</span>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+    <!-- Create user -->
+    <section class="bg-white/5 rounded-xl border border-white/10 p-6">
+      <h2 class="text-lg font-bold mb-4">Add user</h2>
+      <form id="createUserForm" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <input id="u-username" required placeholder="username" class="rounded-lg bg-white/5 border-white/10"/>
+        <input id="u-password" required type="password" placeholder="password" class="rounded-lg bg-white/5 border-white/10"/>
+        <select id="u-role" required class="rounded-lg bg-white/5 border-white/10">
+          <option value="student">student</option>
+          <option value="faculty">faculty</option>
+          <option value="admin">admin</option>
+        </select>
+        <button class="rounded-lg bg-primary text-white font-semibold hover:bg-primary/90">Create</button>
+      </form>
+      <p id="u-msg" class="text-sm mt-3"></p>
+    </section>
+
+    <!-- Users table -->
+    <section class="bg-white/5 rounded-xl border border-white/10 overflow-hidden">
+      <table class="w-full text-left">
+        <thead class="bg-white/10 text-slate-300 text-sm uppercase tracking-wide">
+          <tr>
+            <th class="px-4 py-3 w-24">id</th>
+            <th class="px-4 py-3">username</th>
+            <th class="px-4 py-3 w-40">role</th>
+          </tr>
+        </thead>
+        <tbody id="usersBody" class="divide-y divide-white/5"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="/js/app.js"></script>
+  <script>
+    // list
+    async function loadUsers() {
+      const res = await api('/api/users');
+      if (!res.success) return toast(res.error || 'Failed to load users','error');
+      const body = document.getElementById('usersBody');
+      body.innerHTML = '';
+      (res.users || []).forEach(u => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-white/5';
+        tr.innerHTML = `
+          <td class="px-4 py-3 text-slate-400">${u.id ?? ''}</td>
+          <td class="px-4 py-3 font-semibold">${u.username}</td>
+          <td class="px-4 py-3">
+            <span class="px-2.5 py-1 rounded-full text-xs font-bold
+              ${u.role==='admin' ? 'bg-red-500/20 text-red-300' :
+                 u.role==='faculty' ? 'bg-blue-500/20 text-blue-300' :
+                 'bg-emerald-500/20 text-emerald-300'}">${u.role}</span>
+          </td>`;
+        body.appendChild(tr);
+      });
+    }
+
+    // create
+    document.getElementById('createUserForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        username: document.getElementById('u-username').value.trim(),
+        password: document.getElementById('u-password').value,
+        role: document.getElementById('u-role').value
+      };
+      const res = await api('/api/users', 'POST', payload);
+      const msg = document.getElementById('u-msg');
+      if (res.success) {
+        msg.textContent = 'User created ✅'; msg.className='text-emerald-400';
+        e.target.reset();
+        loadUsers();
+      } else {
+        msg.textContent = res.error || 'Failed to create user'; msg.className='text-red-400';
+      }
+    });
+
+    loadUsers();
+  </script>
+</body>
+</html>

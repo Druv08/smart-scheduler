@@ -2,27 +2,29 @@
 -- Smart Scheduler Database Schema
 -- ===========================
 
--- Users table: stores login info and roles
+-- Users table with all required columns
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL UNIQUE,
+    username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     role TEXT CHECK(role IN ('student', 'faculty', 'admin')) NOT NULL
 );
 
--- Rooms table: classrooms, labs, halls
+-- Rooms table
 CREATE TABLE IF NOT EXISTS rooms (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    room_name TEXT NOT NULL UNIQUE,
-    capacity INTEGER NOT NULL
+    room_name TEXT UNIQUE NOT NULL,
+    capacity INTEGER NOT NULL CHECK (capacity > 0)
 );
 
 -- Courses table: subjects/modules
 CREATE TABLE IF NOT EXISTS courses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    course_name TEXT NOT NULL UNIQUE,
-    faculty_id INTEGER,
-    FOREIGN KEY(faculty_id) REFERENCES users(id)
+    course_code TEXT UNIQUE NOT NULL,
+    course_name TEXT NOT NULL,
+    faculty_username TEXT NOT NULL,
+    max_students INTEGER NOT NULL CHECK (max_students > 0),
+    FOREIGN KEY (faculty_username) REFERENCES users(username)
 );
 
 -- Timetable table: actual scheduling
@@ -36,3 +38,5 @@ CREATE TABLE IF NOT EXISTS timetable (
     FOREIGN KEY(course_id) REFERENCES courses(id),
     FOREIGN KEY(room_id) REFERENCES rooms(id)
 );
+
+DELETE FROM users;

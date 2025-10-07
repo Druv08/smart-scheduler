@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Scheduler – Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: { primary: "#1173d4" },
+          fontFamily: { display: ["Manrope", "sans-serif"] }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="font-display bg-[#0b1420] text-slate-100 min-h-screen flex flex-col">
+  <!-- Navbar -->
+  <header class="border-b border-white/5 bg-black/20 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <h1 class="text-2xl font-extrabold text-white">Smart Scheduler Dashboard</h1>
+      <a href="/index.html" class="text-slate-300 hover:text-white text-sm font-semibold">Logout</a>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="flex-1 max-w-7xl mx-auto px-4 py-10 space-y-10">
+    <!-- Summary Stats -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
+        <h2 class="text-sm text-slate-400 mb-1">Total Users</h2>
+        <p id="count-users" class="text-3xl font-extrabold">7</p>
+      </div>
+      <div class="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
+        <h2 class="text-sm text-slate-400 mb-1">Total Rooms</h2>
+        <p id="count-rooms" class="text-3xl font-extrabold">4</p>
+      </div>
+      <div class="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
+        <h2 class="text-sm text-slate-400 mb-1">Courses</h2>
+        <p class="text-3xl font-extrabold">6</p>
+      </div>
+      <div class="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
+        <h2 class="text-sm text-slate-400 mb-1">Bookings</h2>
+        <p class="text-3xl font-extrabold">12</p>
+      </div>
+    </section>
+
+    <!-- Navigation Cards -->
+    <section>
+      <h2 class="text-xl font-bold mb-6 text-slate-200">Quick Access</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <a href="/users.html" class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-6 flex flex-col items-center justify-center text-center transition">
+          <span class="text-4xl mb-3">👥</span>
+          <h3 class="font-semibold text-lg">Manage Users</h3>
+          <p class="text-slate-400 text-sm mt-1">Add, view, and manage user roles.</p>
+        </a>
+
+        <a href="/rooms.html" class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-6 flex flex-col items-center justify-center text-center transition">
+          <span class="text-4xl mb-3">🏫</span>
+          <h3 class="font-semibold text-lg">Manage Rooms</h3>
+          <p class="text-slate-400 text-sm mt-1">Create or view classroom and lab info.</p>
+        </a>
+
+        <a href="/courses.html" class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-6 flex flex-col items-center justify-center text-center transition">
+          <span class="text-4xl mb-3">📘</span>
+          <h3 class="font-semibold text-lg">Manage Courses</h3>
+          <p class="text-slate-400 text-sm mt-1">Assign faculty and subjects.</p>
+        </a>
+
+        <a href="/timetable.html" class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-6 flex flex-col items-center justify-center text-center transition">
+          <span class="text-4xl mb-3">🕒</span>
+          <h3 class="font-semibold text-lg">View Timetable</h3>
+          <p class="text-slate-400 text-sm mt-1">View and manage schedules.</p>
+        </a>
+
+        <a href="/bookings.html" class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-6 flex flex-col items-center justify-center text-center transition">
+          <span class="text-4xl mb-3">📝</span>
+          <h3 class="font-semibold text-lg">Bookings</h3>
+          <p class="text-slate-400 text-sm mt-1">Manage class and lab bookings.</p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-6 border-t border-white/10 text-sm text-slate-400">
+    © 2025 Smart Scheduler. All Rights Reserved.
+  </footer>
+
+  <script src="/js/app.js"></script>
+  <script>
+    // Demo: update summary with live counts
+    async function refreshStats() {
+      const users = await api('/api/users');
+      const rooms = await api('/api/rooms');
+      if (users.success) document.getElementById('count-users').textContent = users.total ?? users.users?.length ?? 0;
+      if (rooms.success) document.getElementById('count-rooms').textContent = rooms.count ?? rooms.rooms?.length ?? 0;
+    }
+    refreshStats();
+  </script>
+</body>
+</html>
+
+

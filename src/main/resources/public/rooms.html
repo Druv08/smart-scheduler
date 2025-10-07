@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Scheduler — Rooms</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = { darkMode:"class", theme:{ extend:{
+      colors:{ primary:"#1173d4" }, fontFamily:{ display:["Manrope","sans-serif"] }
+    }}}
+  </script>
+</head>
+<body class="font-display bg-[#0b1420] text-slate-100">
+  <header class="border-b border-white/5 bg-black/20 backdrop-blur sticky top-0">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="/dashboard.html" class="text-slate-300 hover:text-white">&larr; Back to Dashboard</a>
+      <h1 class="text-2xl font-extrabold">Smart Scheduler — Rooms</h1>
+      <span class="opacity-0">.</span>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+    <!-- Create room -->
+    <section class="bg-white/5 rounded-xl border border-white/10 p-6">
+      <h2 class="text-lg font-bold mb-4">Add room</h2>
+      <form id="createRoomForm" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <input id="r-name" required placeholder="room name (e.g., Lab 1)" class="rounded-lg bg-white/5 border-white/10"/>
+        <input id="r-cap" required type="number" min="1" placeholder="capacity" class="rounded-lg bg-white/5 border-white/10"/>
+        <button class="rounded-lg bg-primary text-white font-semibold hover:bg-primary/90">Create</button>
+      </form>
+      <p id="r-msg" class="text-sm mt-3"></p>
+    </section>
+
+    <!-- Rooms table -->
+    <section class="bg-white/5 rounded-xl border border-white/10 overflow-hidden">
+      <table class="w-full text-left">
+        <thead class="bg-white/10 text-slate-300 text-sm uppercase tracking-wide">
+          <tr>
+            <th class="px-4 py-3 w-24">id</th>
+            <th class="px-4 py-3">room_name</th>
+            <th class="px-4 py-3 w-32">capacity</th>
+          </tr>
+        </thead>
+        <tbody id="roomsBody" class="divide-y divide-white/5"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/rooms.js"></script>
+</body>
+</html>
+
+
