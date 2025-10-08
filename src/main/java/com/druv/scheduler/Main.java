@@ -1,26 +1,18 @@
 package com.druv.scheduler;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
 public class Main {
+
     public static void main(String[] args) {
         try {
             // Initialize database
             Database.initialize();
             
-            // Initialize DAOs
-            UserDAO userDAO = new UserDAO();
-            RoomDAO roomDAO = new RoomDAO();
-            CourseDAO courseDAO = new CourseDAO();
-            TimetableDAO timetableDAO = new TimetableDAO();
-            
-            // Initialize managers
-            UserManager userManager = new UserManager(userDAO);
-            RoomManager roomManager = new RoomManager(roomDAO);
-            CourseManager courseManager = new CourseManager(courseDAO);
-            TimetableManager timetableManager = new TimetableManager(timetableDAO);
-            
-            // Start web server
-            WebServer server = new WebServer(userManager, roomManager, courseManager, timetableManager);
-            server.start();
+            // Start Spring Boot application
+            SpringApplication.run(Main.class, args);
             
             System.out.println("Server started at http://localhost:8080");
         } catch (Exception e) {

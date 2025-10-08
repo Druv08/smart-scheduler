@@ -1,14 +1,19 @@
 package com.druv.scheduler;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
+
+import org.mindrot.jbcrypt.BCrypt;
 
 public class HashUtil {
     public static String hashPassword(String password) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-        return Base64.getEncoder().encodeToString(hash);
+        return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
+    public static boolean verifyPassword(String plaintext, String hashed) {
+        try {
+            return BCrypt.checkpw(plaintext, hashed);
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 }

@@ -3,212 +3,134 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Scheduler Dashboard</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #0f172a;
-      color: #f8fafc;
-      font-family: "Inter", sans-serif;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      background-color: #1e293b;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    header h1 {
-      font-size: 1.5rem;
-      margin: 0;
-      font-weight: 700;
-    }
-
-    header button {
-      background-color: #334155;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    header button:hover {
-      background-color: #475569;
-    }
-
-    main {
-      flex: 1;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      width: 100%;
-      max-width: 1280px;
-      margin: 0 auto;
-      box-sizing: border-box;
-    }
-
-    /* Stats section */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-    }
-
-    .stat-card {
-      background-color: #1e293b;
-      padding: 1.5rem;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    }
-
-    .stat-card h2 {
-      font-size: 2rem;
-      margin: 0.5rem 0;
-      color: #60a5fa;
-    }
-
-    /* Quick access section */
-    .quick-access {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
-    }
-
-    .access-card {
-      background-color: #1e293b;
-      padding: 1.5rem;
-      border-radius: 10px;
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.2s, background 0.3s;
-    }
-
-    .access-card:hover {
-      transform: translateY(-4px);
-      background-color: #334155;
-    }
-
-    .access-card h3 {
-      margin-top: 0.5rem;
-      color: #93c5fd;
-    }
-
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background-color: #1e293b;
-      font-size: 0.9rem;
-      color: #cbd5e1;
-    }
-  </style>
+  <title>Smart Scheduler – Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/dashboard.css">
 </head>
+
 <body>
-  <header>
-    <h1>Smart Scheduler Dashboard</h1>
-    <button onclick="logout()">Logout</button>
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <svg class="icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"/>
+        </svg>
+        <h1>Smart Scheduler</h1>
+      </div>
+
+      <nav class="nav">
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="bookings.html">Bookings</a>
+        <a href="users.html">Users</a>
+        <a href="courses.html">Courses</a>
+        <a href="timetable.html">Timetable</a>
+        <a href="profile-settings.html">Profile</a>
+      </nav>
+
+      <div class="actions">
+        <button class="bell" id="notifications">
+          <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+            <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06Z"/>
+          </svg>
+        </button>
+        <div class="avatar" id="profileMenu"></div>
+      </div>
+    </div>
   </header>
 
-  <main>
+  <main class="main">
+    <section class="intro">
+      <h2>Dashboard Overview</h2>
+      <p>Welcome to Smart Scheduler — your central hub to manage courses, rooms, and timetables.</p>
+    </section>
+
     <section class="stats">
       <div class="stat-card">
-        <h2 id="count-users">7</h2>
-        <p>Total Users</p>
+        <div class="stat-icon rooms">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <h3 id="roomCount">24</h3>
+          <p>Total Rooms</p>
+        </div>
+        <div class="stat-change increase">+2 this week</div>
       </div>
+
       <div class="stat-card">
-        <h2 id="count-rooms">4</h2>
-        <p>Total Rooms</p>
+        <div class="stat-icon courses">
+          <svg viewBox="0 0 24 24">
+            <path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <h3 id="courseCount">12</h3>
+          <p>Active Courses</p>
+        </div>
+        <div class="stat-change increase">+3 this month</div>
       </div>
+
       <div class="stat-card">
-        <h2 id="count-courses">6</h2>
-        <p>Courses</p>
+        <div class="stat-icon bookings">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <h3 id="bookingCount">37</h3>
+          <p>Bookings This Week</p>
+        </div>
+        <div class="stat-change decrease">-5 vs last week</div>
       </div>
+
       <div class="stat-card">
-        <h2 id="count-bookings">12</h2>
-        <p>Bookings</p>
+        <div class="stat-icon users">
+          <svg viewBox="0 0 24 24">
+            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <h3 id="userCount">145</h3>
+          <p>Registered Users</p>
+        </div>
+        <div class="stat-change increase">+12 this month</div>
       </div>
     </section>
 
-    <h2>Quick Access</h2>
-    <section class="quick-access">
-      <div class="access-card" onclick="navigate('/users')">
-        <h3>Manage Users</h3>
-        <p>Add, view, and manage user roles.</p>
+    <section class="dashboard-grid">
+      <div class="card activity-card">
+        <div class="card-header">
+          <h3>Recent Activity</h3>
+          <button class="view-all">View All</button>
+        </div>
+        <div class="activity-list">
+          <!-- Activity items will be dynamically populated -->
+        </div>
       </div>
-      <div class="access-card" onclick="navigate('/rooms')">
-        <h3>Manage Rooms</h3>
-        <p>Create or view classroom and lab info.</p>
-      </div>
-      <div class="access-card" onclick="navigate('/courses')">
-        <h3>Manage Courses</h3>
-        <p>Assign faculty and subjects.</p>
-      </div>
-      <div class="access-card" onclick="navigate('/timetable')">
-        <h3>View Timetable</h3>
-        <p>View and manage weekly schedules.</p>
-      </div>
-      <div class="access-card" onclick="navigate('/bookings')">
-        <h3>Bookings</h3>
-        <p>Manage class and lab reservations.</p>
-      </div>
-      <div class="access-card" onclick="showComingSoon()">
-        <h3>Reports</h3>
-        <p>Generate timetable and utilization reports.</p>
+
+      <div class="card schedule-card">
+        <div class="card-header">
+          <h3>Today's Schedule</h3>
+          <button class="view-all">View Calendar</button>
+        </div>
+        <div class="schedule-list">
+          <!-- Schedule items will be dynamically populated -->
+        </div>
       </div>
     </section>
   </main>
 
-  <footer>
-    © 2025 Smart Scheduler. All Rights Reserved.
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Smart Scheduler</p>
+    </div>
   </footer>
 
   <script src="/js/app.js"></script>
-  <script>
-    // Refresh stats periodically
-    async function refreshStats() {
-      try {
-        const users = await api('/api/users');
-        const rooms = await api('/api/rooms');
-        const courses = await api('/api/courses');
-        const bookings = await api('/api/bookings');
-
-        if (users.success) document.getElementById('count-users').textContent = users.total ?? users.users?.length ?? 0;
-        if (rooms.success) document.getElementById('count-rooms').textContent = rooms.total ?? rooms.rooms?.length ?? 0;
-        if (courses.success) document.getElementById('count-courses').textContent = courses.total ?? courses.courses?.length ?? 0;
-        if (bookings.success) document.getElementById('count-bookings').textContent = bookings.total ?? bookings.bookings?.length ?? 0;
-      } catch (err) {
-        console.error('Failed to refresh stats:', err);
-      }
-    }
-
-    function navigate(path) {
-      window.location.href = path;
-    }
-
-    function logout() {
-      localStorage.removeItem('token');
-      window.location.href = '/index.html';
-    }
-
-    function showComingSoon() {
-      alert('Report system coming soon!');
-    }
-
-    // Initial load
-    refreshStats();
-    // Refresh every 30 seconds
-    setInterval(refreshStats, 30000);
-  </script>
+  <script src="/js/dashboard.js"></script>
 </body>
 </html>
 

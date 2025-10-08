@@ -1,123 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bookings - Smart Scheduler</title>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-  <script>
-    tailwind.config = { darkMode: "class", theme: { extend: { colors: { primary: "#1173d4", "background-light": "#f6f7f8", "background-dark": "#101922" }, fontFamily: { display: ["Manrope", "sans-serif"] } } } }
-  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Scheduler – Bookings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/bookings.css">
 </head>
-<body class="font-display bg-background-light text-slate-900">
-  <div class="max-w-5xl mx-auto px-4 py-8">
-    <!-- Add navigation/auth status -->
-    <div class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-bold">Room Bookings</h1>
-      <div class="flex gap-4">
-        <span id="userInfo"></span>
-        <a href="dashboard.html" class="text-primary">← Back to Dashboard</a>
+
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <svg class="icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"/>
+        </svg>
+        <h1>Smart Scheduler</h1>
+      </div>
+
+      <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="bookings.html" class="active">Bookings</a>
+        <a href="users.html">Users</a>
+        <a href="courses.html">Courses</a>
+        <a href="timetable.html">Timetable</a>
+        <a href="profile-settings.html">Profile</a>
+      </nav>
+
+      <div class="actions">
+        <button class="bell" id="notifications">
+          <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+            <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06Z"/>
+          </svg>
+        </button>
+        <div class="avatar" id="profileMenu"></div>
       </div>
     </div>
+  </header>
 
-    <form id="bookingForm" class="grid grid-cols-1 md:grid-cols-5 gap-3 items-end bg-white rounded-lg p-4 border">
-      <div>
-        <label class="text-sm font-medium">Course</label>
-        <select id="course" class="mt-1 w-full rounded border"></select>
-      </div>
-      <div>
-        <label class="text-sm font-medium">Room</label>
-        <select id="room" class="mt-1 w-full rounded border"></select>
-      </div>
-      <div>
-        <label class="text-sm font-medium">Day</label>
-        <select id="day" class="mt-1 w-full rounded border">
-          <option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option>
-        </select>
-      </div>
-      <div>
-        <label class="text-sm font-medium">Start</label>
-        <input id="start" type="time" value="09:00" class="mt-1 w-full rounded border"/>
-      </div>
-      <div>
-        <label class="text-sm font-medium">End</label>
-        <input id="end" type="time" value="10:00" class="mt-1 w-full rounded border"/>
-      </div>
-      <div class="md:col-span-5 text-right">
-        <button class="px-4 py-2 rounded bg-primary text-white">Create Booking</button>
-      </div>
-    </form>
+  <main class="main">
+    <section class="intro">
+      <h2>Bookings</h2>
+      <p>Manage all your room and course bookings efficiently.</p>
+    </section>
 
-    <h2 class="text-xl font-semibold mt-8 mb-3">Existing Bookings</h2>
-    <div class="bg-white rounded-lg border">
-      <table class="w-full text-left">
-        <thead><tr class="border-b"><th class="p-3">Course</th><th class="p-3">Room</th><th class="p-3">Day</th><th class="p-3">Start</th><th class="p-3">End</th></tr></thead>
-        <tbody id="rows"></tbody>
-      </table>
-    </div>
-  </div>
+    <section class="card">
+      <div class="card-header">
+        <h3>Active Bookings</h3>
+        <button class="add-btn" id="addBooking">
+          <svg class="btn-icon" viewBox="0 0 24 24">
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+          </svg>
+          Add Booking
+        </button>
+      </div>
 
-  <script type="module">
-    import { api, requireAuth, getCurrentUser } from '/app.js';
-    
-    // Check auth first
-    async function init() {
-      try {
-        const user = await getCurrentUser();
-        if (!user) {
-          window.location.href = '/login.html?redirect=' + encodeURIComponent(window.location.pathname);
-          return;
-        }
-        
-        // Show user info
-        document.getElementById('userInfo').textContent = `Logged in as ${user.username}`;
-        
-        // Load page data
-        await Promise.all([loadOptions(), loadBookings()]);
-      } catch (err) {
-        console.error('Auth check failed:', err);
-        window.location.href = '/login.html';
-      }
-    }
+      <div class="table-container">
+        <table class="bookings-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Room</th>
+              <th>Course</th>
+              <th>Faculty</th>
+              <th>Date</th>
+              <th>Time Slot</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="bookingsTableBody">
+            <tr>
+              <td>B001</td>
+              <td>Room-619</td>
+              <td>AI & ML</td>
+              <td>Dr. Prince</td>
+              <td>10/08/2025</td>
+              <td>10:00 - 12:00</td>
+              <td class="actions">
+                <button class="icon-btn edit" title="Edit booking">
+                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                </button>
+                <button class="icon-btn delete" title="Delete booking">
+                  <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-    async function loadOptions() {
-      const [courses, rooms] = await Promise.all([
-        api('/api/courses').then(j=>j.data),
-        api('/api/rooms').then(j=>j.data)
-      ]);
-      const cSel = document.getElementById('course');
-      courses.forEach(c=>{ const o=document.createElement('option'); o.value=c.id; o.textContent=c.name; cSel.appendChild(o); });
-      const rSel = document.getElementById('room');
-      rooms.forEach(r=>{ const o=document.createElement('option'); o.value=r.id; o.textContent=r.name || r.room_name || (r.id+':room'); rSel.appendChild(o); });
-    }
-    async function loadBookings() {
-      const rows = document.getElementById('rows'); rows.innerHTML='';
-      const entries = await api('/api/bookings').then(j=>j.data);
-      for (const e of entries) {
-        const tr=document.createElement('tr'); tr.className='border-t';
-        tr.innerHTML = `<td class="p-3">${e.courseId}</td><td class="p-3">${e.roomId}</td><td class="p-3">${e.dayOfWeek}</td><td class="p-3">${e.startTime}</td><td class="p-3">${e.endTime}</td>`;
-        rows.appendChild(tr);
-      }
-    }
-    document.getElementById('bookingForm').addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const payload = {
-        courseId: parseInt(document.getElementById('course').value,10),
-        roomId: parseInt(document.getElementById('room').value,10),
-        dayOfWeek: document.getElementById('day').value,
-        startTime: document.getElementById('start').value,
-        endTime: document.getElementById('end').value
-      };
-      try {
-        await api('/api/bookings',{method:'POST', body: JSON.stringify(payload)});
-        await loadBookings();
-      } catch(ex) { alert(ex.message||'Failed'); }
-    });
-    // Start the page
-    init().catch(console.error);
-  </script>
+      <div class="pagination">
+        <button class="btn-page" disabled>Previous</button>
+        <span>Page 1 of 1</span>
+        <button class="btn-page" disabled>Next</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/bookings.js"></script>
 </body>
 </html>
 

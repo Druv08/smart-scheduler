@@ -1,68 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Smart Scheduler — Rooms</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-  <script>
-    tailwind.config = { darkMode:"class", theme:{ extend:{
-      colors:{ primary:"#1173d4" }, fontFamily:{ display:["Manrope","sans-serif"] }
-    }}}
-  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Scheduler – Rooms</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/rooms.css">
 </head>
-<body class="font-display bg-[#0b1420] text-slate-100">
-  <header class="border-b border-white/5 bg-black/20 backdrop-blur sticky top-0">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-      <a href="/dashboard.html" class="text-slate-300 hover:text-white">&larr; Back to Dashboard</a>
-      <h1 class="text-2xl font-extrabold">Smart Scheduler — Rooms</h1>
-      <span class="opacity-0">.</span>
+
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <svg class="icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"/>
+        </svg>
+        <h1>Smart Scheduler</h1>
+      </div>
+
+      <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="rooms.html" class="active">Rooms</a>
+        <a href="bookings.html">Bookings</a>
+        <a href="users.html">Users</a>
+        <a href="courses.html">Courses</a>
+        <a href="timetable.html">Timetable</a>
+        <a href="profile-settings.html">Profile</a>
+      </nav>
+
+      <div class="actions">
+        <button class="bell" id="notifications">
+          <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+            <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06Z"/>
+          </svg>
+        </button>
+        <div class="avatar" id="profileMenu"></div>
+      </div>
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
-    <!-- Create room -->
-    <section class="bg-white/5 rounded-xl border border-white/10 p-6">
-      <h2 class="text-lg font-bold mb-4">Add room</h2>
-      <form id="createRoomForm" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <input id="r-name" required placeholder="room name (e.g., Lab 1)" class="rounded-lg bg-white/5 border-white/10"/>
-        <input id="r-cap" required type="number" min="1" placeholder="capacity" class="rounded-lg bg-white/5 border-white/10"/>
-        <button class="rounded-lg bg-primary text-white font-semibold hover:bg-primary/90">Create</button>
-      </form>
-      <p id="r-msg" class="text-sm mt-3"></p>
+  <main class="main">
+    <section class="intro">
+      <h2>Rooms</h2>
+      <p>View and manage all classroom, lab, and seminar rooms available for scheduling.</p>
     </section>
 
-    <!-- Rooms table -->
-    <section class="bg-white/5 rounded-xl border border-white/10 overflow-hidden">
-      <table class="w-full text-left">
-        <thead class="bg-white/10 text-slate-300 text-sm uppercase tracking-wide">
-          <tr>
-            <th class="px-4 py-3 w-24">id</th>
-            <th class="px-4 py-3">room_name</th>
-            <th class="px-4 py-3 w-32">capacity</th>
-          </tr>
-        </thead>
-        <tbody id="roomsBody" class="divide-y divide-white/5"></tbody>
-      </table>
-    </section>
-
-    <!-- Add Room Button and Modal -->
-    <button id="btnAddRoom" class="btn btn-primary">Add Room</button>
-
-    <div id="roomModal" class="modal">
-        <div class="modal-content">
-            <span id="closeRoomModal" class="close">&times;</span>
-            <form id="roomForm">
-                <input type="text" name="roomName" required>
-                <input type="number" name="capacity" required>
-                <button type="submit">Save</button>
-            </form>
+    <section class="card">
+      <div class="card-header">
+        <div class="header-left">
+          <h3>Room Directory</h3>
+          <div class="filters">
+            <select id="buildingFilter" class="filter-select">
+              <option value="">All Buildings</option>
+              <option value="university">University Building</option>
+              <option value="tp1">TP-1</option>
+              <option value="tp2">TP-2</option>
+            </select>
+            <select id="typeFilter" class="filter-select">
+              <option value="">All Types</option>
+              <option value="lecture">Lecture Hall</option>
+              <option value="lab">Computer Lab</option>
+              <option value="seminar">Seminar Hall</option>
+            </select>
+          </div>
         </div>
-    </div>
+        <button class="add-btn" id="addRoom">
+          <svg class="btn-icon" viewBox="0 0 24 24">
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+          </svg>
+          Add Room
+        </button>
+      </div>
+
+      <div class="table-container">
+        <table class="rooms-table">
+          <thead>
+            <tr>
+              <th>Room ID</th>
+              <th>Building</th>
+              <th>Type</th>
+              <th>Capacity</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="roomsTableBody">
+            <!-- Table content will be dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <button class="btn-page" id="prevPage" disabled>Previous</button>
+        <span id="pageInfo">Page 1 of 1</span>
+        <button class="btn-page" id="nextPage" disabled>Next</button>
+      </div>
+    </section>
   </main>
 
   <script src="/js/app.js"></script>

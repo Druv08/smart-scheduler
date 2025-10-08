@@ -13,19 +13,15 @@ public class User {
         this.role = role;
     }
 
-    // Default constructor needed for some operations
-    public User() {}
-
-    // Getters and setters
+    // Getters
     public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-
     public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
-
     public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-
     public String getRole() { return role; }
+
+    // Setters
+    public void setId(int id) { this.id = id; }
+    public void setUsername(String username) { this.username = username; }
+    public void setPassword(String password) { this.password = password; }
     public void setRole(String role) { this.role = role; }
 }

@@ -1,41 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Scheduler – Courses</title>
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/courses.css">
 </head>
+
 <body>
-  <header class="top-bar">
-    <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
-    <h1>Smart Scheduler – Courses</h1>
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <svg class="icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"/>
+        </svg>
+        <h1>Smart Scheduler</h1>
+      </div>
+
+      <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="bookings.html">Bookings</a>
+        <a href="users.html">Users</a>
+        <a href="courses.html" class="active">Courses</a>
+        <a href="timetable.html">Timetable</a>
+        <a href="profile-settings.html">Profile</a>
+      </nav>
+
+      <div class="actions">
+        <button class="bell" id="notifications">
+          <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+            <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06Z"/>
+          </svg>
+        </button>
+        <div class="avatar" id="profileMenu"></div>
+      </div>
+    </div>
   </header>
 
-  <main>
-    <div id="courses-container" class="content-box">
-      <p>No courses available yet.</p>
-    </div>
+  <main class="main">
+    <section class="intro">
+      <h2>Courses</h2>
+      <p>View, edit, and manage all courses offered by your department.</p>
+    </section>
 
-    <button id="btnAddCourse" class="btn btn-primary">
-      + Add New Course
-    </button>
+    <section class="card">
+      <div class="card-header">
+        <div class="header-left">
+          <h3>Course List</h3>
+          <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            <input type="search" placeholder="Search courses..." id="courseSearch">
+          </div>
+        </div>
+        <button class="add-btn" id="addCourse">
+          <svg class="btn-icon" viewBox="0 0 24 24">
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+          </svg>
+          Add Course
+        </button>
+      </div>
+
+      <div class="table-container">
+        <table class="courses-table">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Name</th>
+              <th>Instructor</th>
+              <th>Credits</th>
+              <th>Department</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="coursesTableBody">
+            <tr>
+              <td>CS101</td>
+              <td>DSA</td>
+              <td>Dr. Prince</td>
+              <td>4</td>
+              <td>Computer Science</td>
+              <td class="actions">
+                <button class="icon-btn edit" title="Edit course">
+                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                </button>
+                <button class="icon-btn delete" title="Delete course">
+                  <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>CS102</td>
+              <td>COA</td>
+              <td>Dr. Prince</td>
+              <td>3</td>
+              <td>Computer Science</td>
+              <td class="actions">
+                <button class="icon-btn edit" title="Edit course">
+                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                </button>
+                <button class="icon-btn delete" title="Delete course">
+                  <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>CS103</td>
+              <td>APP</td>
+              <td>Dr. Prince</td>
+              <td>4</td>
+              <td>Computer Science</td>
+              <td class="actions">
+                <button class="icon-btn edit" title="Edit course">
+                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                </button>
+                <button class="icon-btn delete" title="Delete course">
+                  <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>CS104</td>
+              <td>TBVP</td>
+              <td>Dr. Prince</td>
+              <td>3</td>
+              <td>Computer Science</td>
+              <td class="actions">
+                <button class="icon-btn edit" title="Edit course">
+                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                </button>
+                <button class="icon-btn delete" title="Delete course">
+                  <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>CS105</td>
+              <td>OS</td>
+              <td>Dr. Prince</td>
+              <td>4</td>
+              <td>Computer Science</td>
+              <td class="actions">
+                <button class="icon-btn edit" title="Edit course">
+                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                </button>
+                <button class="icon-btn delete" title="Delete course">
+                  <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <button class="btn-page" id="prevPage" disabled>Previous</button>
+        <span id="pageInfo">Page 1 of 1</span>
+        <button class="btn-page" id="nextPage" disabled>Next</button>
+      </div>
+    </section>
   </main>
 
-  <!-- Modal -->
-  <div id="courseModal" class="modal">
-    <div class="modal-content">
-      <span id="closeCourseModal" class="close">&times;</span>
-      <form id="courseForm">
-        <input type="text" name="courseCode" required>
-        <input type="text" name="courseName" required>
-        <input type="text" name="facultyUsername" required>
-        <input type="number" name="maxStudents" required>
-        <button type="submit">Save</button>
-      </form>
-    </div>
-  </div>
-
-  <script src="js/courses.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/courses.js"></script>
 </body>
 </html>

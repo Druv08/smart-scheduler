@@ -1,97 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Smart Scheduler – Welcome</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Scheduler – Home</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-  <script>
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: { primary: "#1173d4" },
-          fontFamily: { display: ["Manrope", "sans-serif"] }
-        }
-      }
-    };
-  </script>
-  <link rel="stylesheet" href="/css/styles.css">
-  <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-    nav { background-color: #1173d4; padding: 1em; }
-    nav a { color: white; margin-right: 1em; text-decoration: none; }
-    nav a:hover { text-decoration: underline; }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/index.css">
 </head>
-<body class="font-display bg-[#0b1420] text-slate-100 min-h-screen flex flex-col">
-  <!-- Header -->
-  <header class="border-b border-white/5 bg-black/20 backdrop-blur sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-      <h1 class="text-2xl font-extrabold text-white">Smart Scheduler</h1>
-      <a href="#login" class="text-slate-300 hover:text-white text-sm font-semibold">Login</a>
+
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <svg class="icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"/>
+        </svg>
+        <h1>Smart Scheduler</h1>
+      </div>
+
+      <nav class="nav">
+        <a href="index.html" class="active">Home</a>
+        <a href="login.html">Login</a>
+      </nav>
+
+      <div class="actions">
+        <button onclick="location.href='login.html'" class="login-btn">Login</button>
+      </div>
     </div>
   </header>
 
-  <!-- Navigation -->
-  <nav class="bg-primary p-4">
-    <div class="max-w-7xl mx-auto px-4">
-      <a href="/users" class="text-white hover:underline">Users</a>
-      <a href="/rooms" class="text-white hover:underline">Rooms</a>
-      <a href="/courses" class="text-white hover:underline">Courses</a>
-      <a href="/bookings" class="text-white hover:underline">Bookings</a>
-    </div>
-  </nav>
+  <main class="main">
+    <section class="hero">
+      <h2>Welcome to Smart Scheduler</h2>
+      <p>
+        Efficient timetable and room management for colleges and universities.
+        Generate, edit, and monitor your academic schedule instantly.
+      </p>
+      <button class="primary" onclick="location.href='dashboard.html'">Get Started</button>
+    </section>
 
-  <!-- Hero Section -->
-  <section class="flex-1 flex flex-col justify-center items-center text-center px-6 py-16">
-    <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-6">Organize. Schedule. Simplify.</h2>
-    <p class="text-slate-400 text-lg max-w-2xl mb-10">
-      Smart Scheduler helps colleges manage classrooms, timetables, and faculty assignments — all in one powerful platform.
-    </p>
-    <a href="#login" class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-semibold">Get Started</a>
-  </section>
-
-  <!-- Login Section -->
-  <section id="login" class="bg-white/5 border-t border-white/10 py-16">
-    <div class="max-w-md mx-auto bg-white/5 border border-white/10 rounded-2xl p-8">
-      <h2 class="text-2xl font-bold mb-6 text-center">Login to Continue</h2>
-      <div id="loginForm" class="space-y-4">
-        <input id="username" required placeholder="Username" class="w-full rounded-lg bg-white/5 border-white/10 px-4 py-2"/>
-        <input id="password" required type="password" placeholder="Password" class="w-full rounded-lg bg-white/5 border-white/10 px-4 py-2"/>
-        <button class="w-full bg-primary hover:bg-primary/90 text-white rounded-lg py-2 font-semibold" onclick="login()">Login</button>
+    <section class="cards">
+      <div class="card">
+        <div class="card-icon">📅</div>
+        <h3>Timetables</h3>
+        <p>Generate automated timetables with optimized slot distribution.</p>
       </div>
-      <p id="login-msg" class="text-center text-sm mt-3"></p>
-    </div>
-  </section>
+      <div class="card">
+        <div class="card-icon">🏛️</div>
+        <h3>Rooms</h3>
+        <p>Allocate rooms efficiently and avoid conflicts automatically.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>Reports</h3>
+        <p>View logs, performance summaries and usage analytics in real-time.</p>
+      </div>
+    </section>
+  </main>
 
-  <!-- Footer -->
-  <footer class="text-center py-6 border-t border-white/10 text-sm text-slate-400">
-    © 2025 Smart Scheduler. Designed for simplicity.
+  <footer class="footer">
+    <p>&copy; 2025 Smart Scheduler. All rights reserved.</p>
   </footer>
 
   <script src="/js/app.js"></script>
-  <script>
-    function login() {
-      const user = document.getElementById('username').value.trim();
-      const pass = document.getElementById('password').value;
-      const msg = document.getElementById('login-msg');
-
-      // Placeholder auth (since real login API isn't implemented yet)
-      if (user && pass) {
-        msg.textContent = 'Login successful  Redirecting...';
-        msg.className = 'text-emerald-400 text-center text-sm mt-3';
-        setTimeout(() => window.location.href = '/dashboard.html', 1000);
-      } else {
-        msg.textContent = 'Invalid credentials ';
-        msg.className = 'text-red-400 text-center text-sm mt-3';
-      }
-    }
-  </script>
+  <script src="/js/home.js"></script>
 </body>
 </html>
 

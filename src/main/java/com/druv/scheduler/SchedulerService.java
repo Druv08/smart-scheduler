@@ -4,6 +4,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public class SchedulerService {
@@ -58,13 +59,16 @@ public class SchedulerService {
         }
 
         try {
-            User user = userDAO.authenticate(username, HashUtil.hashPassword(password));
-            if (user != null) {
-                String token = generateToken();
-                activeSessions.put(token, new SessionInfo(user));
-                return Map.of("success", true, "token", token);
+            Optional<User> userOpt = userDAO.getUserByUsername(username);
+            if (userOpt.isPresent()) {
+                User user = userOpt.get();
+                if (HashUtil.verifyPassword(password, user.getPassword())) {
+                    String token = generateToken();
+                    activeSessions.put(token, new SessionInfo(user));
+                    return Map.of("success", true, "token", token);
+                }
             }
-        } catch (NoSuchAlgorithmException e) {
+        } catch (Exception e) {
             return Map.of("success", false, "message", "Authentication error");
         }
 
@@ -160,29 +164,13 @@ public class SchedulerService {
         return true;
     }
 
-    public boolean addUser(String token, String username, String password, String role) {
-        // Only admins can add users
-        if (!isAuthorized(token, "ADMIN")) {
-            return false;
-        }
-
-        // Validate inputs
-        if (username == null || password == null || role == null || 
-            username.trim().isEmpty() || password.trim().isEmpty() || role.trim().isEmpty()) {
-            throw new IllegalArgumentException("Username, password and role are required");
-        }
-
-        // Validate role
-        if (!List.of("ADMIN", "FACULTY", "STUDENT").contains(role.toUpperCase())) {
-            throw new IllegalArgumentException("Invalid role: " + role);
-        }
-
+    public boolean addUser(String username, String password, String role) {
         try {
-            // Hash password before storing
-            String hashedPassword = HashUtil.hashPassword(password.trim());
-            return userDAO.addUser(username.trim(), hashedPassword, role.toUpperCase());
+            String hashedPassword = HashUtil.hashPassword(password);
+            User newUser = userDAO.addUser(username, hashedPassword, role);
+            return newUser != null;
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Failed to hash password", e);
+            return false;
         }
     }
 

@@ -1,7 +1,8 @@
 package com.druv.scheduler;
 
-import java.util.List;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Optional;
 
 public class UserManager {
     private final UserDAO userDAO;
@@ -11,24 +12,24 @@ public class UserManager {
     }
 
     public List<User> getAllUsers() {
-        return userDAO.findAll();
+        return userDAO.getAllUsers();
     }
 
     public boolean addUser(String username, String password, String role) {
         try {
             String hashedPassword = HashUtil.hashPassword(password);
-            return userDAO.addUser(username, hashedPassword, role.toUpperCase());
+            User user = userDAO.addUser(username, hashedPassword, role.toUpperCase());
+            return user != null;
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Failed to hash password", e);
         }
     }
 
     public User authenticate(String username, String password) {
-        try {
-            String hashedPassword = HashUtil.hashPassword(password);
-            return userDAO.authenticate(username, hashedPassword);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Failed to hash password", e);
+        Optional<User> userOpt = userDAO.getUserByUsername(username);
+        if (userOpt.isPresent() && HashUtil.verifyPassword(password, userOpt.get().getPassword())) {
+            return userOpt.get();
         }
+        return null;
     }
 }

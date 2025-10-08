@@ -1,0 +1,205 @@
+:root {
+  --primary: #1173d4;
+  --accent: #0e66bb;
+  --bg: #f6f7f8;
+  --card: #ffffff;
+  --border: #e5e7eb;
+  --muted: #6b7280;
+  --text: #111418;
+  --lecture: #e3f2fd;
+  --lab: #e8f5e9;
+  --project: #fff3e0;
+}
+
+/* === View Controls === */
+.view-controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-right: 1rem;
+}
+
+.view-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+  background: var(--bg);
+  color: var(--muted);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+/* === Card Header === */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.date-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nav-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--muted);
+}
+
+.nav-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.nav-btn:hover svg {
+  fill: white;
+}
+
+.current-date {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* === Timetable === */
+.timetable-wrapper {
+  overflow-x: auto;
+  margin: 0 -1.5rem;
+  padding: 0 1.5rem;
+}
+
+.timetable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+}
+
+.timetable th,
+.timetable td {
+  border: 1px solid var(--border);
+  padding: 1rem;
+  vertical-align: top;
+}
+
+.timetable th {
+  background: var(--bg);
+  color: var(--muted);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.time-header {
+  position: sticky;
+  left: 0;
+  background: var(--bg);
+  z-index: 2;
+}
+
+.timetable td {
+  min-width: 200px;
+  height: 100px;
+  background: var(--card);
+  transition: all 0.2s;
+}
+
+.timetable td:hover {
+  background: var(--bg);
+}
+
+/* === Schedule Items === */
+.schedule-item {
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.schedule-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.schedule-item.lecture { background: var(--lecture); }
+.schedule-item.lab { background: var(--lab); }
+.schedule-item.project { background: var(--project); }
+
+.room {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 0.3rem;
+}
+
+/* === Legend === */
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .card-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .header-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .date-nav {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .add-btn {
+    width: 100%;
+  }
+
+  .legend {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
