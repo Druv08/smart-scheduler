@@ -8,8 +8,96 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.sqlite.SQLiteException;
+
 public class UserDAO {
-    // Fetch all users
+    private static final String CREATE_TABLE = """
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL,
+            role TEXT NOT NULL CHECK(role IN ('ADMIN', 'FACULTY', 'STUDENT'))
+        )""";
+
+    public UserDAO() {
+        initializeTable();
+    }
+
+    private void initializeTable() {
+        try (Connection conn = Database.connect();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(CREATE_TABLE);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to initialize users table", e);
+        }
+    }
+
+    public List<User> findAll() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users";
+        
+        try (Connection conn = Database.connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
+            while (rs.next()) {
+                users.add(new User(
+                    rs.getInt("id"),
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    rs.getString("role")
+                ));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching users", e);
+        }
+        return users;
+    }
+
+    public boolean addUser(String username, String hashedPassword, String role) {
+        String sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
+        
+        try (Connection conn = Database.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, username);
+            stmt.setString(2, hashedPassword);
+            stmt.setString(3, role);
+            
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            if (e instanceof SQLiteException && e.getMessage().contains("UNIQUE")) {
+                return false; // Username already exists
+            }
+            throw new RuntimeException("Error adding user", e);
+        }
+    }
+
+    public User authenticate(String username, String hashedPassword) {
+        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+        
+        try (Connection conn = Database.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, username);
+            stmt.setString(2, hashedPassword);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new User(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("role")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error authenticating user", e);
+        }
+        return null;
+    }
+
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users";
@@ -27,66 +115,20 @@ public class UserDAO {
                 ));
             }
         } catch (SQLException e) {
-            System.err.println("Error fetching users: " + e.getMessage());
+            throw new RuntimeException("Error fetching users", e);
         }
         return users;
     }
 
-    // Insert a new user
-    public boolean addUser(String username, String password, String role) {
-        if (username == null || password == null || role == null) {
-            System.err.println("Error adding user: Username, password and role cannot be null");
-            return false;
-        }
-
-        String sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
-        
-        try (Connection conn = Database.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setString(1, username);
-            pstmt.setString(2, password);
-            pstmt.setString(3, role);
-            
-            int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Added user: " + username);
-                return true;
-            }
-            return false;
-            
-        } catch (SQLException e) {
-            String errorMessage = e.getMessage();
-            if (errorMessage != null && errorMessage.contains("UNIQUE constraint failed")) {
-                System.err.println("Error adding user: Username already exists");
-            } else {
-                System.err.println("Error adding user: " + errorMessage);
-            }
-            return false;
-        }
-    }
-
-    // Delete user by ID
     public void deleteUser(int id) {
         String sql = "DELETE FROM users WHERE id = ?";
+        
         try (Connection conn = Database.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-            pstmt.executeUpdate();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Add shutdown method
-    public void shutdown() {
-        try (Connection conn = Database.connect()) {
-            if (conn != null && !conn.isClosed()) {
-                System.out.println("Closing database connections...");
-                conn.close();
-            }
-        } catch (SQLException e) {
-            System.err.println("Error during shutdown: " + e.getMessage());
+            throw new RuntimeException("Error deleting user", e);
         }
     }
 }

@@ -9,52 +9,100 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TimetableDAO {
-    public boolean addEntry(int courseId, int roomId, String dayOfWeek, String startTime, String endTime) {
-        final String sql = "INSERT INTO timetable (course_id, room_id, day_of_week, start_time, end_time) VALUES (?, ?, ?, ?, ?)";
+    private static final String CREATE_TABLE = """
+        CREATE TABLE IF NOT EXISTS timetable (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            course_id INTEGER NOT NULL,
+            room_id INTEGER NOT NULL,
+            day_of_week TEXT NOT NULL,
+            start_time TEXT NOT NULL,
+            end_time TEXT NOT NULL,
+            FOREIGN KEY (course_id) REFERENCES courses(id),
+            FOREIGN KEY (room_id) REFERENCES rooms(id),
+            UNIQUE(room_id, day_of_week, start_time, end_time)
+        )""";
+
+    public TimetableDAO() {
+        initializeTable();
+    }
+
+    private void initializeTable() {
         try (Connection conn = Database.connect();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, courseId);
-            ps.setInt(2, roomId);
-            ps.setString(3, dayOfWeek);
-            ps.setString(4, startTime);
-            ps.setString(5, endTime);
-            return ps.executeUpdate() > 0;
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(CREATE_TABLE);
         } catch (SQLException e) {
-            System.err.println("Error adding timetable entry: " + e.getMessage());
-            return false;
+            throw new RuntimeException("Failed to initialize timetable", e);
         }
     }
 
-    public List<TimetableEntry> getAllEntries() {
-        final String sql = "SELECT id, course_id, room_id, day_of_week, start_time, end_time FROM timetable ORDER BY day_of_week, start_time";
+    public List<TimetableEntry> findAll() {
         List<TimetableEntry> entries = new ArrayList<>();
+        String sql = "SELECT * FROM timetable";
+
         try (Connection conn = Database.connect();
-             Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
             while (rs.next()) {
                 entries.add(new TimetableEntry(
-                    rs.getInt("id"),
                     rs.getInt("course_id"),
                     rs.getInt("room_id"),
                     rs.getString("day_of_week"),
                     rs.getString("start_time"),
-                    rs.getString("end_time")));
+                    rs.getString("end_time")
+                ));
             }
         } catch (SQLException e) {
-            System.err.println("Error fetching timetable: " + e.getMessage());
+            throw new RuntimeException("Error fetching bookings", e);
         }
         return entries;
     }
 
-    public boolean deleteEntry(int id) {
-        final String sql = "DELETE FROM timetable WHERE id = ?";
+    public boolean addBooking(int courseId, int roomId, String day, String startTime, String endTime) {
+        String sql = "INSERT INTO timetable (course_id, room_id, day_of_week, start_time, end_time) VALUES (?, ?, ?, ?, ?)";
+        
         try (Connection conn = Database.connect();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            return ps.executeUpdate() > 0;
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, courseId);
+            stmt.setInt(2, roomId);
+            stmt.setString(3, day);
+            stmt.setString(4, startTime);
+            stmt.setString(5, endTime);
+            
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Error deleting timetable entry: " + e.getMessage());
-            return false;
+            if (e.getMessage().contains("UNIQUE")) {
+                return false; // Time slot conflict
+            }
+            throw new RuntimeException("Error adding booking", e);
+        }
+    }
+
+    public boolean hasTimeConflict(int roomId, String day, String startTime, String endTime) {
+        String sql = """
+            SELECT COUNT(*) FROM timetable 
+            WHERE room_id = ? 
+            AND day_of_week = ? 
+            AND ((start_time < ? AND end_time > ?) 
+                 OR 
+                 (start_time < ? AND end_time > ?))""";
+                 
+        try (Connection conn = Database.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, roomId);
+            stmt.setString(2, day);
+            stmt.setString(3, endTime);
+            stmt.setString(4, startTime);
+            stmt.setString(5, startTime);
+            stmt.setString(6, endTime);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error checking time conflicts", e);
         }
     }
 }

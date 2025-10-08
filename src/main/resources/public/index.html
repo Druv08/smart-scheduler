@@ -20,6 +20,13 @@
       }
     };
   </script>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    nav { background-color: #1173d4; padding: 1em; }
+    nav a { color: white; margin-right: 1em; text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+  </style>
 </head>
 <body class="font-display bg-[#0b1420] text-slate-100 min-h-screen flex flex-col">
   <!-- Header -->
@@ -29,6 +36,16 @@
       <a href="#login" class="text-slate-300 hover:text-white text-sm font-semibold">Login</a>
     </div>
   </header>
+
+  <!-- Navigation -->
+  <nav class="bg-primary p-4">
+    <div class="max-w-7xl mx-auto px-4">
+      <a href="/users" class="text-white hover:underline">Users</a>
+      <a href="/rooms" class="text-white hover:underline">Rooms</a>
+      <a href="/courses" class="text-white hover:underline">Courses</a>
+      <a href="/bookings" class="text-white hover:underline">Bookings</a>
+    </div>
+  </nav>
 
   <!-- Hero Section -->
   <section class="flex-1 flex flex-col justify-center items-center text-center px-6 py-16">
@@ -43,11 +60,11 @@
   <section id="login" class="bg-white/5 border-t border-white/10 py-16">
     <div class="max-w-md mx-auto bg-white/5 border border-white/10 rounded-2xl p-8">
       <h2 class="text-2xl font-bold mb-6 text-center">Login to Continue</h2>
-      <form id="loginForm" class="space-y-4">
-        <input id="login-username" required placeholder="Username" class="w-full rounded-lg bg-white/5 border-white/10 px-4 py-2"/>
-        <input id="login-password" required type="password" placeholder="Password" class="w-full rounded-lg bg-white/5 border-white/10 px-4 py-2"/>
-        <button class="w-full bg-primary hover:bg-primary/90 text-white rounded-lg py-2 font-semibold">Login</button>
-      </form>
+      <div id="loginForm" class="space-y-4">
+        <input id="username" required placeholder="Username" class="w-full rounded-lg bg-white/5 border-white/10 px-4 py-2"/>
+        <input id="password" required type="password" placeholder="Password" class="w-full rounded-lg bg-white/5 border-white/10 px-4 py-2"/>
+        <button class="w-full bg-primary hover:bg-primary/90 text-white rounded-lg py-2 font-semibold" onclick="login()">Login</button>
+      </div>
       <p id="login-msg" class="text-center text-sm mt-3"></p>
     </div>
   </section>
@@ -59,10 +76,9 @@
 
   <script src="/js/app.js"></script>
   <script>
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const user = document.getElementById('login-username').value.trim();
-      const pass = document.getElementById('login-password').value;
+    function login() {
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value;
       const msg = document.getElementById('login-msg');
 
       // Placeholder auth (since real login API isn't implemented yet)
@@ -74,7 +90,7 @@
         msg.textContent = 'Invalid credentials ';
         msg.className = 'text-red-400 text-center text-sm mt-3';
       }
-    });
+    }
   </script>
 </body>
 </html>

@@ -49,6 +49,20 @@
         <tbody id="roomsBody" class="divide-y divide-white/5"></tbody>
       </table>
     </section>
+
+    <!-- Add Room Button and Modal -->
+    <button id="btnAddRoom" class="btn btn-primary">Add Room</button>
+
+    <div id="roomModal" class="modal">
+        <div class="modal-content">
+            <span id="closeRoomModal" class="close">&times;</span>
+            <form id="roomForm">
+                <input type="text" name="roomName" required>
+                <input type="number" name="capacity" required>
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </div>
   </main>
 
   <script src="/js/app.js"></script>

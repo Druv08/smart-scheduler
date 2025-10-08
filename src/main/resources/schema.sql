@@ -7,8 +7,12 @@ CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    role TEXT CHECK(role IN ('student', 'faculty', 'admin')) NOT NULL
+    role TEXT NOT NULL
 );
+
+-- Add a default admin user
+INSERT OR IGNORE INTO users (username, password, role) 
+VALUES ('admin', 'admin123', 'ADMIN');
 
 -- Rooms table
 CREATE TABLE IF NOT EXISTS rooms (
@@ -17,7 +21,7 @@ CREATE TABLE IF NOT EXISTS rooms (
     capacity INTEGER NOT NULL CHECK (capacity > 0)
 );
 
--- Courses table: subjects/modules
+-- Courses table
 CREATE TABLE IF NOT EXISTS courses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     course_code TEXT UNIQUE NOT NULL,
@@ -35,8 +39,8 @@ CREATE TABLE IF NOT EXISTS timetable (
     day_of_week TEXT,
     start_time TEXT,
     end_time TEXT,
-    FOREIGN KEY(course_id) REFERENCES courses(id),
-    FOREIGN KEY(room_id) REFERENCES rooms(id)
+    FOREIGN KEY (course_id) REFERENCES courses(id),
+    FOREIGN KEY (room_id) REFERENCES rooms(id)
 );
 
 DELETE FROM users;

@@ -1,20 +1,62 @@
+.modal {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.course-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.course-table th,
+.course-table td {
+    padding: 10px;
+    border-bottom: 1px solid #333;
+}
+
+/* Additional basic styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #0b1420;
+    color: #fff;
     margin: 0;
     padding: 20px;
-    background-color: #f5f5f5;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    background-color: white;
+.modal form {
+    background: #1a2736;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
 }
 
-h1 {
-    color: #333;
-    text-align: center;
+input, button {
+    display: block;
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #2f3b4b;
+    background: #0b1420;
+    color: white;
+}
+
+button {
+    background: #1a73e8;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1557b0;
+}
+
+#cancel-course-btn {
+    background: transparent;
+    border: 1px solid #2f3b4b;
 }

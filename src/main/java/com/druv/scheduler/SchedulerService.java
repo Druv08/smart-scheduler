@@ -1,119 +1,192 @@
 package com.druv.scheduler;
 
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class SchedulerService {
     private final UserDAO userDAO;
-    private final RoomDAO roomDAO;
     private final CourseDAO courseDAO;
+    private final RoomDAO roomDAO;
+    private final TimetableDAO timetableDAO;
+    private final Map<String, SessionInfo> activeSessions = new HashMap<>();
 
-    public SchedulerService() {
-        this.userDAO = new UserDAO();
-        this.roomDAO = new RoomDAO();
-        this.courseDAO = new CourseDAO();
+    private static class SessionInfo {
+        User user;
+        long timestamp;
+
+        SessionInfo(User user) {
+            this.user = user;
+            this.timestamp = System.currentTimeMillis();
+        }
+
+        boolean isExpired() {
+            return System.currentTimeMillis() - timestamp > 24 * 60 * 60 * 1000;
+        }
     }
 
-    // User methods
-    public boolean addUser(String username, String password, String role) {
-        if (username == null || username.trim().isEmpty()) {
-            throw new IllegalArgumentException("Username cannot be empty");
-        }
-        if (password == null || password.trim().isEmpty()) {
-            throw new IllegalArgumentException("Password cannot be empty");
-        }
-        if (!isValidRole(role)) {
-            throw new IllegalArgumentException("Invalid role: " + role);
-        }
-
-        String hashedPassword = Security.hashPassword(password);
-        return userDAO.addUser(username, hashedPassword, role);
+    public SchedulerService(UserDAO userDAO, CourseDAO courseDAO, RoomDAO roomDAO, TimetableDAO timetableDAO) {
+        this.userDAO = userDAO;
+        this.courseDAO = courseDAO;
+        this.roomDAO = roomDAO;
+        this.timetableDAO = timetableDAO;
     }
 
-    public List<User> getAllUsers() {
-        return userDAO.getAllUsers();
-    }
-
-    public void showUsers() {
-        List<User> users = getAllUsers();
-        if (users.isEmpty()) {
-            System.out.println("No users found.");
-            return;
+    // Authentication methods
+    public User validateToken(String token) {
+        if (token == null || !token.startsWith("Bearer ")) {
+            return null;
         }
 
-        System.out.println("\nAll Users:");
-        System.out.println("----------------------------------------");
-        System.out.printf("%-20s %-10s%n", "Username", "Role");
-        System.out.println("----------------------------------------");
+        String actualToken = token.substring(7);
+        SessionInfo session = activeSessions.get(actualToken);
         
-        for (User user : users) {
-            System.out.printf("%-20s %-10s%n", 
-                user.getUsername(), 
-                user.getRole());
+        if (session == null || session.isExpired()) {
+            activeSessions.remove(actualToken);
+            return null;
         }
-        System.out.println("----------------------------------------");
+
+        return session.user;
+    }
+
+    public Map<String, Object> login(String username, String password) {
+        if (username == null || password == null || 
+            username.trim().isEmpty() || password.trim().isEmpty()) {
+            return Map.of("success", false, "message", "Invalid credentials");
+        }
+
+        try {
+            User user = userDAO.authenticate(username, HashUtil.hashPassword(password));
+            if (user != null) {
+                String token = generateToken();
+                activeSessions.put(token, new SessionInfo(user));
+                return Map.of("success", true, "token", token);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            return Map.of("success", false, "message", "Authentication error");
+        }
+
+        return Map.of("success", false, "message", "Invalid credentials");
+    }
+
+    public void logout(String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            String actualToken = token.substring(7);
+            activeSessions.remove(actualToken);
+        }
+    }
+
+    // Protected methods that require authentication
+    private boolean isAuthorized(String token, String requiredRole) {
+        User user = validateToken(token);
+        return user != null && user.getRole().equals(requiredRole);
+    }
+
+    // Course methods
+    public List<Course> getAllCourses(String token) {
+        if (validateToken(token) != null) {
+            return courseDAO.findAll();
+        }
+        return List.of();
+    }
+
+    public boolean addCourse(String token, String code, String name, String faculty, int maxStudents) {
+        if (!isAuthorized(token, "ADMIN")) {
+            return false;
+        }
+        return courseDAO.addCourse(code, name, faculty, maxStudents);
     }
 
     // Room methods
-    public boolean addRoom(String roomName, int capacity) {
-        if (roomName == null || roomName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Room name cannot be empty");
+    public List<Room> getAllRooms(String token) {
+        if (validateToken(token) != null) {
+            return roomDAO.findAll();
         }
-        if (capacity <= 0) {
-            throw new IllegalArgumentException("Capacity must be positive");
-        }
-        return roomDAO.addRoom(roomName, capacity);
+        return List.of();
     }
 
-    public List<Room> getAllRooms() {
-        return roomDAO.getAllRooms();
+    public boolean addRoom(String token, String name, int capacity) {
+        if (!isAuthorized(token, "ADMIN")) {
+            return false;
+        }
+        return roomDAO.addRoom(name, capacity);
     }
 
-    public void showRooms() {
-        List<Room> rooms = getAllRooms();
-        if (rooms.isEmpty()) {
-            System.out.println("No rooms available.");
-            return;
+    // Timetable methods
+    public List<TimetableEntry> getAllBookings(String token) {
+        if (validateToken(token) != null) {
+            return timetableDAO.findAll();
         }
+        return List.of();
+    }
 
-        System.out.println("\nAll Rooms:");
-        System.out.println("----------------------------------------");
-        System.out.printf("%-20s %-10s%n", "Room Name", "Capacity");
-        System.out.println("----------------------------------------");
+    public boolean addBooking(String token, int courseId, int roomId, 
+                            String day, String startTime, String endTime) {
+        User user = validateToken(token);
+        if (user == null || (!user.getRole().equals("ADMIN") && !user.getRole().equals("FACULTY"))) {
+            return false;
+        }
         
-        for (Room room : rooms) {
-            System.out.printf("%-20s %-10d%n", 
-                room.getRoomName(), 
-                room.getCapacity());
+        if (timetableDAO.hasTimeConflict(roomId, day, startTime, endTime)) {
+            return false;
         }
-        System.out.println("----------------------------------------");
-        System.out.println("Total Rooms: " + rooms.size());
+        
+        return timetableDAO.addBooking(courseId, roomId, day, startTime, endTime);
     }
 
-    // Course management methods
-    public List<Course> getAllCourses() {
-        return courseDAO.getAllCourses();
+    // User methods with auth
+    public List<User> getAllUsers(String token) {
+        if (isAuthorized(token, "ADMIN")) {
+            return userDAO.getAllUsers();
+        }
+        return List.of();
     }
 
-    public boolean addCourse(String courseCode, String courseName, String facultyUsername, int maxStudents) {
-        if (courseCode == null || courseCode.trim().isEmpty()) {
-            throw new IllegalArgumentException("Course code cannot be empty");
+    private boolean isValidToken(String token) {
+        if (token == null || !token.startsWith("Bearer ")) {
+            return false;
         }
-        if (courseName == null || courseName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Course name cannot be empty");
+        
+        String actualToken = token.substring(7);
+        SessionInfo session = activeSessions.get(actualToken);
+        
+        if (session == null || session.isExpired()) {
+            activeSessions.remove(actualToken);
+            return false;
         }
-        if (facultyUsername == null || facultyUsername.trim().isEmpty()) {
-            throw new IllegalArgumentException("Faculty username cannot be empty");
-        }
-        if (maxStudents <= 0) {
-            throw new IllegalArgumentException("Maximum students must be positive");
-        }
-        return courseDAO.addCourse(courseCode, courseName, facultyUsername, maxStudents);
+        
+        return true;
     }
 
-    private boolean isValidRole(String role) {
-        return role != null && 
-               (role.equals("student") || 
-                role.equals("faculty") || 
-                role.equals("admin"));
+    public boolean addUser(String token, String username, String password, String role) {
+        // Only admins can add users
+        if (!isAuthorized(token, "ADMIN")) {
+            return false;
+        }
+
+        // Validate inputs
+        if (username == null || password == null || role == null || 
+            username.trim().isEmpty() || password.trim().isEmpty() || role.trim().isEmpty()) {
+            throw new IllegalArgumentException("Username, password and role are required");
+        }
+
+        // Validate role
+        if (!List.of("ADMIN", "FACULTY", "STUDENT").contains(role.toUpperCase())) {
+            throw new IllegalArgumentException("Invalid role: " + role);
+        }
+
+        try {
+            // Hash password before storing
+            String hashedPassword = HashUtil.hashPassword(password.trim());
+            return userDAO.addUser(username.trim(), hashedPassword, role.toUpperCase());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Failed to hash password", e);
+        }
+    }
+
+    private String generateToken() {
+        return UUID.randomUUID().toString();
     }
 }

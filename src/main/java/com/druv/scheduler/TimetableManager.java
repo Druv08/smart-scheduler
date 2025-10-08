@@ -3,17 +3,21 @@ package com.druv.scheduler;
 import java.util.List;
 
 public class TimetableManager {
-    private final TimetableDAO timetableDAO = new TimetableDAO();
+    private final TimetableDAO timetableDAO;
 
-    public boolean addEntry(int courseId, int roomId, String dayOfWeek, String startTime, String endTime) {
-        return timetableDAO.addEntry(courseId, roomId, dayOfWeek, startTime, endTime);
+    public TimetableManager(TimetableDAO timetableDAO) {
+        this.timetableDAO = timetableDAO;
     }
 
-    public List<TimetableEntry> listEntries() {
-        return timetableDAO.getAllEntries();
+    public List<TimetableEntry> getAllBookings() {
+        return timetableDAO.findAll();
     }
 
-    public boolean deleteEntry(int id) {
-        return timetableDAO.deleteEntry(id);
+    public boolean addBooking(int courseId, int roomId, String day, String startTime, String endTime) {
+        return timetableDAO.addBooking(courseId, roomId, day, startTime, endTime);
+    }
+
+    public boolean hasConflict(int roomId, String day, String startTime, String endTime) {
+        return timetableDAO.hasTimeConflict(roomId, day, startTime, endTime);
     }
 }

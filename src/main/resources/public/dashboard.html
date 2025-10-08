@@ -1,109 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Smart Scheduler – Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Scheduler Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0f172a;
+      color: #f8fafc;
+      font-family: "Inter", sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-  <script>
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: { primary: "#1173d4" },
-          fontFamily: { display: ["Manrope", "sans-serif"] }
-        }
-      }
-    };
-  </script>
+    header {
+      background-color: #1e293b;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    header button {
+      background-color: #334155;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    header button:hover {
+      background-color: #475569;
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    /* Stats section */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .stat-card {
+      background-color: #1e293b;
+      padding: 1.5rem;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .stat-card h2 {
+      font-size: 2rem;
+      margin: 0.5rem 0;
+      color: #60a5fa;
+    }
+
+    /* Quick access section */
+    .quick-access {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    .access-card {
+      background-color: #1e293b;
+      padding: 1.5rem;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+    }
+
+    .access-card:hover {
+      transform: translateY(-4px);
+      background-color: #334155;
+    }
+
+    .access-card h3 {
+      margin-top: 0.5rem;
+      color: #93c5fd;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #1e293b;
+      font-size: 0.9rem;
+      color: #cbd5e1;
+    }
+  </style>
 </head>
-<body class="font-display bg-[#0b1420] text-slate-100 min-h-screen flex flex-col">
-  <!-- Navbar -->
-  <header class="border-b border-white/5 bg-black/20 backdrop-blur sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-      <h1 class="text-2xl font-extrabold text-white">Smart Scheduler Dashboard</h1>
-      <a href="/index.html" class="text-slate-300 hover:text-white text-sm font-semibold">Logout</a>
-    </div>
+<body>
+  <header>
+    <h1>Smart Scheduler Dashboard</h1>
+    <button onclick="logout()">Logout</button>
   </header>
 
-  <!-- Main -->
-  <main class="flex-1 max-w-7xl mx-auto px-4 py-10 space-y-10">
-    <!-- Summary Stats -->
-    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div class="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
-        <h2 class="text-sm text-slate-400 mb-1">Total Users</h2>
-        <p id="count-users" class="text-3xl font-extrabold">7</p>
+  <main>
+    <section class="stats">
+      <div class="stat-card">
+        <h2 id="count-users">7</h2>
+        <p>Total Users</p>
       </div>
-      <div class="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
-        <h2 class="text-sm text-slate-400 mb-1">Total Rooms</h2>
-        <p id="count-rooms" class="text-3xl font-extrabold">4</p>
+      <div class="stat-card">
+        <h2 id="count-rooms">4</h2>
+        <p>Total Rooms</p>
       </div>
-      <div class="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
-        <h2 class="text-sm text-slate-400 mb-1">Courses</h2>
-        <p class="text-3xl font-extrabold">6</p>
+      <div class="stat-card">
+        <h2 id="count-courses">6</h2>
+        <p>Courses</p>
       </div>
-      <div class="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
-        <h2 class="text-sm text-slate-400 mb-1">Bookings</h2>
-        <p class="text-3xl font-extrabold">12</p>
+      <div class="stat-card">
+        <h2 id="count-bookings">12</h2>
+        <p>Bookings</p>
       </div>
     </section>
 
-    <!-- Navigation Cards -->
-    <section>
-      <h2 class="text-xl font-bold mb-6 text-slate-200">Quick Access</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <a href="/users.html" class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-6 flex flex-col items-center justify-center text-center transition">
-          <span class="text-4xl mb-3">👥</span>
-          <h3 class="font-semibold text-lg">Manage Users</h3>
-          <p class="text-slate-400 text-sm mt-1">Add, view, and manage user roles.</p>
-        </a>
-
-        <a href="/rooms.html" class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-6 flex flex-col items-center justify-center text-center transition">
-          <span class="text-4xl mb-3">🏫</span>
-          <h3 class="font-semibold text-lg">Manage Rooms</h3>
-          <p class="text-slate-400 text-sm mt-1">Create or view classroom and lab info.</p>
-        </a>
-
-        <a href="/courses.html" class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-6 flex flex-col items-center justify-center text-center transition">
-          <span class="text-4xl mb-3">📘</span>
-          <h3 class="font-semibold text-lg">Manage Courses</h3>
-          <p class="text-slate-400 text-sm mt-1">Assign faculty and subjects.</p>
-        </a>
-
-        <a href="/timetable.html" class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-6 flex flex-col items-center justify-center text-center transition">
-          <span class="text-4xl mb-3">🕒</span>
-          <h3 class="font-semibold text-lg">View Timetable</h3>
-          <p class="text-slate-400 text-sm mt-1">View and manage schedules.</p>
-        </a>
-
-        <a href="/bookings.html" class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-6 flex flex-col items-center justify-center text-center transition">
-          <span class="text-4xl mb-3">📝</span>
-          <h3 class="font-semibold text-lg">Bookings</h3>
-          <p class="text-slate-400 text-sm mt-1">Manage class and lab bookings.</p>
-        </a>
+    <h2>Quick Access</h2>
+    <section class="quick-access">
+      <div class="access-card" onclick="navigate('/users')">
+        <h3>Manage Users</h3>
+        <p>Add, view, and manage user roles.</p>
+      </div>
+      <div class="access-card" onclick="navigate('/rooms')">
+        <h3>Manage Rooms</h3>
+        <p>Create or view classroom and lab info.</p>
+      </div>
+      <div class="access-card" onclick="navigate('/courses')">
+        <h3>Manage Courses</h3>
+        <p>Assign faculty and subjects.</p>
+      </div>
+      <div class="access-card" onclick="navigate('/timetable')">
+        <h3>View Timetable</h3>
+        <p>View and manage weekly schedules.</p>
+      </div>
+      <div class="access-card" onclick="navigate('/bookings')">
+        <h3>Bookings</h3>
+        <p>Manage class and lab reservations.</p>
+      </div>
+      <div class="access-card" onclick="showComingSoon()">
+        <h3>Reports</h3>
+        <p>Generate timetable and utilization reports.</p>
       </div>
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="text-center py-6 border-t border-white/10 text-sm text-slate-400">
+  <footer>
     © 2025 Smart Scheduler. All Rights Reserved.
   </footer>
 
   <script src="/js/app.js"></script>
   <script>
-    // Demo: update summary with live counts
+    // Refresh stats periodically
     async function refreshStats() {
-      const users = await api('/api/users');
-      const rooms = await api('/api/rooms');
-      if (users.success) document.getElementById('count-users').textContent = users.total ?? users.users?.length ?? 0;
-      if (rooms.success) document.getElementById('count-rooms').textContent = rooms.count ?? rooms.rooms?.length ?? 0;
+      try {
+        const users = await api('/api/users');
+        const rooms = await api('/api/rooms');
+        const courses = await api('/api/courses');
+        const bookings = await api('/api/bookings');
+
+        if (users.success) document.getElementById('count-users').textContent = users.total ?? users.users?.length ?? 0;
+        if (rooms.success) document.getElementById('count-rooms').textContent = rooms.total ?? rooms.rooms?.length ?? 0;
+        if (courses.success) document.getElementById('count-courses').textContent = courses.total ?? courses.courses?.length ?? 0;
+        if (bookings.success) document.getElementById('count-bookings').textContent = bookings.total ?? bookings.bookings?.length ?? 0;
+      } catch (err) {
+        console.error('Failed to refresh stats:', err);
+      }
     }
+
+    function navigate(path) {
+      window.location.href = path;
+    }
+
+    function logout() {
+      localStorage.removeItem('token');
+      window.location.href = '/index.html';
+    }
+
+    function showComingSoon() {
+      alert('Report system coming soon!');
+    }
+
+    // Initial load
     refreshStats();
+    // Refresh every 30 seconds
+    setInterval(refreshStats, 30000);
   </script>
 </body>
 </html>

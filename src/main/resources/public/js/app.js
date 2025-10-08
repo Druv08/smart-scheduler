@@ -117,11 +117,16 @@ function toast(msg, type='info') {
 
 // Course management functions
 function showAddCourseModal() {
-    document.getElementById('addCourseModal').classList.remove('hidden');
+    const modal = document.getElementById('addCourseModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
 }
 
 function hideAddCourseModal() {
-    document.getElementById('addCourseModal').classList.add('hidden');
+    const modal = document.getElementById('addCourseModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.getElementById('addCourseForm').reset();
 }
 
 // Add course form handler
@@ -147,38 +152,38 @@ document.getElementById('addCourseForm')?.addEventListener('submit', async (e) =
         if (data.success) {
             hideAddCourseModal();
             loadCourses();
-            toast('Course added successfully', 'success');
+            alert('Course added successfully');
         } else {
-            toast(data.error, 'error');
+            alert('Error: ' + (data.error || 'Failed to add course'));
         }
     } catch (error) {
-        toast('Failed to add course', 'error');
+        console.error('Error:', error);
+        alert('Failed to add course. Please try again.');
     }
 });
 
-// Load courses function
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize based on current page
+    if (window.location.pathname.includes('courses')) {
+        loadCourses();
+    }
+});
+
 async function loadCourses() {
     const container = document.getElementById('coursesTable');
-    if (!container) return;
-
     try {
         const response = await fetch('/api/courses');
         const data = await response.json();
 
         if (!data.success) {
-            container.innerHTML = `
-                <p class="text-red-500 text-center">
-                    Failed to load courses: ${data.error}
-                </p>`;
+            container.innerHTML = `<p class="text-red-500 text-center">Error: ${data.error}</p>`;
             return;
         }
 
-        const courses = data.courses;
-        if (courses.length === 0) {
+        if (!data.courses || data.courses.length === 0) {
             container.innerHTML = `
-                <p class="text-gray-400 text-center">
-                    No courses available. Add your first course!
-                </p>`;
+                <p class="text-gray-400 text-center">No courses available yet.</p>
+            `;
             return;
         }
 
@@ -190,22 +195,15 @@ async function loadCourses() {
                         <th class="px-4 py-3 text-left">Name</th>
                         <th class="px-4 py-3 text-left">Faculty</th>
                         <th class="px-4 py-3 text-center">Max Students</th>
-                        <th class="px-4 py-3 text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    ${courses.map(course => `
+                    ${data.courses.map(course => `
                         <tr class="border-b border-gray-700 hover:bg-gray-700/50">
                             <td class="px-4 py-3">${course.courseCode}</td>
                             <td class="px-4 py-3">${course.courseName}</td>
                             <td class="px-4 py-3">${course.facultyUsername}</td>
                             <td class="px-4 py-3 text-center">${course.maxStudents}</td>
-                            <td class="px-4 py-3 text-right">
-                                <button onclick="deleteCourse(${course.id})"
-                                        class="text-red-400 hover:text-red-300">
-                                    Delete
-                                </button>
-                            </td>
                         </tr>
                     `).join('')}
                 </tbody>
@@ -213,13 +211,210 @@ async function loadCourses() {
         `;
     } catch (error) {
         container.innerHTML = `
-            <p class="text-red-500 text-center">
-                Failed to connect to server
-            </p>`;
+            <p class="text-red-500 text-center">Failed to load courses. Please try again.</p>
+        `;
     }
 }
 
-// Initialize if on courses page
-if (window.location.pathname.includes('courses')) {
-    loadCourses();
+// Auth handling
+async function login(username, password) {
+    try {
+        const resp = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        const payload = await resp.json();
+        if (!payload.success) {
+            showError(payload.error || 'Login failed');
+            return null;
+        }
+        return payload.data;
+    } catch (e) {
+        showError('Network error');
+        return null;
+    }
 }
+
+// Users
+async function loadUsers() {
+    try {
+        const resp = await fetch('/api/users', {
+            headers: { 'Authorization': getAuthToken() }
+        });
+        const payload = await resp.json();
+        if (!payload.success) {
+            showError(payload.error || 'Failed to load users');
+            return;
+        }
+        renderUsers(payload.data || []);
+    } catch (e) {
+        showError('Network error');
+    }
+}
+
+async function createUser(userData) {
+    try {
+        const resp = await fetch('/api/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': getAuthToken()
+            },
+            body: JSON.stringify(userData)
+        });
+        const payload = await resp.json();
+        if (!payload.success) {
+            showFieldError('#username', payload.error || 'Could not create user');
+            return null;
+        }
+        return payload.data;
+    } catch (e) {
+        showError('Network error');
+        return null;
+    }
+}
+
+// Rooms
+async function loadRooms() {
+    try {
+        const resp = await fetch('/api/rooms', {
+            headers: { 'Authorization': getAuthToken() }
+        });
+        const payload = await resp.json();
+        if (!payload.success) {
+            showError(payload.error || 'Failed to load rooms');
+            return;
+        }
+        renderRooms(payload.data || []);
+    } catch (e) {
+        showError('Network error');
+    }
+}
+
+async function createRoom(roomData) {
+    try {
+        const resp = await fetch('/api/rooms', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': getAuthToken()
+            },
+            body: JSON.stringify(roomData)
+        });
+        const payload = await resp.json();
+        if (!payload.success) {
+            showFieldError('#roomName', payload.error || 'Could not create room');
+            return null;
+        }
+        return payload.data;
+    } catch (e) {
+        showError('Network error');
+        return null;
+    }
+}
+
+// Courses
+async function loadCourses() {
+    try {
+        const resp = await fetch('/api/courses', {
+            headers: { 'Authorization': getAuthToken() }
+        });
+        const payload = await resp.json();
+        if (!payload.success) {
+            showError(payload.error || 'Failed to load courses');
+            return;
+        }
+        renderCourses(payload.data || []);
+    } catch (e) {
+        showError('Network error');
+    }
+}
+
+async function createCourse(courseData) {
+    try {
+        const resp = await fetch('/api/courses', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': getAuthToken()
+            },
+            body: JSON.stringify(courseData)
+        });
+        const payload = await resp.json();
+        if (!payload.success) {
+            showFieldError('#courseCode', payload.error || 'Could not create course');
+            return null;
+        }
+        return payload.data;
+    } catch (e) {
+        showError('Network error');
+        return null;
+    }
+}
+
+// Bookings
+async function loadBookings() {
+    try {
+        const resp = await fetch('/api/bookings', {
+            headers: { 'Authorization': getAuthToken() }
+        });
+        const payload = await resp.json();
+        if (!payload.success) {
+            showError(payload.error || 'Failed to load bookings');
+            return;
+        }
+        renderBookings(payload.data || []);
+    } catch (e) {
+        showError('Network error');
+    }
+}
+
+async function createBooking(bookingData) {
+    try {
+        const resp = await fetch('/api/bookings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': getAuthToken()
+            },
+            body: JSON.stringify(bookingData)
+        });
+        const payload = await resp.json();
+        if (!payload.success) {
+            showFieldError('#courseSelect', payload.error || 'Could not create booking');
+            return null;
+        }
+        return payload.data;
+    } catch (e) {
+        showError('Network error');
+        return null;
+    }
+}
+
+// Helper functions
+function getAuthToken() {
+    return localStorage.getItem('authToken');
+}
+
+function showError(message) {
+    const errorDiv = document.querySelector('#errorMessage');
+    if (errorDiv) {
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+    } else {
+        console.error(message);
+    }
+}
+
+function showFieldError(selector, message) {
+    const field = document.querySelector(selector);
+    if (field) {
+        field.setCustomValidity(message);
+        field.reportValidity();
+    } else {
+        showError(message);
+    }
+}
+
+<div id="errorMessage" class="error-message" style="display:none;"></div>

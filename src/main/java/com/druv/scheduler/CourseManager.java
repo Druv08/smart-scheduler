@@ -5,35 +5,19 @@ import java.util.List;
 public class CourseManager {
     private final CourseDAO courseDAO;
 
-    public CourseManager() {
-        this.courseDAO = new CourseDAO();
-    }
-
-    public boolean addCourse(String courseCode, String courseName, String facultyUsername, int maxStudents) {
-        if (courseCode == null || courseCode.trim().isEmpty()) {
-            throw new IllegalArgumentException("Course code cannot be empty");
-        }
-        if (courseName == null || courseName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Course name cannot be empty");
-        }
-        if (facultyUsername == null || facultyUsername.trim().isEmpty()) {
-            throw new IllegalArgumentException("Faculty username cannot be empty");
-        }
-        if (maxStudents <= 0) {
-            throw new IllegalArgumentException("Maximum students must be positive");
-        }
-
-        return courseDAO.addCourse(courseCode, courseName, facultyUsername, maxStudents);
+    public CourseManager(CourseDAO courseDAO) {
+        this.courseDAO = courseDAO;
     }
 
     public List<Course> getAllCourses() {
-        return courseDAO.getAllCourses();
+        return courseDAO.findAll();
     }
 
-    public boolean deleteCourse(int courseId) {
-        if (courseId <= 0) {
-            throw new IllegalArgumentException("Invalid course ID");
-        }
-        return courseDAO.deleteCourse(courseId);
+    public boolean addCourse(String code, String name, String faculty, int maxStudents) {
+        return courseDAO.addCourse(code, name, faculty, maxStudents);
+    }
+
+    public Course findByCode(String code) {
+        return courseDAO.findByCode(code);
     }
 }
