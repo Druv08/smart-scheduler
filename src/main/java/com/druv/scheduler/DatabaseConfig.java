@@ -11,7 +11,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 public class DatabaseConfig {
 
     @Bean
-    public DataSource dataSource() {
+    DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.sqlite.JDBC");
         dataSource.setUrl("jdbc:sqlite:smart_scheduler.db");
@@ -19,58 +19,58 @@ public class DatabaseConfig {
     }
 
     @Bean
-    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+    JdbcTemplate jdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 
     @Bean
-    public UserDAO userDAO(JdbcTemplate jdbcTemplate) {
+    UserDAO userDAO(JdbcTemplate jdbcTemplate) {
         return new UserDAOImpl(jdbcTemplate);
     }
 
     @Bean
-    public CourseDAO courseDAO() {
+    CourseDAO courseDAO() {
         return new CourseDAO();
     }
 
     @Bean
-    public RoomDAO roomDAO() {
+    RoomDAO roomDAO() {
         return new RoomDAO();
     }
 
     @Bean
-    public TimetableDAO timetableDAO() {
+    TimetableDAO timetableDAO() {
         return new TimetableDAO();
     }
 
     @Bean
-    public Security security() {
+    Security security() {
         return new Security();
     }
 
     @Bean
-    public SchedulerService schedulerService(UserDAO userDAO, CourseDAO courseDAO,
-                                           RoomDAO roomDAO, TimetableDAO timetableDAO) {
+    SchedulerService schedulerService(UserDAO userDAO, CourseDAO courseDAO,
+        RoomDAO roomDAO, TimetableDAO timetableDAO) {
         return new SchedulerService(userDAO, courseDAO, roomDAO, timetableDAO);
     }
 
     @Bean
-    public UserManager userManager(UserDAO userDAO) {
+    UserManager userManager(UserDAO userDAO) {
         return new UserManager(userDAO);
     }
 
     @Bean
-    public CourseManager courseManager(CourseDAO courseDAO) {
+    CourseManager courseManager(CourseDAO courseDAO) {
         return new CourseManager(courseDAO);
     }
 
     @Bean
-    public RoomManager roomManager(RoomDAO roomDAO) {
+    RoomManager roomManager(RoomDAO roomDAO) {
         return new RoomManager(roomDAO);
     }
 
     @Bean
-    public TimetableManager timetableManager(TimetableDAO timetableDAO) {
+    TimetableManager timetableManager(TimetableDAO timetableDAO) {
         return new TimetableManager(timetableDAO);
     }
 }

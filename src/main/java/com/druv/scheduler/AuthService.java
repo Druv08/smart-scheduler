@@ -3,7 +3,6 @@ package com.druv.scheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +12,6 @@ public class AuthService {
     private final UserDAO userDAO;
     private final Security security;
 
-    @Autowired
     public AuthService(UserDAO userDAO, Security security) {
         this.userDAO = userDAO;
         this.security = security;
