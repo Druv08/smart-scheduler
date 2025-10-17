@@ -98,6 +98,31 @@ public class CourseDAO {
         }
     }
 
+    public Course findById(int id) {
+        String sql = "SELECT * FROM courses WHERE id = ?";
+        
+        try (Connection conn = Database.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Course course = new Course(
+                        rs.getString("course_code"),
+                        rs.getString("course_name"),
+                        rs.getString("faculty_username"),
+                        rs.getInt("max_students")
+                    );
+                    course.setId(rs.getInt("id"));
+                    return course;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding course by id", e);
+        }
+        return null;
+    }
+
     public Course findByCode(String courseCode) {
         String sql = "SELECT * FROM courses WHERE course_code = ?";
         
@@ -121,5 +146,41 @@ public class CourseDAO {
             throw new RuntimeException("Error finding course", e);
         }
         return null;
+    }
+
+    public boolean updateCourse(int id, String code, String name, String faculty, int maxStudents) {
+        String sql = "UPDATE courses SET course_code = ?, course_name = ?, faculty_username = ?, max_students = ? WHERE id = ?";
+        
+        try (Connection conn = Database.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, code);
+            stmt.setString(2, name);
+            stmt.setString(3, faculty);
+            stmt.setInt(4, maxStudents);
+            stmt.setInt(5, id);
+            
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating course", e);
+        }
+    }
+
+    public boolean updateCourse(Course course) {
+        return updateCourse(course.getId(), course.getCourseCode(), course.getCourseName(),
+                          course.getFacultyUsername(), course.getMaxStudents());
+    }
+
+    public boolean deleteCourse(int id) {
+        String sql = "DELETE FROM courses WHERE id = ?";
+        
+        try (Connection conn = Database.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, id);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting course", e);
+        }
     }
 }

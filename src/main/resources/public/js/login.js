@@ -23,11 +23,11 @@ document.addEventListener('DOMContentLoaded', function() {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
             // Basic validation
-            if (!email || !password) {
+            if (!username || !password) {
                 alert('Please fill in all fields');
                 return;
             }
@@ -41,32 +41,57 @@ document.addEventListener('DOMContentLoaded', function() {
             loginBtn.innerHTML = '<span>Logging in...</span>';
             loginBtn.disabled = true;
             
-            // Simulate API call delay
-            setTimeout(() => {
-                // For demonstration, any email/password combination works
-                // In production, this would validate against your backend
-                if (email && password) {
-                    // Store login state (in production, use proper session management)
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('userEmail', email);
-                    
-                    // Redirect to dashboard
+            // Make API call to login endpoint
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Login failed');
+                }
+            })
+            .then(data => {
+                if (data.authenticated) {
+                    // Successful login - redirect to dashboard
                     window.location.href = 'dashboard.html';
                 } else {
-                    // Reset button state
-                    loginBtn.innerHTML = originalText;
-                    loginBtn.disabled = false;
-                    alert('Invalid credentials. Please try again.');
+                    throw new Error('Authentication failed');
                 }
-            }, 1000);
+            })
+            .catch(error => {
+                console.error('Login error:', error);
+                loginBtn.innerHTML = originalText;
+                loginBtn.disabled = false;
+                alert('Invalid credentials. Please try again.');
+            });
         });
     }
 });
 
 // Check if user is already logged in when visiting login page
 document.addEventListener('DOMContentLoaded', function() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    if (isLoggedIn === 'true' && window.location.pathname.includes('login.html')) {
-        window.location.href = 'dashboard.html';
-    }
+    fetch('/api/session', {
+        method: 'GET',
+        credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.authenticated && window.location.pathname.includes('login.html')) {
+            window.location.href = 'dashboard.html';
+        }
+    })
+    .catch(error => {
+        // Not logged in - stay on login page
+        console.log('No active session - showing login form');
+    });
 });

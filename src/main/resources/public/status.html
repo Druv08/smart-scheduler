@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Scheduler - System Status</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .status { margin: 10px 0; }
+        .success { color: green; }
+        .error { color: red; }
+        .warning { color: orange; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Smart Scheduler - System Status Check</h1>
+    <div id="status-container"></div>
+    
+    <script>
+        async function checkSystemStatus() {
+            const container = document.getElementById('status-container');
+            const results = [];
+            
+            // Check backend API endpoints
+            const endpoints = [
+                { name: 'Session API', url: '/api/session' },
+                { name: 'Users API', url: '/api/users' },
+                { name: 'Courses API', url: '/api/courses' },
+                { name: 'Rooms API', url: '/api/rooms' },
+                { name: 'Reports API', url: '/api/reports/summary' }
+            ];
+            
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(endpoint.url, { credentials: 'include' });
+                    if (response.ok || response.status === 401) { // 401 is expected for unauthorized
+                        results.push(`✅ ${endpoint.name}: Available (${response.status})`);
+                    } else {
+                        results.push(`⚠️ ${endpoint.name}: Unexpected status (${response.status})`);
+                    }
+                } catch (error) {
+                    results.push(`❌ ${endpoint.name}: Error - ${error.message}`);
+                }
+            }
+            
+            // Check static resources
+            const staticFiles = [
+                '/css/common.css',
+                '/css/login.css',
+                '/css/dashboard.css',
+                '/js/app.js',
+                '/js/login.js',
+                '/js/session.js'
+            ];
+            
+            for (const file of staticFiles) {
+                try {
+                    const response = await fetch(file);
+                    if (response.ok) {
+                        results.push(`✅ Static File: ${file} - Available`);
+                    } else {
+                        results.push(`❌ Static File: ${file} - Not found (${response.status})`);
+                    }
+                } catch (error) {
+                    results.push(`❌ Static File: ${file} - Error: ${error.message}`);
+                }
+            }
+            
+            // Test login functionality
+            try {
+                const loginResponse = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ username: 'admin', password: 'password' })
+                });
+                
+                if (loginResponse.ok) {
+                    results.push('✅ Login Test: Admin login successful');
+                } else {
+                    results.push(`⚠️ Login Test: Failed (${loginResponse.status})`);
+                }
+            } catch (error) {
+                results.push(`❌ Login Test: Error - ${error.message}`);
+            }
+            
+            // Display results
+            container.innerHTML = results.map(result => `<div class="status">${result}</div>`).join('');
+            
+            // Add summary
+            const successCount = results.filter(r => r.includes('✅')).length;
+            const totalCount = results.length;
+            const summary = `<h2>Summary: ${successCount}/${totalCount} checks passed</h2>`;
+            container.insertAdjacentHTML('afterbegin', summary);
+        }
+        
+        // Run check on page load
+        document.addEventListener('DOMContentLoaded', checkSystemStatus);
+    </script>
+</body>
+</html>

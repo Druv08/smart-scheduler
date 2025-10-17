@@ -1,11 +1,12 @@
 package com.druv.scheduler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
@@ -59,13 +60,17 @@ public class AuthService {
      * @return Optional containing session token if successful
      */
     public Optional<String> login(String username, String password) {
+        System.out.println("AuthService.login called with username: " + username);
+        
         if (!isValidLoginInput(username, password)) {
             logger.warn("Invalid login attempt: Invalid credentials format");
+            System.out.println("Login validation failed - invalid input format");
             return Optional.empty();
         }
 
         try {
             Optional<User> userOpt = userDAO.getUserByUsername(username);
+            System.out.println("User found in database: " + userOpt.isPresent());
             
             if (userOpt.isPresent()) {
                 User user = userOpt.get();
