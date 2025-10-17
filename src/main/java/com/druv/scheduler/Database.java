@@ -90,6 +90,9 @@ public class Database {
                         UNIQUE(room_id, day_of_week, start_time, end_time)
                     )""");
 
+                // Create default users if they don't exist
+                createDefaultUsers(stmt);
+                
                 initialized = true;
                 System.out.println("Database initialized successfully.");
                 return true;
@@ -97,6 +100,36 @@ public class Database {
         } catch (Exception e) {
             System.err.println("Database initialization failed: " + e.getMessage());
             return false;
+        }
+    }
+    
+    private static void createDefaultUsers(java.sql.Statement stmt) throws java.sql.SQLException {
+        // Check if any users exist
+        java.sql.ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM users");
+        rs.next();
+        int userCount = rs.getInt(1);
+        rs.close();
+        
+        // Only create default users if no users exist
+        if (userCount == 0) {
+            System.out.println("Creating default test users...");
+            
+            // Create admin user
+            stmt.execute("INSERT INTO users (username, password, role) VALUES ('admin', " +
+                "'$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'ADMIN')"); // password: password
+            
+            // Create faculty user
+            stmt.execute("INSERT INTO users (username, password, role) VALUES ('dr.prince', " +
+                "'$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'FACULTY')"); // password: password
+            
+            // Create student user  
+            stmt.execute("INSERT INTO users (username, password, role) VALUES ('druv', " +
+                "'$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'STUDENT')"); // password: password
+            
+            System.out.println("Default users created:");
+            System.out.println("- admin / password (ADMIN)");
+            System.out.println("- dr.prince / password (FACULTY)"); 
+            System.out.println("- druv / password (STUDENT)");
         }
     }
 }

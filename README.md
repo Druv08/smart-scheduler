@@ -183,11 +183,11 @@ This project follows standard Java and Spring Boot development practices. Contri
 
 We extend our sincere gratitude to **Dr. Prince** for his invaluable guidance and mentorship throughout this project development. His expertise in software engineering and academic excellence has been instrumental in shaping this application.
 
-Dr. Prince serves as the primary instructor for all courses in our system, demonstrating his versatility and comprehensive knowledge across multiple computer science domains.
+Dr. Prince serves as the primary instructor for APP Subject in our system, demonstrating his versatility and comprehensive knowledge across multiple computer science domain.
 
 ## License
 
-This project is developed for academic purposes as part of coursework requirements.
+This project is developed for academic purposes as part of coursework requirements and to prove we didnt cheat lol.
 
 ## Contact
 
