@@ -122,4 +122,17 @@ public class CourseDAO {
         }
         return null;
     }
+    
+    public boolean deleteCourse(int id) {
+        String sql = "DELETE FROM courses WHERE id = ?";
+        
+        try (Connection conn = Database.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, id);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting course", e);
+        }
+    }
 }

@@ -3,11 +3,114 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Scheduler – Users</title>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/common.css">
-  <link rel="stylesheet" href="css/users.css">
+  <title>Smart Timetable - Teachers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/modern-exact-design.css">
 </head>
+
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <svg class="icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"/>
+        </svg>
+        <h1>Smart Timetable</h1>
+      </div>
+
+      <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="users.html" class="active">Teachers</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="courses.html">Batches</a>
+        <a href="timetable.html">Courses</a>
+        <a href="timetable.html">Timetable</a>
+      </nav>
+
+      <div class="actions">
+        <button class="btn btn-primary">
+          <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+          </svg>
+          New
+        </button>
+        <div class="avatar" id="profileMenu">
+          <img src="https://images.unsplash.com/photo-1494790108755-2616b612b647?w=32&h=32&fit=crop&crop=face" alt="User" style="width: 100%; height: 100%; border-radius: 50%;">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      <h1 style="font-size: var(--font-size-3xl); font-weight: 700; margin-bottom: 2rem;">Teachers</h1>
+
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>NAME</th>
+              <th>DEPARTMENT</th>
+              <th>EMAIL</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Dr. Eleanor Vance</td>
+              <td style="color: var(--gray-500);">Computer Science</td>
+              <td style="color: var(--gray-500);">eleanor.vance@example.edu</td>
+              <td>
+                <button class="btn btn-secondary" style="padding: 0.25rem 0.75rem; font-size: var(--font-size-xs);">Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Prof. Samuel Reed</td>
+              <td style="color: var(--gray-500);">Mathematics</td>
+              <td style="color: var(--gray-500);">samuel.reed@example.edu</td>
+              <td>
+                <button class="btn btn-secondary" style="padding: 0.25rem 0.75rem; font-size: var(--font-size-xs);">Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Dr. Olivia Hayes</td>
+              <td style="color: var(--gray-500);">Physics</td>
+              <td style="color: var(--gray-500);">olivia.hayes@example.edu</td>
+              <td>
+                <button class="btn btn-secondary" style="padding: 0.25rem 0.75rem; font-size: var(--font-size-xs);">Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Prof. Ethan Carter</td>
+              <td style="color: var(--gray-500);">Chemistry</td>
+              <td style="color: var(--gray-500);">ethan.carter@example.edu</td>
+              <td>
+                <button class="btn btn-secondary" style="padding: 0.25rem 0.75rem; font-size: var(--font-size-xs);">Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Dr. Sophia Bennett</td>
+              <td style="color: var(--gray-500);">Biology</td>
+              <td style="color: var(--gray-500);">sophia.bennett@example.edu</td>
+              <td>
+                <button class="btn btn-secondary" style="padding: 0.25rem 0.75rem; font-size: var(--font-size-xs);">Edit</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Smart Timetable</p>
+    </div>
+  </footer>
+
+  <script src="js/simple-app.js"></script>
+</body>
+</html>
 
 <body>
   <header class="header">
@@ -91,62 +194,7 @@
             </tr>
           </thead>
           <tbody id="usersTableBody">
-            <tr>
-              <td>Druv</td>
-              <td>druv@email.com</td>
-              <td>Student</td>
-              <td><span class="badge badge-success">Active</span></td>
-              <td>2025-10-08</td>
-              <td class="actions">
-                <button class="icon-btn edit" title="Edit user">
-                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-                </button>
-                <button class="icon-btn delete" title="Delete user">
-                  <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>Carlyn</td>
-              <td>carlyn@email.com</td>
-              <td>Student</td>
-              <td><span class="badge badge-success">Active</span></td>
-              <td>2025-10-07</td>
-              <td class="actions">
-                <button class="icon-btn edit" title="Edit user">
-                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-                </button>
-                <button class="icon-btn delete" title="Delete user">
-                  <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>Allan</td>
-              <td>allan@email.com</td>
-              <td>Student</td>
-              <td><span class="badge badge-success">Active</span></td>
-              <td>2025-10-06</td>
-              <td class="actions">
-                <button class="icon-btn edit" title="Edit user">
-                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-                </button>
-                <button class="icon-btn delete" title="Delete user">
-                  <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>Amrita</td>
-              <td>amrita@email.com</td>
-              <td>Student</td>
-              <td><span class="badge badge-success">Active</span></td>
-              <td>2025-10-05</td>
-              <td class="actions">
-                <button class="icon-btn edit" title="Edit user">
-                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-                </button>
-                <button class="icon-btn delete" title="Delete user">
+            <!-- Users will be loaded dynamically -->
                   <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
                 </button>
               </td>
@@ -170,6 +218,10 @@
         </table>
       </div>
 
+      <div id="users" class="users-container">
+        <!-- Dynamic users content will be loaded here -->
+      </div>
+
       <div class="pagination">
         <button class="btn-page" id="prevPage" disabled>Previous</button>
         <span id="pageInfo">Page 1 of 1</span>
@@ -178,7 +230,6 @@
     </section>
   </main>
 
-  <script src="/js/app.js"></script>
-  <script src="/js/users.js"></script>
+  <script src="js/simple-app.js"></script>
 </body>
 </html>

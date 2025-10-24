@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Scheduler – Timetable</title>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/common.css">
-  <link rel="stylesheet" href="css/timetable.css">
+  <title>Smart Timetable</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/modern-exact-design.css">
 </head>
 
 <body>
@@ -16,99 +15,144 @@
         <svg class="icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"/>
         </svg>
-        <h1>Smart Scheduler</h1>
+        <h1>Smart Timetable</h1>
       </div>
 
       <nav class="nav">
         <a href="dashboard.html">Dashboard</a>
-        <a href="rooms.html">Rooms</a>
-        <a href="bookings.html">Bookings</a>
-        <a href="users.html">Users</a>
-        <a href="courses.html">Courses</a>
         <a href="timetable.html" class="active">Timetable</a>
-        <a href="profile-settings.html">Profile</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="users.html">Teachers</a>
+        <a href="courses.html">Batches</a>
       </nav>
 
       <div class="actions">
-        <div class="view-controls">
-          <button class="view-btn active" data-view="week">Week</button>
-          <button class="view-btn" data-view="month">Month</button>
-        </div>
         <button class="bell" id="notifications">
           <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
             <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06Z"/>
           </svg>
         </button>
-        <div class="avatar" id="profileMenu"></div>
+        <div class="avatar" id="profileMenu">AD</div>
       </div>
     </div>
   </header>
 
   <main class="main">
-    <section class="intro">
-      <h2>Weekly Timetable</h2>
-      <p>View and manage your weekly schedule of classes, rooms, and faculty.</p>
-    </section>
-
-    <section class="card">
-      <div class="card-header">
-        <div class="header-left">
-          <h3>Class Schedule</h3>
-          <div class="date-nav">
-            <button class="nav-btn" id="prevWeek">
-              <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-            </button>
-            <span class="current-date" id="currentWeek">October 7 - 11, 2025</span>
-            <button class="nav-btn" id="nextWeek">
-              <svg viewBox="0 0 24 24"><path d="M10.59 6L12 7.41 16.17 12l-4.17 4.59L10.59 18l6-6z"/></svg>
-            </button>
-          </div>
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1 style="font-size: var(--font-size-3xl); font-weight: 700; margin: 0;">Timetable</h1>
+        
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <select style="padding: 0.5rem 1rem; border: 1px solid var(--gray-300); border-radius: var(--border-radius); font-size: var(--font-size-sm);">
+            <option>Filter by Teacher</option>
+          </select>
+          <button class="btn btn-primary">
+            <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+            Export CSV
+          </button>
         </div>
-        <button class="add-btn" id="addSchedule">
-          <svg class="btn-icon" viewBox="0 0 24 24">
-            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-          </svg>
-          Add Entry
-        </button>
       </div>
 
-      <div class="timetable-wrapper">
-        <table class="timetable" id="weeklyTimetable">
+      <div class="timetable-grid">
+        <table class="table">
           <thead>
             <tr>
-              <th class="time-header">Time</th>
-              <th>Monday</th>
-              <th>Tuesday</th>
-              <th>Wednesday</th>
-              <th>Thursday</th>
-              <th>Friday</th>
+              <th style="width: 120px;">TIME</th>
+              <th>MONDAY</th>
+              <th>TUESDAY</th>
+              <th>WEDNESDAY</th>
+              <th>THURSDAY</th>
+              <th>FRIDAY</th>
             </tr>
           </thead>
           <tbody>
-            <!-- Time slots will be populated dynamically -->
+            <tr>
+              <td class="time-slot">8:00 - 9:00</td>
+              <td>Math 101 - Room A</td>
+              <td>Physics 201 - Room B</td>
+              <td>Chemistry 301 - Room C</td>
+              <td>Biology 401 - Room D</td>
+              <td>English 102 - Room E</td>
+            </tr>
+            <tr>
+              <td class="time-slot">9:00 - 10:00</td>
+              <td>Math 101 - Room A</td>
+              <td>Physics 201 - Room B</td>
+              <td>Chemistry 301 - Room C</td>
+              <td>Biology 401 - Room D</td>
+              <td>English 102 - Room E</td>
+            </tr>
+            <tr>
+              <td class="time-slot">10:00 - 11:00</td>
+              <td style="text-align: center; color: var(--primary-blue); font-weight: 500;">Break</td>
+              <td style="text-align: center; color: var(--primary-blue); font-weight: 500;">Break</td>
+              <td style="text-align: center; color: var(--primary-blue); font-weight: 500;">Break</td>
+              <td style="text-align: center; color: var(--primary-blue); font-weight: 500;">Break</td>
+              <td style="text-align: center; color: var(--primary-blue); font-weight: 500;">Break</td>
+            </tr>
+            <tr>
+              <td class="time-slot">11:00 - 12:00</td>
+              <td>History 202 - Room F</td>
+              <td>Geography 302 - Room G</td>
+              <td>Economics 402 - Room H</td>
+              <td>Political Science 103 - Room I</td>
+              <td>Sociology 203 - Room J</td>
+            </tr>
+            <tr>
+              <td class="time-slot">12:00 - 13:00</td>
+              <td>History 202 - Room F</td>
+              <td>Geography 302 - Room G</td>
+              <td>Economics 402 - Room H</td>
+              <td>Political Science 103 - Room I</td>
+              <td>Sociology 203 - Room J</td>
+            </tr>
+            <tr>
+              <td class="time-slot">13:00 - 14:00</td>
+              <td style="text-align: center; color: var(--primary-blue); font-weight: 500;">Lunch</td>
+              <td style="text-align: center; color: var(--primary-blue); font-weight: 500;">Lunch</td>
+              <td style="text-align: center; color: var(--primary-blue); font-weight: 500;">Lunch</td>
+              <td style="text-align: center; color: var(--primary-blue); font-weight: 500;">Lunch</td>
+              <td style="text-align: center; color: var(--primary-blue); font-weight: 500;">Lunch</td>
+            </tr>
+            <tr>
+              <td class="time-slot">14:00 - 15:00</td>
+              <td>Computer Science 303 - Room K</td>
+              <td>Information Technology 403 - Room L</td>
+              <td>Software Engineering 104 - Room M</td>
+              <td>Data Science 204 - Room N</td>
+              <td>Artificial Intelligence 304 - Room O</td>
+            </tr>
+            <tr>
+              <td class="time-slot">15:00 - 16:00</td>
+              <td>Computer Science 303 - Room K</td>
+              <td>Information Technology 403 - Room L</td>
+              <td>Software Engineering 104 - Room M</td>
+              <td>Data Science 204 - Room N</td>
+              <td>Artificial Intelligence 304 - Room O</td>
+            </tr>
+            <tr>
+              <td class="time-slot">16:00 - 17:00</td>
+              <td style="color: var(--gray-400);">Free</td>
+              <td style="color: var(--gray-400);">Free</td>
+              <td style="color: var(--gray-400);">Free</td>
+              <td style="color: var(--gray-400);">Free</td>
+              <td style="color: var(--gray-400);">Free</td>
+            </tr>
           </tbody>
         </table>
       </div>
-
-      <div class="legend">
-        <div class="legend-item">
-          <span class="legend-color legend-color-lecture"></span>
-          <span>Lecture</span>
-        </div>
-        <div class="legend-item">
-          <span class="legend-color legend-color-lab"></span>
-          <span>Lab</span>
-        </div>
-        <div class="legend-item">
-          <span class="legend-color legend-color-project"></span>
-          <span>Project</span>
-        </div>
-      </div>
-    </section>
+    </div>
   </main>
 
-  <script src="/js/app.js"></script>
-  <script src="/js/timetable.js"></script>
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Smart Timetable</p>
+    </div>
+  </footer>
+
+  <script src="js/simple-app.js"></script>
 </body>
 </html>
 

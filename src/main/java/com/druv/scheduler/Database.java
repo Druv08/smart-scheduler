@@ -2,15 +2,17 @@ package com.druv.scheduler;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Database {
-    private static String dbUrl = "jdbc:sqlite:scheduler.db";
+    private static String dbUrl = "jdbc:sqlite:smart_scheduler.db";
     private static boolean initialized = false;
-    private static List<Connection> activeConnections = new ArrayList<>();
+    private static final List<Connection> activeConnections = new ArrayList<>();
 
     public static void setTestMode(String testDbName) {
         dbUrl = "jdbc:sqlite:" + testDbName;
@@ -90,6 +92,9 @@ public class Database {
                         UNIQUE(room_id, day_of_week, start_time, end_time)
                     )""");
 
+                // Create default admin user if no users exist
+                createDefaultAdminUser(stmt);
+                
                 initialized = true;
                 System.out.println("Database initialized successfully.");
                 return true;
@@ -97,6 +102,29 @@ public class Database {
         } catch (Exception e) {
             System.err.println("Database initialization failed: " + e.getMessage());
             return false;
+        }
+    }
+    
+    private static void createDefaultAdminUser(Statement stmt) {
+        try {
+            // Check if any users exist
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM users");
+            if (rs.next() && rs.getInt(1) == 0) {
+                // No users exist, create default admin
+                String hashedPassword = HashUtil.hashPassword("admin123");
+                PreparedStatement ps = stmt.getConnection().prepareStatement(
+                    "INSERT INTO users (username, password, role) VALUES (?, ?, ?)"
+                );
+                ps.setString(1, "admin");
+                ps.setString(2, hashedPassword);
+                ps.setString(3, "ADMIN");
+                ps.executeUpdate();
+                ps.close();
+                System.out.println("Default admin user created: username=admin, password=admin123");
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.err.println("Failed to create default admin user: " + e.getMessage());
         }
     }
 }

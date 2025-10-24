@@ -1,11 +1,20 @@
 package com.druv.scheduler;
 
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class WebServer {
+    
+    @Autowired
+    private ApiController apiController;
 
     public WebServer() {
         // Simple constructor for static file serving
@@ -22,8 +31,15 @@ public class WebServer {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String loginPage() {
         return "forward:/login.html";
+    }
+    
+    @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> credentials) {
+        // Delegate to the ApiController
+        return apiController.login(credentials);
     }
 
     @GetMapping("/error")

@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Scheduler – Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/common.css">
-  <link rel="stylesheet" href="css/dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/modern-exact-design.css">
 </head>
 
 <body>
@@ -16,17 +15,14 @@
         <svg class="icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"/>
         </svg>
-        <h1>Smart Scheduler</h1>
+        <h1>Smart Timetable</h1>
       </div>
 
       <nav class="nav">
         <a href="dashboard.html" class="active">Dashboard</a>
-        <a href="rooms.html">Rooms</a>
-        <a href="bookings.html">Bookings</a>
-        <a href="users.html">Users</a>
-        <a href="courses.html">Courses</a>
-        <a href="timetable.html">Timetable</a>
-        <a href="profile-settings.html">Profile</a>
+        <a href="#" onclick="navigateToPage('scheduler-control.html')">Data Entry</a>
+        <a href="#" onclick="navigateToPage('scheduler-engine.html')">Scheduler</a>
+        <a href="timetable.html">Timetable View</a>
       </nav>
 
       <div class="actions">
@@ -35,102 +31,142 @@
             <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06Z"/>
           </svg>
         </button>
-        <div class="avatar" id="profileMenu"></div>
+        <div class="avatar" id="profileMenu">AD</div>
       </div>
     </div>
   </header>
 
   <main class="main">
-    <section class="intro">
-      <h2>Dashboard Overview</h2>
-      <p>Welcome to Smart Scheduler — your central hub to manage courses, rooms, and timetables.</p>
-    </section>
+    <div class="container">
+      <section class="intro">
+        <h1 style="font-size: var(--font-size-3xl); font-weight: 700; margin-bottom: 0.5rem;">Dashboard</h1>
+        <p style="color: var(--gray-600); font-size: var(--font-size-base);">Welcome back, Sarah! Here's a quick overview of your schedule and upcoming events.</p>
+        
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+          <button class="btn btn-primary">Data Entry</button>
+          <button class="btn btn-secondary">Scheduler</button>
+        </div>
+      </section>
 
-    <section class="stats">
-      <div class="stat-card">
-        <div class="stat-icon rooms">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
-          </svg>
+      <section class="stats">
+        <div class="stat-card">
+          <h3>12</h3>
+          <p>Scheduled Courses</p>
         </div>
-        <div class="stat-info">
-          <h3 id="roomCount">24</h3>
-          <p>Total Rooms</p>
+        
+        <div class="stat-card">
+          <h3>8</h3>
+          <p>Active Teachers</p>
         </div>
-        <div class="stat-change increase">+2 this week</div>
-      </div>
+        
+        <div class="stat-card">
+          <h3>3</h3>
+          <p>Upcoming Events</p>
+        </div>
+      </section>
 
-      <div class="stat-card">
-        <div class="stat-icon courses">
-          <svg viewBox="0 0 24 24">
-            <path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/>
-          </svg>
+      <div class="dashboard-grid">
+        <div class="card">
+          <div class="card-header">
+            <h3>Timetable Overview</h3>
+          </div>
+          <div class="card-body">
+            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
+              <div style="text-align: center; font-weight: 600; color: var(--gray-500); font-size: var(--font-size-xs);">S</div>
+              <div style="text-align: center; font-weight: 600; color: var(--gray-500); font-size: var(--font-size-xs);">M</div>
+              <div style="text-align: center; font-weight: 600; color: var(--gray-500); font-size: var(--font-size-xs);">T</div>
+              <div style="text-align: center; font-weight: 600; color: var(--gray-500); font-size: var(--font-size-xs);">W</div>
+              <div style="text-align: center; font-weight: 600; color: var(--gray-500); font-size: var(--font-size-xs);">T</div>
+              <div style="text-align: center; font-weight: 600; color: var(--gray-500); font-size: var(--font-size-xs);">F</div>
+              <div style="text-align: center; font-weight: 600; color: var(--gray-500); font-size: var(--font-size-xs);">S</div>
+            </div>
+            
+            <div style="text-align: center; margin: 1rem 0;">
+              <div style="display: flex; align-items: center; justify-content: center; gap: 1rem;">
+                <button class="action-btn">&lt;</button>
+                <h4 style="margin: 0; font-weight: 600;">August 2024</h4>
+                <button class="action-btn">&gt;</button>
+              </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem;">
+              <div style="text-align: center; padding: 0.5rem; font-size: var(--font-size-sm);">1</div>
+              <div style="text-align: center; padding: 0.5rem; font-size: var(--font-size-sm);">2</div>
+              <div style="text-align: center; padding: 0.5rem; font-size: var(--font-size-sm);">3</div>
+              <div style="text-align: center; padding: 0.5rem; font-size: var(--font-size-sm);">4</div>
+              <div style="text-align: center; padding: 0.5rem; background: var(--primary-blue); color: white; border-radius: 50%; font-weight: 600; font-size: var(--font-size-sm);">5</div>
+              <div style="text-align: center; padding: 0.5rem; font-size: var(--font-size-sm);">6</div>
+              <div style="text-align: center; padding: 0.5rem; font-size: var(--font-size-sm);">7</div>
+            </div>
+          </div>
         </div>
-        <div class="stat-info">
-          <h3 id="courseCount">12</h3>
-          <p>Active Courses</p>
-        </div>
-        <div class="stat-change increase">+3 this month</div>
-      </div>
 
-      <div class="stat-card">
-        <div class="stat-icon bookings">
-          <svg viewBox="0 0 24 24">
-            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
-          </svg>
+        <div class="card">
+          <div class="card-header">
+            <h3>Today's Schedule</h3>
+          </div>
+          <div class="card-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; font-size: var(--font-size-xs); font-weight: 600; color: var(--gray-500); text-transform: uppercase; margin-bottom: 1rem;">
+              <div>Course</div>
+              <div>Time</div>
+              <div>Room</div>
+              <div>Teacher</div>
+            </div>
+            
+            <div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--gray-200); font-size: var(--font-size-sm);">
+                <div>Introduction to Programming</div>
+                <div>9:00 AM - 10:30 AM</div>
+                <div>Room 101</div>
+                <div>Dr. Emily Carter</div>
+              </div>
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--gray-200); font-size: var(--font-size-sm);">
+                <div>Calculus I</div>
+                <div>11:00 AM - 12:30 PM</div>
+                <div>Room 202</div>
+                <div>Prof. David Lee</div>
+              </div>
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--gray-200); font-size: var(--font-size-sm);">
+                <div>Physics Lab</div>
+                <div>2:00 PM - 4:00 PM</div>
+                <div>Lab A</div>
+                <div>Dr. Robert Green</div>
+              </div>
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--gray-200); font-size: var(--font-size-sm);">
+                <div>English Literature</div>
+                <div>10:00 AM - 11:30 AM</div>
+                <div>Room 301</div>
+                <div>Prof. Olivia White</div>
+              </div>
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; padding: 0.75rem 0; font-size: var(--font-size-sm);">
+                <div>History of Art</div>
+                <div>1:00 PM - 2:30 PM</div>
+                <div>Room 302</div>
+                <div>Dr. Sophia Brown</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="stat-info">
-          <h3 id="bookingCount">37</h3>
-          <p>Bookings This Week</p>
-        </div>
-        <div class="stat-change decrease">-5 vs last week</div>
       </div>
-
-      <div class="stat-card">
-        <div class="stat-icon users">
-          <svg viewBox="0 0 24 24">
-            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
-          </svg>
-        </div>
-        <div class="stat-info">
-          <h3 id="userCount">145</h3>
-          <p>Registered Users</p>
-        </div>
-        <div class="stat-change increase">+12 this month</div>
-      </div>
-    </section>
-
-    <section class="dashboard-grid">
-      <div class="card activity-card">
-        <div class="card-header">
-          <h3>Recent Activity</h3>
-          <button class="view-all">View All</button>
-        </div>
-        <div class="activity-list">
-          <!-- Activity items will be dynamically populated -->
-        </div>
-      </div>
-
-      <div class="card schedule-card">
-        <div class="card-header">
-          <h3>Today's Schedule</h3>
-          <button class="view-all">View Calendar</button>
-        </div>
-        <div class="schedule-list">
-          <!-- Schedule items will be dynamically populated -->
-        </div>
-      </div>
-    </section>
+    </div>
   </main>
 
   <footer class="footer">
     <div class="container">
-      <p>&copy; 2025 Smart Scheduler</p>
+      <p>&copy; 2025 Smart Timetable</p>
     </div>
   </footer>
 
-  <script src="/js/app.js"></script>
-  <script src="/js/dashboard.js"></script>
+  <script src="js/simple-app.js"></script>
+  <script>
+    function navigateToPage(page) {
+      window.location.href = page;
+    }
+  </script>
 </body>
 </html>
 

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Scheduler – Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/modern-design.css">
+  <link rel="stylesheet" href="css/modern-auth.css">
+</head>
+
+<body class="login-container">
+  <header class="auth-header">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <svg class="icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"/>
+        </svg>
+        <h1>Smart Scheduler</h1>
+      </a>
+    </div>
+  </header>
+
+  <main class="login-main">
+    <div class="login-card">
+      <div class="login-header">
+        <h2 class="login-title">Welcome Back</h2>
+        <p class="login-subtitle">Please enter your credentials to log in.</p>
+      </div>
+
+      <form class="login-form" id="loginForm">
+        <div class="form-group">
+          <label for="loginUsername" class="form-label">Username</label>
+          <input type="text" id="loginUsername" name="username" placeholder="Enter your username" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword" class="form-label">Password</label>
+          <input type="password" id="loginPassword" name="password" placeholder="Enter your password" class="form-control" required>
+        </div>
+
+        <div class="login-actions">
+          <div></div>
+          <a href="#" class="forgot-password">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="login-btn">
+          Log In
+        </button>
+      </form>
+
+      <div class="text-center mt-6">
+        <p class="text-muted">Don't have an account? <a href="signup.html" class="text-primary font-medium">Sign up</a></p>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/simple-app.js"></script>
+</body>
+</html>

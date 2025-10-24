@@ -1,99 +1,442 @@
-// Wait for DOM to load
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("✅ app.js loaded successfully!");
-    console.log("✅ Smart Scheduler Frontend Loaded");
-    
-    // Get users container
-    const usersContainer = document.getElementById('users');
+// Smart Scheduler Main Application
+class SmartSchedulerApp {
+    constructor() {
+        this.api = new SmartSchedulerAPI();
+        this.init();
+    }
 
-    // Function to fetch and display users
-    const fetchUsers = async () => {
+    init() {
+        console.log("✅ Smart Scheduler App initialized");
+        this.setupEventListeners();
+        this.initializeModules();
+    }
+
+    setupEventListeners() {
+        // Global event listeners
+        document.addEventListener('click', this.handleGlobalClick.bind(this));
+        document.addEventListener('submit', this.handleGlobalSubmit.bind(this));
+    }
+
+    handleGlobalClick(e) {
+        // Handle modal closes
+        if (e.target.classList.contains('modal-overlay')) {
+            this.closeModal(e.target);
+        }
+
+        // Handle dropdown toggles
+        if (e.target.closest('.dropdown-toggle')) {
+            this.toggleDropdown(e.target.closest('.dropdown-toggle'));
+        }
+    }
+
+    handleGlobalSubmit(e) {
+        // Prevent default form submission and handle via API
+        const form = e.target;
+        if (form.classList.contains('api-form')) {
+            e.preventDefault();
+            this.handleFormSubmission(form);
+        }
+    }
+
+    async handleFormSubmission(form) {
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        const endpoint = form.dataset.endpoint;
+        const method = form.dataset.method || 'POST';
+
         try {
-            const response = await fetch('/api/users');
-            const data = await response.json();
-            
-            if (data.success) {
-                const usersList = data.users.map(user => `
-                    <div class="p-4 mb-2 bg-gray-50 rounded-lg">
-                        <span class="font-medium">${user.username}</span>
-                        <span class="ml-2 px-2 py-1 text-sm rounded-full ${getRoleBadgeColor(user.role)}">
-                            ${user.role}
-                        </span>
-                    </div>
-                `).join('');
-                
-                usersContainer.innerHTML = usersList;
+            const response = await this.api.request(endpoint, method, data);
+            if (response.success) {
+                this.showNotification('Operation successful', 'success');
+                if (form.dataset.onSuccess) {
+                    this.executeCallback(form.dataset.onSuccess);
+                }
             } else {
-                usersContainer.innerHTML = '<p class="text-red-500">Error loading users</p>';
+                this.showNotification(response.error || 'Operation failed', 'error');
             }
         } catch (error) {
-            console.error('Error:', error);
-            usersContainer.innerHTML = '<p class="text-red-500">Failed to load users</p>';
+            console.error('Form submission error:', error);
+            this.showNotification('Network error occurred', 'error');
         }
-    };
+    }
 
-    // Helper function for role badge colors
-    const getRoleBadgeColor = (role) => {
-        switch(role) {
-            case 'admin':
-                return 'bg-red-100 text-red-800';
-            case 'faculty':
-                return 'bg-blue-100 text-blue-800';
-            case 'student':
-                return 'bg-green-100 text-green-800';
-            default:
-                return 'bg-gray-100 text-gray-800';
-        }
-    };
+    initializeModules() {
+        // Initialize different page modules
+        this.initializeUsers();
+        this.initializeRooms();
+        this.initializeCourses();
+        this.initializeTimetable();
+        this.initializeBookings();
+        this.initializeDashboard();
+    }
 
-    // Initial load
-    fetchUsers();
+    // Users Module
+    async initializeUsers() {
+        const usersContainer = document.getElementById('users');
+        if (!usersContainer) return;
 
-    async function loadData(apiPath, targetId, dataKey) {
         try {
-            const response = await fetch(`/api/${apiPath}`);
-            const data = await response.json();
+            const users = await this.api.getUsers();
+            this.renderUsers(users, usersContainer);
+        } catch (error) {
+            console.error('Failed to load users:', error);
+            usersContainer.innerHTML = '<p class="error">Failed to load users</p>';
+        }
+    }
+
+    renderUsers(users, container) {
+        const usersList = users.map(user => `
+            <div class="user-card">
+                <div class="user-info">
+                    <span class="username">${user.username}</span>
+                    <span class="email">${user.email}</span>
+                </div>
+                <span class="role-badge role-${user.role}">${user.role}</span>
+                <div class="user-actions">
+                    <button onclick="app.editUser(${user.id})" class="btn-edit">Edit</button>
+                    <button onclick="app.deleteUser(${user.id})" class="btn-delete">Delete</button>
+                </div>
+            </div>
+        `).join('');
+        
+        container.innerHTML = usersList;
+    }
+
+    async loadData(apiPath, targetId, dataKey) {
+        try {
+            const response = await this.api.request(`/${apiPath}`);
+            const data = response;
 
             if (!data.success) {
                 document.getElementById(targetId).innerHTML =
-                    `<p class="text-red-500">❌ Error: ${data.error || 'Failed to load'}</p>`;
+                    `<p class="error">❌ Error: ${data.error || 'Failed to load'}</p>`;
                 return;
             }
 
             const items = data[dataKey];
+            if (!items || items.length === 0) {
+                document.getElementById(targetId).innerHTML = '<p class="empty-state">No data available</p>';
+                return;
+            }
+
             let html = `
-                <table class="min-w-full border border-gray-300 bg-white rounded-lg shadow-md">
-                    <thead class="bg-gray-100 text-gray-700">
-                        <tr>
-                            ${Object.keys(items[0] || {}).map(key => `<th class="px-4 py-2">${key}</th>`).join('')}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${items.map(row => `
-                            <tr class="border-t hover:bg-gray-50">
-                                ${Object.values(row).map(val => `<td class="px-4 py-2">${val}</td>`).join('')}
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                ${Object.keys(items[0] || {}).map(key => `<th>${key}</th>`).join('')}
+                                <th>Actions</th>
                             </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            ${items.map(row => `
+                                <tr>
+                                    ${Object.values(row).map(val => `<td>${val}</td>`).join('')}
+                                    <td>
+                                        <button class="btn-small btn-edit">Edit</button>
+                                        <button class="btn-small btn-delete">Delete</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
             `;
 
             document.getElementById(targetId).innerHTML = html;
         } catch (error) {
             console.error(error);
             document.getElementById(targetId).innerHTML =
-                `<p class="text-red-500">⚠️ Failed to connect to API</p>`;
+                `<p class="error">⚠️ Failed to connect to API</p>`;
         }
     }
 
-    // Example: Load Users and Rooms when those pages are opened
-    if (window.location.pathname.includes("users")) {
-        loadData("users", "usersTable", "users");
-    } else if (window.location.pathname.includes("rooms")) {
-        loadData("rooms", "roomsTable", "rooms");
-    } else if (window.location.pathname.includes("courses")) {
-        loadData("courses", "coursesTable", "courses");
+    // Rooms Module
+    async initializeRooms() {
+        const roomsContainer = document.getElementById('rooms');
+        if (!roomsContainer) return;
+
+        try {
+            const rooms = await this.api.getRooms();
+            this.renderRooms(rooms, roomsContainer);
+        } catch (error) {
+            console.error('Failed to load rooms:', error);
+            roomsContainer.innerHTML = '<p class="error">Failed to load rooms</p>';
+        }
     }
+
+    renderRooms(rooms, container) {
+        const roomsList = rooms.map(room => `
+            <div class="room-card">
+                <div class="room-info">
+                    <h3>${room.room_number}</h3>
+                    <p>${room.building}</p>
+                    <p>Capacity: ${room.capacity}</p>
+                    <p>Type: ${room.room_type}</p>
+                </div>
+                <div class="room-actions">
+                    <button onclick="app.editRoom(${room.id})" class="btn-edit">Edit</button>
+                    <button onclick="app.deleteRoom(${room.id})" class="btn-delete">Delete</button>
+                </div>
+            </div>
+        `).join('');
+        
+        container.innerHTML = roomsList;
+    }
+
+    // Courses Module
+    async initializeCourses() {
+        const coursesContainer = document.getElementById('courses');
+        if (!coursesContainer) return;
+
+        try {
+            const courses = await this.api.getCourses();
+            this.renderCourses(courses, coursesContainer);
+        } catch (error) {
+            console.error('Failed to load courses:', error);
+            coursesContainer.innerHTML = '<p class="error">Failed to load courses</p>';
+        }
+    }
+
+    renderCourses(courses, container) {
+        const coursesList = courses.map(course => `
+            <div class="course-card">
+                <div class="course-info">
+                    <h3>${course.course_code}</h3>
+                    <p>${course.course_name}</p>
+                    <p>Credits: ${course.credits}</p>
+                    ${course.faculty_name ? `<p>Faculty: ${course.faculty_name}</p>` : ''}
+                </div>
+                <div class="course-actions">
+                    <button onclick="app.editCourse(${course.id})" class="btn-edit">Edit</button>
+                    <button onclick="app.deleteCourse(${course.id})" class="btn-delete">Delete</button>
+                </div>
+            </div>
+        `).join('');
+        
+        container.innerHTML = coursesList;
+    }
+
+    // Timetable Module
+    async initializeTimetable() {
+        const timetableContainer = document.getElementById('timetable');
+        if (!timetableContainer) return;
+
+        try {
+            const timetable = await this.api.getTimetable();
+            this.renderTimetable(timetable, timetableContainer);
+        } catch (error) {
+            console.error('Failed to load timetable:', error);
+            timetableContainer.innerHTML = '<p class="error">Failed to load timetable</p>';
+        }
+    }
+
+    renderTimetable(timetable, container) {
+        // Group by day and time
+        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+        const timeSlots = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'];
+
+        let timetableHTML = `
+            <div class="timetable-grid">
+                <div class="timetable-header">
+                    <div class="time-header">Time</div>
+                    ${days.map(day => `<div class="day-header">${day}</div>`).join('')}
+                </div>
+        `;
+
+        timeSlots.forEach(time => {
+            timetableHTML += `<div class="time-slot">${time}</div>`;
+            days.forEach(day => {
+                const entry = timetable.find(t => t.day_of_week === day && t.start_time === time + ':00');
+                timetableHTML += `
+                    <div class="timetable-cell ${entry ? 'occupied' : 'empty'}">
+                        ${entry ? `
+                            <div class="course-info">
+                                <strong>${entry.course_code}</strong>
+                                <br>${entry.room_number}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+        });
+
+        timetableHTML += '</div>';
+        container.innerHTML = timetableHTML;
+    }
+
+    // Bookings Module
+    async initializeBookings() {
+        const bookingsContainer = document.getElementById('bookings');
+        if (!bookingsContainer) return;
+
+        try {
+            const bookings = await this.api.getBookings();
+            this.renderBookings(bookings, bookingsContainer);
+        } catch (error) {
+            console.error('Failed to load bookings:', error);
+            bookingsContainer.innerHTML = '<p class="error">Failed to load bookings</p>';
+        }
+    }
+
+    renderBookings(bookings, container) {
+        const bookingsList = bookings.map(booking => `
+            <div class="booking-card">
+                <div class="booking-info">
+                    <h3>${booking.room_number} - ${booking.building}</h3>
+                    <p>Date: ${new Date(booking.booking_date).toLocaleDateString()}</p>
+                    <p>Time: ${booking.start_time} - ${booking.end_time}</p>
+                    <p>Purpose: ${booking.purpose || 'Not specified'}</p>
+                    <span class="status-badge status-${booking.status}">${booking.status}</span>
+                </div>
+                <div class="booking-actions">
+                    <button onclick="app.editBooking(${booking.id})" class="btn-edit">Edit</button>
+                    <button onclick="app.cancelBooking(${booking.id})" class="btn-cancel">Cancel</button>
+                </div>
+            </div>
+        `).join('');
+        
+        container.innerHTML = bookingsList;
+    }
+
+    // Dashboard Module
+    async initializeDashboard() {
+        const dashboardContainer = document.getElementById('dashboard-stats');
+        if (!dashboardContainer) return;
+
+        try {
+            const stats = await this.api.getDashboardStats();
+            this.renderDashboardStats(stats);
+        } catch (error) {
+            console.error('Failed to load dashboard stats:', error);
+        }
+    }
+
+    renderDashboardStats(stats) {
+        const statsElements = {
+            'total-users': stats.users,
+            'total-courses': stats.courses,
+            'total-rooms': stats.rooms,
+            'pending-bookings': stats.pending_bookings
+        };
+
+        Object.entries(statsElements).forEach(([id, value]) => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = value || 0;
+            }
+        });
+    }
+
+    // Utility methods
+    showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <span>${message}</span>
+            <button onclick="this.parentElement.remove()" class="notification-close">&times;</button>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.remove();
+            }
+        }, 5000);
+    }
+
+    closeModal(modal) {
+        modal.remove();
+    }
+
+    toggleDropdown(toggle) {
+        const dropdown = toggle.nextElementSibling;
+        if (dropdown) {
+            dropdown.classList.toggle('active');
+        }
+    }
+
+    executeCallback(callback) {
+        if (typeof window[callback] === 'function') {
+            window[callback]();
+        }
+    }
+
+    // CRUD Operations
+    async editUser(id) {
+        console.log(`Editing user ${id}`);
+        // Implement edit user functionality
+    }
+
+    async deleteUser(id) {
+        if (confirm('Are you sure you want to delete this user?')) {
+            try {
+                await this.api.deleteUser(id);
+                this.showNotification('User deleted successfully', 'success');
+                this.initializeUsers();
+            } catch (error) {
+                this.showNotification('Failed to delete user', 'error');
+            }
+        }
+    }
+
+    async editRoom(id) {
+        console.log(`Editing room ${id}`);
+        // Implement edit room functionality
+    }
+
+    async deleteRoom(id) {
+        if (confirm('Are you sure you want to delete this room?')) {
+            try {
+                await this.api.deleteRoom(id);
+                this.showNotification('Room deleted successfully', 'success');
+                this.initializeRooms();
+            } catch (error) {
+                this.showNotification('Failed to delete room', 'error');
+            }
+        }
+    }
+
+    async editCourse(id) {
+        console.log(`Editing course ${id}`);
+        // Implement edit course functionality
+    }
+
+    async deleteCourse(id) {
+        if (confirm('Are you sure you want to delete this course?')) {
+            try {
+                await this.api.deleteCourse(id);
+                this.showNotification('Course deleted successfully', 'success');
+                this.initializeCourses();
+            } catch (error) {
+                this.showNotification('Failed to delete course', 'error');
+            }
+        }
+    }
+
+    async editBooking(id) {
+        console.log(`Editing booking ${id}`);
+        // Implement edit booking functionality
+    }
+
+    async cancelBooking(id) {
+        if (confirm('Are you sure you want to cancel this booking?')) {
+            try {
+                await this.api.cancelBooking(id);
+                this.showNotification('Booking cancelled successfully', 'success');
+                this.initializeBookings();
+            } catch (error) {
+                this.showNotification('Failed to cancel booking', 'error');
+            }
+        }
+    }
+}
+
+// Initialize app when DOM is loaded
+let app;
+document.addEventListener('DOMContentLoaded', () => {
+    app = new SmartSchedulerApp();
 });
 
 async function api(url, method = 'GET', body) {

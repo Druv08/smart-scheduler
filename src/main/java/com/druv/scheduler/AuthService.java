@@ -1,10 +1,11 @@
 package com.druv.scheduler;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -80,6 +81,39 @@ public class AuthService {
         } catch (Exception e) {
             logger.error("Login error for user {}: {}", username, e.getMessage());
             throw new AuthenticationException("Login failed", e);
+        }
+    }
+
+    /**
+     * Simple boolean authentication for API endpoints.
+     * @return true if credentials are valid, false otherwise
+     */
+    public boolean authenticate(String username, String password) {
+        if (!isValidLoginInput(username, password)) {
+            logger.warn("Invalid authentication attempt: Invalid credentials format");
+            return false;
+        }
+
+        try {
+            Optional<User> userOpt = userDAO.getUserByUsername(username);
+            
+            if (userOpt.isPresent()) {
+                User user = userOpt.get();
+                boolean authenticated = security.checkPassword(password, user.getPassword());
+                if (authenticated) {
+                    logger.info("Authentication successful for user: {}", username);
+                } else {
+                    logger.warn("Authentication failed for user: {} - invalid password", username);
+                }
+                return authenticated;
+            }
+
+            logger.warn("Authentication failed for user: {} - user not found", username);
+            return false;
+
+        } catch (Exception e) {
+            logger.error("Authentication error for user {}: {}", username, e.getMessage());
+            return false;
         }
     }
 

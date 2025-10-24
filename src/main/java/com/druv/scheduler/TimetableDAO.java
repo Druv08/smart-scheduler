@@ -105,4 +105,84 @@ public class TimetableDAO {
             throw new RuntimeException("Error checking time conflicts", e);
         }
     }
+    
+    public boolean addTimetableEntry(TimetableEntry entry) {
+        return addBooking(entry.getCourseId(), entry.getRoomId(), entry.getDayOfWeek(), 
+                         entry.getStartTime(), entry.getEndTime());
+    }
+    
+    public boolean deleteEntry(int id) {
+        String sql = "DELETE FROM timetable WHERE id = ?";
+        
+        try (Connection conn = Database.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, id);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting timetable entry", e);
+        }
+    }
+    
+    public List<TimetableEntry> getByRoomAndDay(int roomId, String day) {
+        List<TimetableEntry> entries = new ArrayList<>();
+        String sql = "SELECT * FROM timetable WHERE room_id = ? AND day_of_week = ?";
+
+        try (Connection conn = Database.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, roomId);
+            stmt.setString(2, day);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    TimetableEntry entry = new TimetableEntry(
+                        rs.getInt("course_id"),
+                        rs.getInt("room_id"),
+                        rs.getString("day_of_week"),
+                        rs.getString("start_time"),
+                        rs.getString("end_time")
+                    );
+                    entry.setId(rs.getInt("id"));
+                    entries.add(entry);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching entries by room and day", e);
+        }
+        return entries;
+    }
+    
+    public List<TimetableEntry> getByInstructorAndDay(int instructorId, String day) {
+        List<TimetableEntry> entries = new ArrayList<>();
+        String sql = """
+            SELECT t.* FROM timetable t 
+            JOIN courses c ON t.course_id = c.id 
+            JOIN users u ON c.faculty_username = u.username 
+            WHERE u.id = ? AND t.day_of_week = ?""";
+
+        try (Connection conn = Database.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, instructorId);
+            stmt.setString(2, day);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    TimetableEntry entry = new TimetableEntry(
+                        rs.getInt("course_id"),
+                        rs.getInt("room_id"),
+                        rs.getString("day_of_week"),
+                        rs.getString("start_time"),
+                        rs.getString("end_time")
+                    );
+                    entry.setId(rs.getInt("id"));
+                    entries.add(entry);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching entries by instructor and day", e);
+        }
+        return entries;
+    }
 }

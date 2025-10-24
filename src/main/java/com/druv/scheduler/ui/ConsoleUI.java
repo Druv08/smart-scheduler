@@ -41,13 +41,19 @@ public class ConsoleUI {
         scanner.nextLine(); // consume newline
 
         switch (choice) {
-            case 1 -> handleLogin();
-            case 2 -> handleRegister();
-            case 3 -> {
+            case 1:
+                handleLogin();
+                break;
+            case 2:
+                handleRegister();
+                break;
+            case 3:
                 System.out.println("Goodbye!");
                 System.exit(0);
-            }
-            default -> System.out.println("Invalid option!");
+                break;
+            default:
+                System.out.println("Invalid option!");
+                break;
         }
     }
 
@@ -146,6 +152,7 @@ public class ConsoleUI {
         }
     }
 
+    @SuppressWarnings("unused")
     private void showAllCourses() {
         System.out.println("\n=== COURSES ===");
         List<Course> courses = schedulerService.getAllCourses(authToken);
@@ -186,6 +193,7 @@ public class ConsoleUI {
         }
     }
 
+    @SuppressWarnings("unused")
     private void addNewRoom() {
         System.out.print("Enter room name: ");
         String name = scanner.nextLine();
