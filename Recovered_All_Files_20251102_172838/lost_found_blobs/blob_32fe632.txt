@@ -1,6 +1,0 @@
-﻿C:\Users\druvk\OneDrive\Desktop\CODE\Smart_Scheduler\smart-scheduler\src\main\java\com\druv\scheduler\Main.java
-C:\Users\druvk\OneDrive\Desktop\CODE\Smart_Scheduler\smart-scheduler\src\main\java\com\druv\scheduler\Database.java
-C:\Users\druvk\OneDrive\Desktop\CODE\Smart_Scheduler\smart-scheduler\src\main\java\com\druv\scheduler\TimetableManager.java
-C:\Users\druvk\OneDrive\Desktop\CODE\Smart_Scheduler\smart-scheduler\src\main\java\com\druv\scheduler\CourseManager.java
-C:\Users\druvk\OneDrive\Desktop\CODE\Smart_Scheduler\smart-scheduler\src\main\java\com\druv\scheduler\DatabaseManager.java
-C:\Users\druvk\OneDrive\Desktop\CODE\Smart_Scheduler\smart-scheduler\src\main\java\com\druv\scheduler\RoomManager.java
