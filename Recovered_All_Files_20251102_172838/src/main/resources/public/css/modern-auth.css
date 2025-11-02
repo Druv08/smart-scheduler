@@ -1,0 +1,197 @@
+﻿/* ==========================
+   SMART SCHEDULER - MODERN LOGIN DESIGN
+   Based on the beautiful Tailwind login example
+========================== */
+
+/* Login specific modern styles */
+.login-container, .signup-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-main, .signup-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: var(--background-light);
+}
+
+.login-card, .signup-card {
+  width: 100%;
+  max-width: 28rem;
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-light);
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.login-card:hover, .signup-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+}
+
+.login-header, .signup-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-title, .signup-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--foreground-light);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+.login-subtitle, .signup-subtitle {
+  color: var(--muted-foreground-light);
+  font-size: 0.875rem;
+}
+
+.login-form, .signup-form {
+  display: block;
+}
+
+.login-form .form-group, .signup-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.login-form .form-label, .signup-form .form-label {
+  display: block;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--muted-foreground-light);
+  margin-bottom: 0.5rem;
+}
+
+.login-form .form-control, .signup-form .form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: rgba(248, 250, 252, 0.8);
+  color: var(--foreground-light);
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  min-height: 2.75rem;
+}
+
+.login-form .form-control:focus, .signup-form .form-control:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(17, 115, 212, 0.1);
+  background: white;
+}
+
+.login-form .form-control::placeholder, .signup-form .form-control::placeholder {
+  color: var(--muted-foreground-light);
+}
+
+.login-actions, .signup-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1.5rem 0;
+}
+
+.forgot-password {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--primary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.forgot-password:hover {
+  color: color-mix(in srgb, var(--primary) 80%, black);
+}
+
+.login-btn, .signup-btn {
+  width: 100%;
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  padding: 0.875rem 1rem;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  min-height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-btn:hover, .signup-btn:hover {
+  background: color-mix(in srgb, var(--primary) 90%, black);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.login-btn:focus, .signup-btn:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Auth header for login/signup pages */
+.auth-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-light);
+  padding: 0;
+}
+
+.auth-header .container {
+  padding: 1rem var(--container-padding);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.auth-header .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.auth-header .logo .icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Modern form grid for signup */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.form-grid-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 640px) {
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .login-card, .signup-card {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .login-title, .signup-title {
+    font-size: 1.5rem;
+  }
+}
