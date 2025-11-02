@@ -1,7 +1,7 @@
 package com.druv.scheduler;
 
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.sql.Connection;
 
 import org.junit.jupiter.api.AfterEach;
@@ -16,13 +16,13 @@ public class MainTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        Files.deleteIfExists(Paths.get(TEST_DB));
+        Files.deleteIfExists(Path.of(TEST_DB));
         System.setProperty("db.name", TEST_DB);
     }
 
     @AfterEach
     void tearDown() throws Exception {
-        Files.deleteIfExists(Paths.get(TEST_DB));
+        Files.deleteIfExists(Path.of(TEST_DB));
     }
 
     @Test

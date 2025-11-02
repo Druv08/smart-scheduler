@@ -95,7 +95,7 @@ public class ReportService {
         roomDAO.findAll().forEach(room -> {
             List<TimetableEntry> roomEntries = timetableDAO.getByRoom(room.getId());
             
-            // Calculate utilization (assuming 5 days × 8 hours = 40 possible slots per week)
+            // Calculate utilization (assuming 5 days Ã— 8 hours = 40 possible slots per week)
             int totalPossibleSlots = 40;
             int bookedSlots = roomEntries.size();
             double utilizationPercent = (bookedSlots * 100.0) / totalPossibleSlots;
@@ -214,7 +214,7 @@ public class ReportService {
         
         // Overall schedule density
         int totalSlots = entries.size();
-        int maxPossibleSlots = roomDAO.findAll().size() * 5 * 8; // rooms × days × hours
+        int maxPossibleSlots = roomDAO.findAll().size() * 5 * 8; // rooms Ã— days Ã— hours
         double scheduleDensity = maxPossibleSlots > 0 ? (totalSlots * 100.0) / maxPossibleSlots : 0;
         overview.put("overallScheduleDensity", Math.round(scheduleDensity * 100.0) / 100.0);
         

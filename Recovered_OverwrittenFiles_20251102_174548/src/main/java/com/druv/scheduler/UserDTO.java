@@ -1,4 +1,4 @@
-﻿package com.druv.scheduler;
+package com.druv.scheduler;
 
 public class UserDTO {
     private int id;

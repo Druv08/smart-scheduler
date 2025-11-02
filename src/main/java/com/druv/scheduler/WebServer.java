@@ -179,7 +179,6 @@ public class WebServer {
         return ResponseEntity.ok(Map.of("message", "Welcome to professor panel"));
     }
 
-<<<<<<< Updated upstream
     @GetMapping("/api/student")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> studentPage(HttpSession session) {
@@ -212,7 +211,8 @@ public class WebServer {
             }
         }
         return false;
-=======
+    }
+
     @GetMapping("/profile-settings")
     public String profileSettings() {
         return "forward:/profile-settings.html";
@@ -226,7 +226,6 @@ public class WebServer {
     @GetMapping("/scheduler-engine")
     public String schedulerEngine() {
         return "forward:/scheduler-engine.html";
->>>>>>> Stashed changes
     }
 
     // ==================== DEBUG API (TEMPORARY) ====================
@@ -650,7 +649,7 @@ public class WebServer {
             for (TimetableEntry entry : conflicts) {
                 if (isTimeOverlap(startTime, endTime, entry.getStartTime(), entry.getEndTime())) {
                     available = false;
-                    conflictDetails = String.format("Room occupied from %s to %s", 
+                    conflictDetails = "Room occupied from %s to %s".formatted(
                         entry.getStartTime(), entry.getEndTime());
                     break;
                 }
@@ -724,7 +723,7 @@ public class WebServer {
                                 scheduledCount++;
                                 courseScheduled = true;
                                 
-                                details.append(String.format("Scheduled %s in %s on %s %s\n", 
+                                details.append("Scheduled %s in %s on %s %s\n".formatted(
                                     course.getCourseName(), room.getName(), day, slot));
                                 
                                 break dayLoop;
@@ -735,14 +734,14 @@ public class WebServer {
                 
                 if (!courseScheduled) {
                     failedCount++;
-                    details.append(String.format("Failed to schedule %s - no available slots\n", 
+                    details.append("Failed to schedule %s - no available slots\n".formatted(
                         course.getCourseName()));
                 }
             }
             
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
-            response.put("message", String.format("Generated schedule: %d courses scheduled, %d failed", 
+            response.put("message", "Generated schedule: %d courses scheduled, %d failed".formatted(
                 scheduledCount, failedCount));
             response.put("scheduledCount", scheduledCount);
             response.put("failedCount", failedCount);
@@ -765,8 +764,8 @@ public class WebServer {
             for (TimetableEntry entry : roomEntries) {
                 if (isTimeOverlap(startTime, endTime, entry.getStartTime(), entry.getEndTime())) {
                     String courseName = getCourseNameById(entry.getCourseId());
-                    return new ConflictResult(true, "Room conflict", 
-                        String.format("Room is already occupied by %s from %s to %s", 
+                    return new ConflictResult(true, "Room conflict",
+                        "Room is already occupied by %s from %s to %s".formatted(
                             courseName, entry.getStartTime(), entry.getEndTime()));
                 }
             }
@@ -782,8 +781,8 @@ public class WebServer {
                     for (TimetableEntry entry : instructorEntries) {
                         if (isTimeOverlap(startTime, endTime, entry.getStartTime(), entry.getEndTime())) {
                             String conflictCourseName = getCourseNameById(entry.getCourseId());
-                            return new ConflictResult(true, "Instructor conflict", 
-                                String.format("Instructor is already teaching %s from %s to %s", 
+                            return new ConflictResult(true, "Instructor conflict",
+                                "Instructor is already teaching %s from %s to %s".formatted(
                                     conflictCourseName, entry.getStartTime(), entry.getEndTime()));
                         }
                     }
@@ -909,7 +908,7 @@ public class WebServer {
             // Write CSV header
             java.io.PrintWriter writer = response.getWriter();
             if (!csvData.isEmpty()) {
-                Map<String, Object> firstRow = csvData.get(0);
+                Map<String, Object> firstRow = csvData.getFirst();
                 writer.println(String.join(",", firstRow.keySet()));
                 
                 // Write data rows
