@@ -3,12 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<<<<<<< Updated upstream
   <title>Smart Scheduler – Profile</title>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/profile-settings.css">
   <link rel="stylesheet" href="/css/style.css">
+=======
+  <title>Smart Scheduler - Profile Settings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/modern-exact-design.css">
+  <link rel="stylesheet" href="css/global-theme.css">
+  <link rel="stylesheet" href="css/profile-settings.css">
+>>>>>>> Stashed changes
 </head>
 <body>
   <header class="header">
@@ -29,6 +37,9 @@
         <a href="profile-settings.html" class="active">Profile</a>
       </nav>
       <div class="actions">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Switch theme">
+          <span id="themeIcon">🌙</span>
+        </button>
         <button class="bell" id="notifications">
           <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
             <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"/>
@@ -39,61 +50,68 @@
     </div>
   </header>
 
-  <main class="main">
-    <section class="intro">
-      <h2>Profile Settings</h2>
-      <p>Manage your personal information and application preferences.</p>
-    </section>
+  <main class="main container profile-settings">
+    <h1 class="page-title">Profile Settings</h1>
+    <p class="subtitle">Manage your personal information and application preferences.</p>
 
-    <form class="form" id="profileForm">
-      <!-- Personal Information -->
-      <fieldset class="card">
-        <legend>Personal Information</legend>
-        <div class="grid">
-          <label>Full Name
-            <input type="text" name="fullName" id="fullName" required>
-          </label>
-          <label>Email Address
-            <input type="email" name="email" id="email" required>
-          </label>
-          <label>Phone Number
-            <input type="tel" name="phone" id="phone">
-          </label>
-          <label>Department
-            <input type="text" name="department" id="department">
-          </label>
-          <label class="full">Role
-            <input type="text" name="role" id="role" readonly>
-          </label>
+    <div class="content-box">
+      <h2 class="section-title">Personal Information</h2>
+      <form id="personalInfoForm" class="profile-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="fullName" placeholder="Enter your full name" required>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="email" placeholder="example@srmist.edu.in" required disabled>
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="text" id="phone" placeholder="+91-XXXXXXXXXX">
+          </div>
+          <div class="form-group">
+            <label>Department</label>
+            <input type="text" id="department" placeholder="e.g., CSE-AI&ML" disabled>
+          </div>
+          <div class="form-group">
+            <label>Role</label>
+            <input type="text" id="role" placeholder="e.g., Student" disabled>
+          </div>
         </div>
-      </fieldset>
-
-      <!-- Security -->
-      <fieldset class="card">
-        <legend>Security</legend>
-        <div class="grid">
-          <label class="full">Current Password
-            <input type="password" name="currentPassword" id="currentPassword">
-          </label>
-          <label>New Password
-            <input type="password" name="newPassword" id="newPassword" 
-                   pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
-                   title="Minimum 8 characters, at least one letter and one number">
-          </label>
-          <label>Confirm New Password
-            <input type="password" name="confirmPassword" id="confirmPassword">
-          </label>
+        <div class="form-actions">
+          <button type="reset" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
         </div>
-      </fieldset>
+      </form>
+    </div>
 
-      <div class="actions-row">
-        <button type="button" class="cancel" onclick="window.location.href='/dashboard.html'">Cancel</button>
-        <button type="submit" class="submit">Update Profile</button>
-      </div>
-    </form>
+    <div class="content-box">
+      <h2 class="section-title">Security</h2>
+      <form id="passwordForm" class="profile-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Current Password</label>
+            <input type="password" id="currentPassword" required>
+          </div>
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" id="newPassword" required>
+          </div>
+          <div class="form-group">
+            <label>Confirm New Password</label>
+            <input type="password" id="confirmPassword" required>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="reset" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Update Password</button>
+        </div>
+      </form>
+    </div>
   </main>
 
-  <script src="/js/app.js"></script>
-  <script src="/js/profile.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/profile-settings.js" defer></script>
 </body>
 </html>

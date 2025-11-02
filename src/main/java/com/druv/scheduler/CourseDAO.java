@@ -183,4 +183,16 @@ public class CourseDAO {
             throw new RuntimeException("Error deleting course", e);
         }
     }
+
+    public long getCourseCount() {
+        String sql = "SELECT COUNT(*) FROM courses";
+        try (Connection conn = Database.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            
+            return rs.next() ? rs.getLong(1) : 0L;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error getting course count", e);
+        }
+    }
 }

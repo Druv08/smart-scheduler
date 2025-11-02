@@ -37,11 +37,12 @@ public class SchedulerService {
 
     // Authentication methods
     public User validateToken(String token) {
-        if (token == null || !token.startsWith("Bearer ")) {
+        if (token == null) {
             return null;
         }
 
-        String actualToken = token.substring(7);
+        // Handle both 'Bearer ' prefixed and direct tokens
+        String actualToken = token.startsWith("Bearer ") ? token.substring(7) : token;
         SessionInfo session = activeSessions.get(actualToken);
         
         if (session == null || session.isExpired()) {
@@ -65,7 +66,7 @@ public class SchedulerService {
                 if (HashUtil.verifyPassword(password, user.getPassword())) {
                     String token = generateToken();
                     activeSessions.put(token, new SessionInfo(user));
-                    return Map.of("success", true, "token", token);
+                    return Map.of("success", true, "token", "Bearer " + token);
                 }
             }
         } catch (Exception e) {
@@ -148,22 +149,6 @@ public class SchedulerService {
         return List.of();
     }
 
-    private boolean isValidToken(String token) {
-        if (token == null || !token.startsWith("Bearer ")) {
-            return false;
-        }
-        
-        String actualToken = token.substring(7);
-        SessionInfo session = activeSessions.get(actualToken);
-        
-        if (session == null || session.isExpired()) {
-            activeSessions.remove(actualToken);
-            return false;
-        }
-        
-        return true;
-    }
-
     public boolean addUser(String username, String password, String role) {
         try {
             String hashedPassword = HashUtil.hashPassword(password);
@@ -176,5 +161,34 @@ public class SchedulerService {
 
     private String generateToken() {
         return UUID.randomUUID().toString();
+    }
+
+    // Statistics methods
+    public long getUserCount(String token) {
+        if (validateToken(token) != null) {
+            return userDAO.getUserCount();
+        }
+        return 0L;
+    }
+
+    public long getCourseCount(String token) {
+        if (validateToken(token) != null) {
+            return courseDAO.getCourseCount();
+        }
+        return 0L;
+    }
+
+    public long getRoomCount(String token) {
+        if (validateToken(token) != null) {
+            return roomDAO.getRoomCount();
+        }
+        return 0L;
+    }
+
+    public long getUpcomingClassesCount(String token) {
+        if (validateToken(token) != null) {
+            return timetableDAO.getUpcomingClassesCount();
+        }
+        return 0L;
     }
 }

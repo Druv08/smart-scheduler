@@ -264,4 +264,18 @@ public class TimetableDAO {
         
         return entries;
     }
+
+    public long getUpcomingClassesCount() {
+        // For simplicity, we'll count all timetable entries as "upcoming"
+        // In a real application, this would include date/time logic
+        String sql = "SELECT COUNT(*) FROM timetable";
+        try (Connection conn = Database.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            
+            return rs.next() ? rs.getLong(1) : 0L;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error getting upcoming classes count", e);
+        }
+    }
 }

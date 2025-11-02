@@ -3,10 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< Updated upstream
   <title>Smart Scheduler – Courses</title>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/courses.css">
+=======
+  <title>Smart Timetable - Courses Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/modern-exact-design.css">
+  <link rel="stylesheet" href="css/global-theme.css">
+  <!-- Cache busting for fresh load -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+>>>>>>> Stashed changes
 </head>
 
 <body>
@@ -21,15 +32,25 @@
 
       <nav class="nav">
         <a href="dashboard.html">Dashboard</a>
+<<<<<<< Updated upstream
         <a href="rooms.html">Rooms</a>
         <a href="bookings.html">Bookings</a>
         <a href="users.html">Users</a>
         <a href="courses.html" class="active">Courses</a>
         <a href="timetable.html">Timetable</a>
         <a href="profile-settings.html">Profile</a>
+=======
+        <a href="timetable.html">Timetable</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="users.html">Teachers</a>
+        <a href="courses.html" class="active">Courses</a>
+>>>>>>> Stashed changes
       </nav>
 
       <div class="actions">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Switch theme">
+          <span id="themeIcon">🌙</span>
+        </button>
         <button class="bell" id="notifications">
           <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
             <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06Z"/>
@@ -41,6 +62,7 @@
   </header>
 
   <main class="main">
+<<<<<<< Updated upstream
     <section class="intro">
       <h2>Courses</h2>
       <p>View, edit, and manage all courses offered by your department.</p>
@@ -56,116 +78,873 @@
             </svg>
             <input type="search" placeholder="Search courses..." id="courseSearch">
           </div>
+=======
+    <div class="container">
+      <!-- Page Header Content Box -->
+      <div class="content-box">
+        <h2 class="page-title">Courses Management</h2>
+        <p class="text-muted">Manage and explore available courses with full CRUD functionality.</p>
+        
+        <div class="filter-bar">
+          <button class="add-course-btn" id="addCourseBtn" onclick="openCourseModal()">
+            <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+            Add New Course
+          </button>
+          
+          <select id="departmentFilter" class="modern-select">
+            <option value="">All Departments</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Humanities">Humanities</option>
+            <option value="Professional Development">Professional Development</option>
+          </select>
+          
+          <select id="creditsFilter" class="modern-select">
+            <option value="">All Credits</option>
+            <option value="2">2 Credits</option>
+            <option value="3">3 Credits</option>
+            <option value="4">4 Credits</option>
+          </select>
         </div>
-        <button class="add-btn" id="addCourse">
-          <svg class="btn-icon" viewBox="0 0 24 24">
+      </div>
+
+      <!-- Course Directory Content Box -->
+      <div class="content-box">
+        <h3 class="section-title">Course Directory</h3>
+
+        <!-- Course Table -->
+        <div class="table-wrapper">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th>Course Code</th>
+                <th>Course Name</th>
+                <th>Hours/Week</th>
+                <th>Teacher</th>
+                <th>Batch</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="courseTableBody">
+              <!-- Courses will be populated here -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-modern">
+          <button class="page-btn" id="prevPage" disabled>← Previous</button>
+          <span id="pageInfo" style="color: var(--text-secondary); font-size: 0.875rem;">Loading...</span>
+          <button class="page-btn" id="nextPage" disabled>Next →</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Course Modal -->
+  <div id="courseModal" class="modal-backdrop" style="display: none;">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="modalTitle">Add New Course</h3>
+        <button onclick="closeCourseModal()" class="modal-close">&times;</button>
+      </div>
+      
+      <form id="courseForm" class="modal-content">
+        <div class="form-group">
+          <label class="form-label">Course Code *</label>
+          <input type="text" id="courseCode" class="form-input" placeholder="e.g., 21CSC203J" required>
+          <small class="form-help">Enter a unique course code</small>
+>>>>>>> Stashed changes
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Course Name *</label>
+          <input type="text" id="courseName" class="form-input" placeholder="e.g., Data Structures & Algorithms" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Hours per Week *</label>
+          <input type="number" id="hoursPerWeek" class="form-input" min="1" max="10" placeholder="4" required>
+          <small class="form-help">Between 1 and 10 hours</small>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Teacher *</label>
+          <input type="text" id="teacher" class="form-input" placeholder="e.g., Dr. Kalpana C" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Batch *</label>
+          <select id="batch" class="form-input" required>
+            <option value="">Select Batch</option>
+            <option value="CSE-A">CSE-A</option>
+            <option value="CSE-B">CSE-B</option>
+            <option value="ECE-A">ECE-A</option>
+            <option value="ECE-B">ECE-B</option>
+            <option value="MECH-A">MECH-A</option>
+            <option value="MECH-B">MECH-B</option>
+          </select>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" onclick="closeCourseModal()" class="btn-secondary">Cancel</button>
+          <button type="submit" id="submitBtn" class="btn-primary">
+            <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+            Add Course
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <style>
+    /* CSS Variables for compatibility */
+    :root {
+      --white: #ffffff;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+    }
+
+    /* Modern Card Styles */
+    .modern-card {
+      background: var(--theme-surface-primary);
+      border: 1px solid var(--theme-border-primary);
+      border-radius: 12px;
+      box-shadow: var(--theme-shadow-md);
+      overflow: hidden;
+    }
+
+    .card-header-modern {
+      padding: 2rem;
+      border-bottom: 1px solid var(--theme-border-primary);
+      background: var(--theme-surface-secondary);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-controls {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .modern-select {
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--theme-border-primary);
+      border-radius: 8px;
+      background: var(--theme-input-bg);
+      font-size: 0.875rem;
+      color: var(--theme-text-primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-width: 150px;
+    }
+
+    .modern-select:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .add-course-btn {
+      display: flex;
+      align-items: center;
+      padding: 0.875rem 1.75rem;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+    }
+
+    .add-course-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 15px -3px rgba(59, 130, 246, 0.4);
+    }
+
+    /* Table Styles */
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    .modern-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    .modern-table th {
+      text-align: left;
+      padding: 1rem 1.5rem;
+      font-weight: 600;
+      color: var(--gray-600);
+      background: var(--gray-50);
+      border-bottom: 2px solid var(--gray-200);
+      white-space: nowrap;
+    }
+
+    .modern-table td {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--gray-100);
+      color: var(--gray-900);
+      vertical-align: middle;
+    }
+
+    .modern-table tbody tr:hover {
+      background: var(--gray-50);
+      transform: translateX(2px);
+      transition: all 0.2s ease;
+    }
+
+    /* Pagination */
+    .pagination-modern {
+      padding: 1.5rem 2rem;
+      border-top: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--gray-50);
+    }
+
+    .page-btn {
+      padding: 0.5rem 1rem;
+      border: 2px solid var(--gray-200);
+      background: var(--white);
+      color: var(--gray-700);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .page-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .page-btn:not(:disabled):hover {
+      background: var(--gray-100);
+      border-color: var(--gray-300);
+    }
+
+    /* Modal Styles */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: modalSlideIn 0.3s ease-out;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modal-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--gray-50);
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--gray-900);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      color: var(--gray-400);
+      padding: 0.25rem;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close:hover {
+      background: var(--gray-200);
+      color: var(--gray-600);
+    }
+
+    .modal-content {
+      padding: 2rem;
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    /* Form Styles */
+    .form-group {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: var(--gray-700);
+      font-size: 0.875rem;
+    }
+
+    .form-input {
+      padding: 0.875rem 1rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      color: var(--gray-900);
+      transition: all 0.2s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .form-help {
+      font-size: 0.75rem;
+      color: var(--gray-500);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      padding-top: 1rem;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .btn-secondary {
+      padding: 0.75rem 1.5rem;
+      border: 2px solid var(--gray-300);
+      background: var(--white);
+      color: var(--gray-700);
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: var(--gray-50);
+      border-color: var(--gray-400);
+    }
+
+    .btn-primary {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .status-enrolled {
+      background: #3b82f6;
+      color: white;
+      padding: 0.375rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .btn-edit {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.375rem 0.75rem;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-edit:hover {
+      background: #e2e8f0;
+      color: #334155;
+      transform: translateY(-1px);
+    }
+
+    .btn-delete {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.375rem 0.75rem;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-delete:hover {
+      background: #fee2e2;
+      color: #b91c1c;
+      transform: translateY(-1px);
+    }
+
+    /* Notification */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 2000;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      animation: slideInRight 0.3s ease-out;
+      max-width: 400px;
+    }
+
+    .notification.success {
+      background: #10b981;
+      color: white;
+    }
+
+    .notification.error {
+      background: #ef4444;
+      color: white;
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+  </style>
+
+  <script>
+    // Course management system with localStorage
+    let coursesData = [];
+    let isEditMode = false;
+    let editingIndex = -1;
+
+    // Default courses
+    const defaultCourses = [
+      { code: '21CSC203J', name: 'Data Structures & Algorithms', hoursPerWeek: 4, teacher: 'Dr. Kalpana C', batch: 'CSE-B' },
+      { code: '21CSC204J', name: 'Computer Organization & Architecture', hoursPerWeek: 3, teacher: 'Dr. Meenakshi M', batch: 'CSE-B' },
+      { code: '21CSC207J', name: 'Operating Systems', hoursPerWeek: 4, teacher: 'Dr. G.Priyadharshini', batch: 'CSE-B' },
+      { code: '21CSC208J', name: 'Advanced Programming Practice', hoursPerWeek: 3, teacher: 'Dr. Prince Chelladurai S', batch: 'CSE-B' },
+      { code: '21MAT201J', name: 'Transforms & Boundary Value Problems', hoursPerWeek: 4, teacher: 'Dr. P. Godhandaraman', batch: 'CSE-B' },
+      { code: '21UHV002J', name: 'Universal Human Values - II', hoursPerWeek: 2, teacher: 'Dr. D.Boopathi', batch: 'CSE-B' },
+      { code: '21PDE001J', name: 'Professional Ethics', hoursPerWeek: 2, teacher: 'Dr. B.Monika Nair', batch: 'CSE-B' }
+    ];
+
+    // Initialize application
+    function init() {
+      loadCourses();
+      setupEventListeners();
+      renderCourseTable();
+    }
+
+    // Load courses from localStorage or use defaults
+    function loadCourses() {
+      try {
+        const stored = localStorage.getItem('smart-timetable-courses');
+        if (stored) {
+          coursesData = JSON.parse(stored);
+        } else {
+          coursesData = [...defaultCourses];
+          saveCourses();
+        }
+      } catch (error) {
+        console.error('Error loading courses:', error);
+        coursesData = [...defaultCourses];
+        saveCourses();
+      }
+    }
+
+    // Save courses to localStorage
+    function saveCourses() {
+      try {
+        localStorage.setItem('smart-timetable-courses', JSON.stringify(coursesData));
+      } catch (error) {
+        console.error('Error saving courses:', error);
+      }
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+      // Form submission
+      document.getElementById('courseForm').addEventListener('submit', handleFormSubmit);
+      
+      // Modal close on backdrop click
+      document.getElementById('courseModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeCourseModal();
+        }
+      });
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeCourseModal();
+        }
+        if (e.ctrlKey && e.key === 'n') {
+          e.preventDefault();
+          openCourseModal();
+        }
+      });
+
+      // Real-time validation
+      setupFormValidation();
+    }
+
+    // Setup form validation
+    function setupFormValidation() {
+      const inputs = document.querySelectorAll('.form-input');
+      inputs.forEach(input => {
+        input.addEventListener('input', function() {
+          validateField(this);
+        });
+      });
+    }
+
+    // Validate individual field
+    function validateField(input) {
+      const value = input.value.trim();
+      
+      // Reset styles
+      input.style.borderColor = '#d1d5db';
+      
+      if (input.hasAttribute('required') && !value) {
+        input.style.borderColor = '#ef4444';
+        return false;
+      }
+
+      if (input.id === 'courseCode') {
+        input.value = value.toUpperCase();
+        if (value.length < 3) {
+          input.style.borderColor = '#f59e0b';
+          return false;
+        }
+        
+        // Check for duplicates
+        const isDuplicate = coursesData.some((course, index) => 
+          index !== editingIndex && course.code.toLowerCase() === value.toLowerCase()
+        );
+        
+        if (isDuplicate) {
+          input.style.borderColor = '#ef4444';
+          return false;
+        }
+        
+        input.style.borderColor = '#10b981';
+        return true;
+      }
+
+      if (input.id === 'hoursPerWeek') {
+        const hours = parseInt(value);
+        if (hours < 1 || hours > 10) {
+          input.style.borderColor = '#ef4444';
+          return false;
+        }
+        input.style.borderColor = '#10b981';
+        return true;
+      }
+
+      if (value) {
+        input.style.borderColor = '#10b981';
+      }
+      
+      return true;
+    }
+
+    // Render course table
+    function renderCourseTable() {
+      const tbody = document.getElementById('courseTableBody');
+      
+      if (coursesData.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 3rem; color: var(--gray-400);">
+              <div style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">No courses found</div>
+              <div>Click "Add New Course" to get started</div>
+            </td>
+          </tr>
+        `;
+        document.getElementById('pageInfo').textContent = 'No courses';
+        return;
+      }
+
+      tbody.innerHTML = coursesData.map((course, index) => `
+        <tr style="animation: fadeInUp 0.3s ease-out ${index * 0.05}s both;">
+          <td><strong style="color: var(--gray-900);">${course.code}</strong></td>
+          <td style="color: var(--gray-900); font-weight: 500;">${course.name}</td>
+          <td><span style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: 500;">${course.hoursPerWeek}h</span></td>
+          <td style="color: var(--gray-700);">${course.teacher}</td>
+          <td><span style="background: #dbeafe; color: #1e40af; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 500;">${course.batch}</span></td>
+          <td>
+            <div class="action-buttons">
+              <span class="status-enrolled">Enrolled</span>
+              <button class="btn-edit" onclick="editCourse(${index})" title="Edit Course">
+                <svg style="width: 0.75rem; height: 0.75rem;" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                </svg>
+                Edit
+              </button>
+              <button class="btn-delete" onclick="deleteCourse(${index})" title="Delete Course">
+                <svg style="width: 0.75rem; height: 0.75rem;" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z"/>
+                </svg>
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+
+      document.getElementById('pageInfo').textContent = `Showing ${coursesData.length} course${coursesData.length !== 1 ? 's' : ''}`;
+    }
+
+    // Open modal for adding/editing
+    function openCourseModal() {
+      document.getElementById('courseModal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      
+      if (!isEditMode) {
+        document.getElementById('courseForm').reset();
+        document.getElementById('modalTitle').textContent = 'Add New Course';
+        document.getElementById('submitBtn').innerHTML = `
+          <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" viewBox="0 0 24 24" fill="currentColor">
             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
           </svg>
           Add Course
-        </button>
-      </div>
+        `;
+      }
 
-      <div class="table-container">
-        <table class="courses-table">
-          <thead>
-            <tr>
-              <th>Code</th>
-              <th>Name</th>
-              <th>Instructor</th>
-              <th>Credits</th>
-              <th>Department</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="coursesTableBody">
-            <tr>
-              <td>CS101</td>
-              <td>DSA</td>
-              <td>Dr. Prince</td>
-              <td>4</td>
-              <td>Computer Science</td>
-              <td class="actions">
-                <button class="icon-btn edit" title="Edit course">
-                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-                </button>
-                <button class="icon-btn delete" title="Delete course">
-                  <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>CS102</td>
-              <td>COA</td>
-              <td>Dr. Prince</td>
-              <td>3</td>
-              <td>Computer Science</td>
-              <td class="actions">
-                <button class="icon-btn edit" title="Edit course">
-                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-                </button>
-                <button class="icon-btn delete" title="Delete course">
-                  <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>CS103</td>
-              <td>APP</td>
-              <td>Dr. Prince</td>
-              <td>4</td>
-              <td>Computer Science</td>
-              <td class="actions">
-                <button class="icon-btn edit" title="Edit course">
-                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-                </button>
-                <button class="icon-btn delete" title="Delete course">
-                  <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>CS104</td>
-              <td>TBVP</td>
-              <td>Dr. Prince</td>
-              <td>3</td>
-              <td>Computer Science</td>
-              <td class="actions">
-                <button class="icon-btn edit" title="Edit course">
-                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-                </button>
-                <button class="icon-btn delete" title="Delete course">
-                  <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>CS105</td>
-              <td>OS</td>
-              <td>Dr. Prince</td>
-              <td>4</td>
-              <td>Computer Science</td>
-              <td class="actions">
-                <button class="icon-btn edit" title="Edit course">
-                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-                </button>
-                <button class="icon-btn delete" title="Delete course">
-                  <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      // Focus first input
+      setTimeout(() => {
+        document.getElementById('courseCode').focus();
+      }, 300);
+    }
 
-      <div class="pagination">
-        <button class="btn-page" id="prevPage" disabled>Previous</button>
-        <span id="pageInfo">Page 1 of 1</span>
-        <button class="btn-page" id="nextPage" disabled>Next</button>
-      </div>
-    </section>
-  </main>
+    // Close modal
+    function closeCourseModal() {
+      document.getElementById('courseModal').style.display = 'none';
+      document.body.style.overflow = 'auto';
+      
+      // Reset form and state
+      document.getElementById('courseForm').reset();
+      isEditMode = false;
+      editingIndex = -1;
+      
+      // Reset input styles
+      document.querySelectorAll('.form-input').forEach(input => {
+        input.style.borderColor = '#d1d5db';
+      });
+    }
 
+<<<<<<< Updated upstream
   <script src="/js/app.js"></script>
   <script src="/js/courses.js"></script>
+=======
+    // Handle form submission
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      
+      const formData = {
+        code: document.getElementById('courseCode').value.trim().toUpperCase(),
+        name: document.getElementById('courseName').value.trim(),
+        hoursPerWeek: parseInt(document.getElementById('hoursPerWeek').value),
+        teacher: document.getElementById('teacher').value.trim(),
+        batch: document.getElementById('batch').value
+      };
+
+      // Validate all fields
+      const isValid = Object.values(formData).every(value => value !== '' && value !== 0);
+      if (!isValid) {
+        showNotification('Please fill in all required fields.', 'error');
+        return;
+      }
+
+      // Additional validations
+      if (formData.code.length < 3) {
+        showNotification('Course code must be at least 3 characters long.', 'error');
+        return;
+      }
+
+      if (formData.hoursPerWeek < 1 || formData.hoursPerWeek > 10) {
+        showNotification('Hours per week must be between 1 and 10.', 'error');
+        return;
+      }
+
+      // Check for duplicate course code
+      const isDuplicate = coursesData.some((course, index) => 
+        index !== editingIndex && course.code.toLowerCase() === formData.code.toLowerCase()
+      );
+      
+      if (isDuplicate) {
+        showNotification('Course code already exists. Please choose a different code.', 'error');
+        return;
+      }
+
+      // Add or update course
+      if (isEditMode) {
+        coursesData[editingIndex] = { ...formData, updatedAt: new Date().toISOString() };
+        showNotification(`Course ${formData.code} updated successfully!`, 'success');
+      } else {
+        coursesData.push({ ...formData, createdAt: new Date().toISOString() });
+        showNotification(`Course ${formData.code} added successfully!`, 'success');
+      }
+
+      // Save and refresh
+      saveCourses();
+      renderCourseTable();
+      closeCourseModal();
+    }
+
+    // Edit course
+    function editCourse(index) {
+      const course = coursesData[index];
+      isEditMode = true;
+      editingIndex = index;
+
+      // Populate form
+      document.getElementById('courseCode').value = course.code;
+      document.getElementById('courseName').value = course.name;
+      document.getElementById('hoursPerWeek').value = course.hoursPerWeek;
+      document.getElementById('teacher').value = course.teacher;
+      document.getElementById('batch').value = course.batch;
+
+      // Update modal
+      document.getElementById('modalTitle').textContent = 'Edit Course';
+      document.getElementById('submitBtn').innerHTML = `
+        <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+        </svg>
+        Update Course
+      `;
+
+      openCourseModal();
+    }
+
+    // Delete course
+    function deleteCourse(index) {
+      const course = coursesData[index];
+      const message = `Are you sure you want to delete "${course.code}"?\n\n${course.name}\nTeacher: ${course.teacher}\nBatch: ${course.batch}\n\nThis action cannot be undone.`;
+      
+      if (confirm(message)) {
+        coursesData.splice(index, 1);
+        saveCourses();
+        renderCourseTable();
+        showNotification(`Course ${course.code} deleted successfully!`, 'success');
+      }
+    }
+
+    // Show notification
+    function showNotification(message, type = 'success') {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.animation = 'slideInRight 0.3s ease-out reverse';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.remove();
+          }
+        }, 300);
+      }, 3000);
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+
+  <style>
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+
+  <script src="js/theme.js"></script>
+  <script src="js/simple-app.js"></script>
+>>>>>>> Stashed changes
 </body>
 </html>

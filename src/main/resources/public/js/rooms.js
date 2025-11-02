@@ -100,12 +100,10 @@ document.getElementById('createRoomForm').addEventListener('submit', async (e) =
 
 // Function stubs for edit and delete - implement these later
 function editRoom(id) {
-    console.log("Edit room:", id);
     // TODO: Implement room editing
 }
 
 function deleteRoom(id) {
-    console.log("Delete room:", id);
     // TODO: Implement room deletion
 }
 

@@ -179,6 +179,7 @@ public class WebServer {
         return ResponseEntity.ok(Map.of("message", "Welcome to professor panel"));
     }
 
+<<<<<<< Updated upstream
     @GetMapping("/api/student")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> studentPage(HttpSession session) {
@@ -211,6 +212,21 @@ public class WebServer {
             }
         }
         return false;
+=======
+    @GetMapping("/profile-settings")
+    public String profileSettings() {
+        return "forward:/profile-settings.html";
+    }
+
+    @GetMapping("/bookings")
+    public String bookings() {
+        return "forward:/bookings.html";
+    }
+
+    @GetMapping("/scheduler-engine")
+    public String schedulerEngine() {
+        return "forward:/scheduler-engine.html";
+>>>>>>> Stashed changes
     }
 
     // ==================== DEBUG API (TEMPORARY) ====================

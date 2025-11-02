@@ -1,12 +1,18 @@
 package com.druv.scheduler;
 
-import org.springframework.stereotype.Repository;
+import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
+<<<<<<< Updated upstream
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Optional;
+=======
+import org.springframework.stereotype.Repository;
+>>>>>>> Stashed changes
 
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -90,5 +96,12 @@ public class UserDAOImpl implements UserDAO {
             user.getPassword(), 
             user.getRole(), 
             user.getId()) > 0;
+    }
+
+    @Override
+    public long getUserCount() {
+        String sql = "SELECT COUNT(*) FROM users";
+        Long count = jdbcTemplate.queryForObject(sql, Long.class);
+        return count != null ? count : 0L;
     }
 }

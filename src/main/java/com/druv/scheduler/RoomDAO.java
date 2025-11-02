@@ -147,4 +147,16 @@ public class RoomDAO {
             throw new RuntimeException("Error deleting room", e);
         }
     }
+
+    public long getRoomCount() {
+        String sql = "SELECT COUNT(*) FROM rooms";
+        try (Connection conn = Database.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            
+            return rs.next() ? rs.getLong(1) : 0L;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error getting room count", e);
+        }
+    }
 }

@@ -4,10 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Scheduler – Dashboard</title>
+<<<<<<< Updated upstream
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/dashboard.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+=======
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/modern-exact-design.css">
+  <link rel="stylesheet" href="css/global-theme.css">
+>>>>>>> Stashed changes
 </head>
 
 <body data-require-auth>
@@ -22,6 +28,7 @@
 
       <nav class="nav">
         <a href="dashboard.html" class="active">Dashboard</a>
+<<<<<<< Updated upstream
         <a href="rooms.html" data-role="admin">Rooms</a>
         <a href="bookings.html">Bookings</a>
         <a href="users.html" data-role="admin">Users</a>
@@ -29,9 +36,18 @@
         <a href="timetable.html">Timetable</a>
         <a href="profile-settings.html">Profile</a>
         <a href="#" data-logout class="logout-link">Logout</a>
+=======
+        <a href="timetable.html">Timetable</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="users.html">Teachers</a>
+        <a href="courses.html">Batches</a>
+>>>>>>> Stashed changes
       </nav>
 
       <div class="actions">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Switch theme">
+          <span id="themeIcon">🌙</span>
+        </button>
         <button class="bell" id="notifications">
           <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
             <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06Z"/>
@@ -43,6 +59,7 @@
   </header>
 
   <main class="main">
+<<<<<<< Updated upstream
     <section class="intro">
       <h2>Dashboard Overview</h2>
       <p>Welcome to Smart Scheduler — your central hub to manage courses, rooms, and timetables.</p>
@@ -61,6 +78,44 @@
         </div>
         <div class="stat-change increase">+2 this week</div>
       </div>
+=======
+    <div class="container">
+      <section class="intro">
+        <h1 style="font-size: var(--font-size-3xl); font-weight: 700; margin-bottom: 0.5rem;">Dashboard</h1>
+        <p style="color: var(--gray-600); font-size: var(--font-size-base);">Welcome back, Druv! Here's your SRM CSE B.Tech timetable organized by Day 1-5 format with real SRM schedule data.</p>
+        
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+          <button class="btn btn-primary" onclick="window.location.href='timetable.html'">View Timetable</button>
+          <button class="btn btn-secondary" onclick="window.location.href='courses.html'">Manage Courses</button>
+        </div>
+      </section>
+
+      <section class="stats">
+        <div class="stat-card">
+          <h3>7</h3>
+          <p>SRM Courses</p>
+          <small style="color: var(--gray-500);">Theory + Labs</small>
+        </div>
+        
+        <div class="stat-card">
+          <h3>6</h3>
+          <p>Faculty Members</p>
+          <small style="color: var(--gray-500);">Real Professors</small>
+        </div>
+        
+        <div class="stat-card">
+          <h3>5</h3>
+          <p>Academic Days</p>
+          <small style="color: var(--gray-500);">Day 1-5 Format</small>
+        </div>
+        
+        <div class="stat-card">
+          <h3>12</h3>
+          <p>Time Slots</p>
+          <small style="color: var(--gray-500);">50-min Periods</small>
+        </div>
+      </section>
+>>>>>>> Stashed changes
 
       <div class="stat-card">
         <div class="stat-icon courses">
@@ -129,14 +184,50 @@
             <h4>Room Utilization</h4>
             <span class="chart-subtitle">Percentage of time rooms are booked</span>
           </div>
+<<<<<<< Updated upstream
           <div class="chart-container">
             <canvas id="roomUtilizationChart"></canvas>
+=======
+          <div class="card-body">
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
+              <div style="text-align: center; font-weight: 600; color: var(--primary-blue); font-size: var(--font-size-sm);">Day 1</div>
+              <div style="text-align: center; font-weight: 600; color: var(--primary-blue); font-size: var(--font-size-sm);">Day 2</div>
+              <div style="text-align: center; font-weight: 600; color: var(--primary-blue); font-size: var(--font-size-sm);">Day 3</div>
+              <div style="text-align: center; font-weight: 600; color: var(--primary-blue); font-size: var(--font-size-sm);">Day 4</div>
+              <div style="text-align: center; font-weight: 600; color: var(--primary-blue); font-size: var(--font-size-sm);">Day 5</div>
+            </div>
+            
+            <div style="text-align: center; margin: 1rem 0;">
+              <div style="display: flex; align-items: center; justify-content: center; gap: 1rem;">
+                <h4 style="margin: 0; font-weight: 600; color: var(--gray-700);">SRM Unified Timetable Format</h4>
+              </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem;">
+              <button class="day-button active" data-day="1" style="text-align: center; padding: 1rem 0.5rem; background: var(--primary-blue); color: white; border-radius: var(--border-radius); font-weight: 600; font-size: var(--font-size-sm); border: none; cursor: pointer; transition: all 0.2s ease;">
+                Day 1<br><small style="opacity: 0.8;">Theory + Labs</small>
+              </button>
+              <button class="day-button" data-day="2" style="text-align: center; padding: 1rem 0.5rem; background: var(--gray-100); border-radius: var(--border-radius); font-weight: 600; font-size: var(--font-size-sm); border: none; cursor: pointer; transition: all 0.2s ease;">
+                Day 2<br><small style="opacity: 0.6;">Labs Focus</small>
+              </button>
+              <button class="day-button" data-day="3" style="text-align: center; padding: 1rem 0.5rem; background: var(--gray-100); border-radius: var(--border-radius); font-weight: 600; font-size: var(--font-size-sm); border: none; cursor: pointer; transition: all 0.2s ease;">
+                Day 3<br><small style="opacity: 0.6;">Mixed Schedule</small>
+              </button>
+              <button class="day-button" data-day="4" style="text-align: center; padding: 1rem 0.5rem; background: var(--gray-100); border-radius: var(--border-radius); font-weight: 600; font-size: var(--font-size-sm); border: none; cursor: pointer; transition: all 0.2s ease;">
+                Day 4<br><small style="opacity: 0.6;">Theory + Ethics</small>
+              </button>
+              <button class="day-button" data-day="5" style="text-align: center; padding: 1rem 0.5rem; background: var(--gray-100); border-radius: var(--border-radius); font-weight: 600; font-size: var(--font-size-sm); border: none; cursor: pointer; transition: all 0.2s ease;">
+                Day 5<br><small style="opacity: 0.6;">Lab Sessions</small>
+              </button>
+            </div>
+>>>>>>> Stashed changes
           </div>
         </div>
 
         <!-- Daily Classes Chart -->
         <div class="card chart-card">
           <div class="card-header">
+<<<<<<< Updated upstream
             <h4>Classes by Day</h4>
             <span class="chart-subtitle">Total classes scheduled per day</span>
           </div>
@@ -164,6 +255,22 @@
           </div>
           <div class="chart-container">
             <canvas id="timeSlotChart"></canvas>
+=======
+            <h3 id="schedule-title">Day 1 Schedule</h3>
+            <small style="color: var(--gray-500);">Based on SRM Unified Timetable Format</small>
+          </div>
+          <div class="card-body">
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 1rem; font-size: var(--font-size-xs); font-weight: 600; color: var(--gray-500); text-transform: uppercase; margin-bottom: 1rem;">
+              <div>Course</div>
+              <div>Slot</div>
+              <div>Time</div>
+              <div>Room & Faculty</div>
+            </div>
+            
+            <div id="schedule-content">
+              <!-- Dynamic schedule content will be loaded here -->
+            </div>
+>>>>>>> Stashed changes
           </div>
         </div>
       </div>
@@ -228,9 +335,180 @@
     </div>
   </footer>
 
+<<<<<<< Updated upstream
   <script src="/js/session.js"></script>
   <script src="/js/app.js"></script>
   <script src="/js/dashboard.js"></script>
+=======
+  <script src="js/theme.js"></script>
+  <script src="js/simple-app.js"></script>
+  <script>
+    function navigateToPage(page) {
+      window.location.href = page;
+    }
+
+    // Complete SRM Timetable Data - Using the exact format from requirements
+    const schedules = {
+      1: [
+        { course: "Transforms & Boundary Value Problems", slot: "A/X", time: "12:30 – 01:20", room: "CLS619", faculty: "Dr. P. Godhandaraman" },
+        { course: "Transforms & Boundary Value Problems", slot: "A/X", time: "01:25 – 02:15", room: "CLS619", faculty: "Dr. P. Godhandaraman" },
+        { course: "Operating Systems", slot: "F/X", time: "02:20 – 03:10", room: "CLS619", faculty: "Dr. G. Priyadharshini" },
+        { course: "Operating Systems", slot: "F/X", time: "03:10 – 04:00", room: "CLS619", faculty: "Dr. G. Priyadharshini" },
+        { course: "Universal Human Values – II", slot: "G", time: "04:00 – 04:50", room: "To Be Allotted", faculty: "Dr. D. Boopathi" }
+      ],
+      2: [
+        { course: "Data Structures and Algorithms", slot: "B", time: "08:00 – 08:50", room: "CLS619", faculty: "Dr. Kalpana C" },
+        { course: "Data Structures and Algorithms", slot: "B", time: "08:50 – 09:40", room: "CLS619", faculty: "Dr. Kalpana C" },
+        { course: "UHV-II", slot: "G", time: "09:45 – 11:30", room: "To Be Allotted", faculty: "Dr. D. Boopathi" },
+        { course: "Transforms & Boundary Value Problems", slot: "A", time: "11:35 – 12:25", room: "CLS619", faculty: "Dr. P. Godhandaraman" },
+        { course: "Operating Systems Lab", slot: "P17–P18", time: "01:25 – 03:10", room: "UB711B", faculty: "Dr. G. Priyadharshini" }
+      ],
+      3: [
+        { course: "Professional Ethics", slot: "E", time: "11:35 – 12:25", room: "Online", faculty: "Dr. B. Monika Nair" },
+        { course: "Computer Organization and Architecture", slot: "C", time: "12:30 – 02:15", room: "CLS619", faculty: "Dr. Meenakshi M" },
+        { course: "Transforms & Boundary Value Problems", slot: "A", time: "02:20 – 03:10", room: "CLS619", faculty: "Dr. P. Godhandaraman" },
+        { course: "Advanced Programming Practice", slot: "D", time: "03:10 – 04:00", room: "CLS619", faculty: "Dr. Prince Chelladurai S" },
+        { course: "Data Structures and Algorithms", slot: "B", time: "04:00 – 04:50", room: "CLS619", faculty: "Dr. Kalpana C" }
+      ],
+      4: [
+        { course: "Advanced Programming Practice Lab", slot: "P31–P32", time: "08:00 – 09:40", room: "CLS619", faculty: "Dr. Prince Chelladurai S" },
+        { course: "Data Structures and Algorithms", slot: "B", time: "09:45 – 11:30", room: "CLS619", faculty: "Dr. Kalpana C" },
+        { course: "Computer Organization and Architecture", slot: "C", time: "11:35 – 12:25", room: "CLS619", faculty: "Dr. Meenakshi M" }
+      ],
+      5: [
+        { course: "Data Structures Lab", slot: "P41–P42", time: "08:00 – 09:40", room: "UB713B", faculty: "Dr. Kalpana C" },
+        { course: "Data Structures and Algorithms", slot: "B", time: "12:30 – 01:20", room: "CLS619", faculty: "Dr. Kalpana C" },
+        { course: "Computer Organization and Architecture", slot: "C", time: "02:20 – 03:10", room: "CLS619", faculty: "Dr. Meenakshi M" },
+        { course: "Operating Systems", slot: "F", time: "03:10 – 04:00", room: "CLS619", faculty: "Dr. G. Priyadharshini" },
+        { course: "Advanced Programming Practice", slot: "D", time: "04:00 – 04:50", room: "CLS619", faculty: "Dr. Prince Chelladurai S" }
+      ]
+    };
+
+    // Function to render schedule for a specific day with smooth transitions
+    function renderSchedule(day) {
+      const scheduleContent = document.getElementById('schedule-content');
+      const scheduleTitle = document.getElementById('schedule-title');
+      
+      // Add fade-out effect
+      scheduleContent.style.opacity = '0.3';
+      scheduleContent.style.transition = 'opacity 0.2s ease';
+      
+      setTimeout(() => {
+        // Update title
+        scheduleTitle.textContent = `Day ${day} Schedule`;
+        
+        // Clear existing content
+        scheduleContent.innerHTML = '';
+        
+        // Get schedule for the day
+        const daySchedule = schedules[day] || [];
+        
+        if (daySchedule.length === 0) {
+          scheduleContent.innerHTML = '<div style="text-align: center; color: var(--gray-400); padding: 2rem;">No classes scheduled</div>';
+        } else {
+          // Render each class
+          daySchedule.forEach((classItem, index) => {
+            const classElement = document.createElement('div');
+            classElement.style.cssText = `
+              display: grid; 
+              grid-template-columns: 2fr 1fr 1fr 1.5fr; 
+              gap: 1rem; 
+              padding: 0.75rem 0; 
+              ${index < daySchedule.length - 1 ? 'border-bottom: 1px solid var(--gray-200);' : ''} 
+              font-size: var(--font-size-sm);
+              transition: background-color 0.2s ease;
+            `;
+            
+            classElement.innerHTML = `
+              <div><strong>${classItem.course}</strong></div>
+              <div><span style="background: var(--light-blue); color: var(--primary-blue); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 10px; font-weight: 600;">${classItem.slot}</span></div>
+              <div style="font-weight: 500;">${classItem.time}</div>
+              <div><strong>${classItem.room}</strong><br><small style="color: var(--gray-500);">${classItem.faculty}</small></div>
+            `;
+            
+            // Add hover effect for each row
+            classElement.addEventListener('mouseenter', function() {
+              this.style.backgroundColor = 'var(--gray-50)';
+            });
+            
+            classElement.addEventListener('mouseleave', function() {
+              this.style.backgroundColor = 'transparent';
+            });
+            
+            scheduleContent.appendChild(classElement);
+          });
+        }
+        
+        // Fade back in
+        scheduleContent.style.opacity = '1';
+      }, 100);
+    }
+
+    // Function to handle day button clicks with smooth transitions
+    function switchDay(day) {
+      // Update button states with animation
+      document.querySelectorAll('.day-button').forEach(btn => {
+        const btnDay = btn.getAttribute('data-day');
+        btn.style.transition = 'all 0.3s ease';
+        
+        if (btnDay === day.toString()) {
+          btn.classList.add('active');
+          btn.style.background = 'var(--primary-blue)';
+          btn.style.color = 'white';
+          btn.style.transform = 'translateY(-2px)';
+          btn.style.boxShadow = '0 4px 12px rgba(37, 99, 235, 0.3)';
+          btn.querySelector('small').style.opacity = '0.9';
+        } else {
+          btn.classList.remove('active');
+          btn.style.background = 'var(--gray-100)';
+          btn.style.color = 'var(--gray-700)';
+          btn.style.transform = 'translateY(0)';
+          btn.style.boxShadow = 'none';
+          btn.querySelector('small').style.opacity = '0.6';
+        }
+      });
+      
+      // Render schedule for selected day
+      renderSchedule(day);
+    }
+
+    // Initialize dashboard when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add click event listeners to day buttons
+      document.querySelectorAll('.day-button').forEach(button => {
+        button.addEventListener('click', function() {
+          const day = parseInt(this.getAttribute('data-day'));
+          
+          // Add click animation
+          this.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            switchDay(day);
+          }, 100);
+        });
+        
+        // Enhanced hover effects
+        button.addEventListener('mouseenter', function() {
+          if (!this.classList.contains('active')) {
+            this.style.background = 'var(--gray-200)';
+            this.style.transform = 'translateY(-1px)';
+            this.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.1)';
+          }
+        });
+        
+        button.addEventListener('mouseleave', function() {
+          if (!this.classList.contains('active')) {
+            this.style.background = 'var(--gray-100)';
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = 'none';
+          }
+        });
+      });
+      
+      // Load Day 1 schedule by default
+      switchDay(1);
+    });
+  </script>
+>>>>>>> Stashed changes
 </body>
 </html>
 

@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Scheduler – Rooms</title>
+<<<<<<< Updated upstream
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/rooms.css">
+=======
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/modern-exact-design.css">
+  <link rel="stylesheet" href="css/global-theme.css">
+>>>>>>> Stashed changes
 </head>
 
 <body>
@@ -16,92 +22,924 @@
         <svg class="icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"/>
         </svg>
-        <h1>Smart Scheduler</h1>
+        <h1>Smart Timetable</h1>
       </div>
 
       <nav class="nav">
         <a href="dashboard.html">Dashboard</a>
-        <a href="rooms.html" class="active">Rooms</a>
-        <a href="bookings.html">Bookings</a>
-        <a href="users.html">Users</a>
-        <a href="courses.html">Courses</a>
         <a href="timetable.html">Timetable</a>
-        <a href="profile-settings.html">Profile</a>
+        <a href="rooms.html" class="active">Rooms</a>
+        <a href="users.html">Teachers</a>
+        <a href="courses.html">Batches</a>
       </nav>
 
       <div class="actions">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Switch theme">
+          <span id="themeIcon">🌙</span>
+        </button>
         <button class="bell" id="notifications">
           <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
             <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06Z"/>
           </svg>
         </button>
-        <div class="avatar" id="profileMenu"></div>
+        <div class="avatar" id="profileMenu">AD</div>
       </div>
     </div>
   </header>
 
   <main class="main">
-    <section class="intro">
-      <h2>Rooms</h2>
-      <p>View and manage all classroom, lab, and seminar rooms available for scheduling.</p>
-    </section>
+    <div class="container">
+      <section class="intro">
+        <h2>Rooms</h2>
+        <p>View and manage all classroom, lab, and seminar rooms available for scheduling.</p>
+      </section>
 
-    <section class="card">
-      <div class="card-header">
-        <div class="header-left">
-          <h3>Room Directory</h3>
-          <div class="filters">
-            <select id="buildingFilter" class="filter-select">
-              <option value="">All Buildings</option>
-              <option value="university">University Building</option>
-              <option value="tp1">TP-1</option>
-              <option value="tp2">TP-2</option>
-            </select>
-            <select id="typeFilter" class="filter-select">
-              <option value="">All Types</option>
-              <option value="lecture">Lecture Hall</option>
-              <option value="lab">Computer Lab</option>
-              <option value="seminar">Seminar Hall</option>
-            </select>
+
+
+      <section class="card">
+        <div class="card-header">
+          <div class="header-left">
+            <h3>Room Directory</h3>
+            <div class="filters">
+              <select id="buildingFilter" class="filter-select">
+                <option value="">All Buildings</option>
+                <option value="university">University Building</option>
+                <option value="tp1">TP-1</option>
+                <option value="tp2">TP-2</option>
+              </select>
+              <select id="typeFilter" class="filter-select">
+                <option value="">All Types</option>
+                <option value="lecture">Lecture Hall</option>
+                <option value="lab">Computer Lab</option>
+                <option value="seminar">Seminar Hall</option>
+              </select>
+            </div>
           </div>
+          <button class="add-btn" id="addRoom" onclick="openAddRoomModal()">
+            <svg class="btn-icon" viewBox="0 0 24 24">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+            </svg>
+            Add Room
+          </button>
         </div>
-        <button class="add-btn" id="addRoom">
-          <svg class="btn-icon" viewBox="0 0 24 24">
-            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-          </svg>
-          Add Room
-        </button>
-      </div>
 
-      <div class="table-container">
-        <table class="rooms-table">
-          <thead>
-            <tr>
-              <th>Room ID</th>
-              <th>Building</th>
-              <th>Type</th>
-              <th>Capacity</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="roomsTableBody">
-            <!-- Table content will be dynamically populated -->
-          </tbody>
-        </table>
-      </div>
+        <div class="table-container">
+          <table class="rooms-table">
+            <thead>
+              <tr>
+                <th>Room ID</th>
+                <th>Building</th>
+                <th>Type</th>
+                <th>Capacity</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="roomsTableBody">
+              <!-- Table content will be dynamically populated -->
+            </tbody>
+          </table>
+        </div>
 
-      <div class="pagination">
-        <button class="btn-page" id="prevPage" disabled>Previous</button>
-        <span id="pageInfo">Page 1 of 1</span>
-        <button class="btn-page" id="nextPage" disabled>Next</button>
-      </div>
-    </section>
+        <div class="pagination">
+          <button class="btn-page" id="prevPage" disabled>Previous</button>
+          <span id="pageInfo">Page 1 of 1</span>
+          <button class="btn-page" id="nextPage" disabled>Next</button>
+        </div>
+      </section>
+    </div>
   </main>
 
+<<<<<<< Updated upstream
   <script src="/js/app.js"></script>
   <script src="/js/rooms.js"></script>
+=======
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Smart Timetable</p>
+    </div>
+  </footer>
+
+  <!-- Add Room Modal -->
+  <div id="addRoomModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div class="modal-content" style="background: var(--white); border-radius: var(--border-radius-lg); box-shadow: var(--shadow-lg); width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto;">
+      <div class="modal-header" style="padding: 1.5rem 1.5rem 0 1.5rem; border-bottom: 1px solid var(--gray-200); margin-bottom: 1.5rem;">
+        <h3 style="margin: 0; font-size: var(--font-size-lg); font-weight: 600; color: var(--gray-900);">Add New Room</h3>
+        <button onclick="closeAddRoomModal()" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--gray-400); padding: 0.5rem;">&times;</button>
+      </div>
+      
+      <div class="modal-body" style="padding: 0 1.5rem 1.5rem;">
+        <form id="addRoomForm" style="display: grid; gap: 1rem;">
+          <div>
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--gray-700); font-size: var(--font-size-sm);">Room ID *</label>
+            <input type="text" id="roomId" placeholder="e.g., CLS620, UB714C" required style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--gray-300); border-radius: var(--border-radius); font-size: var(--font-size-sm); transition: border-color 0.2s;">
+          </div>
+          
+          <div>
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--gray-700); font-size: var(--font-size-sm);">Building *</label>
+            <select id="building" required style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--gray-300); border-radius: var(--border-radius); font-size: var(--font-size-sm); background: var(--white);">
+              <option value="">Select Building</option>
+              <option value="University Building">University Building</option>
+              <option value="TP-1">TP-1</option>
+              <option value="TP-2">TP-2</option>
+              <option value="Main Block">Main Block</option>
+              <option value="Science Block">Science Block</option>
+            </select>
+          </div>
+          
+          <div>
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--gray-700); font-size: var(--font-size-sm);">Type *</label>
+            <select id="roomType" required style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--gray-300); border-radius: var(--border-radius); font-size: var(--font-size-sm); background: var(--white);">
+              <option value="">Select Type</option>
+              <option value="Classroom">Classroom</option>
+              <option value="Lab">Lab</option>
+              <option value="Seminar Hall">Seminar Hall</option>
+              <option value="Auditorium">Auditorium</option>
+              <option value="Conference Room">Conference Room</option>
+            </select>
+          </div>
+          
+          <div>
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--gray-700); font-size: var(--font-size-sm);">Capacity *</label>
+            <input type="number" id="capacity" min="1" max="500" placeholder="60" required style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--gray-300); border-radius: var(--border-radius); font-size: var(--font-size-sm);">
+          </div>
+          
+          <div>
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--gray-700); font-size: var(--font-size-sm);">Status *</label>
+            <select id="status" required style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--gray-300); border-radius: var(--border-radius); font-size: var(--font-size-sm); background: var(--white);">
+              <option value="">Select Status</option>
+              <option value="Available">Available</option>
+              <option value="Occupied">Occupied</option>
+              <option value="Maintenance">Maintenance</option>
+              <option value="Reserved">Reserved</option>
+            </select>
+          </div>
+          
+          <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--gray-200);">
+            <button type="button" onclick="closeAddRoomModal()" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary">
+              <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+              </svg>
+              Add Room
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/theme.js"></script>
+  <script src="js/simple-app.js"></script>
+  
+  <!-- Additional Modal Styles -->
+  <style>
+    /* Card and layout styles */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 2rem;
+    }
+
+    .card-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .header-left h3 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--gray-900);
+    }
+
+    .filters {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .filter-select {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--border-radius);
+      background: var(--white);
+      font-size: 0.875rem;
+      color: var(--gray-900);
+      cursor: pointer;
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .add-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--primary-blue);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .add-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .btn-icon {
+      width: 1rem;
+      height: 1rem;
+      fill: currentColor;
+    }
+
+    .table-container {
+      padding: 1.5rem;
+      overflow-x: auto;
+    }
+
+    .rooms-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    .rooms-table th {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      color: var(--gray-500);
+      border-bottom: 2px solid var(--gray-200);
+      background: var(--gray-50);
+    }
+
+    .rooms-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--gray-200);
+      color: var(--gray-900);
+    }
+
+    .rooms-table tr:hover {
+      background: var(--gray-50);
+    }
+
+    .pagination {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn-page {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--gray-200);
+      background: var(--white);
+      color: var(--gray-900);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+
+    .btn-page:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-page:not(:disabled):hover {
+      background: var(--gray-50);
+    }
+
+    #pageInfo {
+      font-size: 0.875rem;
+      color: var(--gray-500);
+    }
+
+    /* Modal styles */
+    #addRoomModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    #addRoomModal .modal-content {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-lg);
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: modalSlideIn 0.3s ease-out;
+    }
+    
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .modal-body {
+      padding: 1.5rem;
+    }
+    
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--gray-400);
+      cursor: pointer;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+    
+    .close-btn:hover {
+      background: var(--gray-100);
+      color: var(--gray-600);
+    }
+    
+    /* Ensure buttons have proper styling */
+    .btn {
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    /* Action buttons styling */
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.375rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      border: 1px solid;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      line-height: 1;
+    }
+    
+    .edit-btn {
+      background: #f8fafc;
+      border-color: #e2e8f0;
+      color: #475569;
+    }
+    
+    .edit-btn:hover {
+      background: #e2e8f0;
+      border-color: #cbd5e1;
+      color: #334155;
+      transform: translateY(-1px);
+    }
+    
+    .delete-btn {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #dc2626;
+    }
+    
+    .delete-btn:hover {
+      background: #fee2e2;
+      border-color: #fca5a5;
+      color: #b91c1c;
+      transform: translateY(-1px);
+    }
+    
+    .action-btn:active {
+      transform: translateY(0);
+    }
+  </style>
+  
+  <script>
+    // Room data storage with localStorage persistence
+    let rooms = [];
+    
+    // Default rooms data
+    const defaultRooms = [
+      { id: 'CLS619', building: 'University Building', type: 'Classroom', capacity: 60, status: 'Available' },
+      { id: 'UB713B', building: 'University Building', type: 'Lab', capacity: 40, status: 'Occupied' },
+      { id: 'UB711B', building: 'University Building', type: 'Lab', capacity: 35, status: 'Available' }
+    ];
+    
+    // Load rooms from localStorage or use defaults
+    function loadRooms() {
+      try {
+        const storedRooms = localStorage.getItem('smart-scheduler-rooms');
+        if (storedRooms) {
+          rooms = JSON.parse(storedRooms);
+        } else {
+          rooms = [...defaultRooms];
+          saveRooms();
+        }
+      } catch (error) {
+        console.error('Error loading rooms from localStorage:', error);
+        rooms = [...defaultRooms];
+      }
+    }
+    
+    // Save rooms to localStorage
+    function saveRooms() {
+      try {
+        localStorage.setItem('smart-scheduler-rooms', JSON.stringify(rooms));
+      } catch (error) {
+        console.error('Error saving rooms to localStorage:', error);
+      }
+    }
+
+    // Open modal
+    function openAddRoomModal() {
+      const modal = document.getElementById('addRoomModal');
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+
+    // Close modal with reset
+    function closeAddRoomModal() {
+      const modal = document.getElementById('addRoomModal');
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto'; // Restore scrolling
+      
+      // Reset form
+      document.getElementById('addRoomForm').reset();
+      
+      // Reset modal to "Add" mode
+      document.querySelector('#addRoomModal .modal-header h3').textContent = 'Add New Room';
+      document.querySelector('#addRoomForm button[type="submit"]').innerHTML = `
+        <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+        Add Room
+      `;
+      
+      // Clear editing index
+      delete window.editingRoomIndex;
+      
+      // Reset input styles
+      const inputs = document.querySelectorAll('#addRoomModal input, #addRoomModal select');
+      inputs.forEach(input => {
+        input.style.borderColor = '#d1d5db';
+        input.style.boxShadow = 'none';
+      });
+    }
+
+    // Get status badge HTML with proper colors
+    function getStatusBadge(status) {
+      const statusColors = {
+        'Available': { bg: '#10b981', color: 'white' },      // Green
+        'Occupied': { bg: '#f59e0b', color: 'white' },       // Orange  
+        'Maintenance': { bg: '#ef4444', color: 'white' },    // Red
+        'Reserved': { bg: '#3b82f6', color: 'white' }        // Blue
+      };
+      const colors = statusColors[status] || { bg: '#f3f4f6', color: '#374151' };
+      return `<span style="background: ${colors.bg}; color: ${colors.color}; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; display: inline-block; line-height: 1;">${status}</span>`;
+    }
+
+    // Get type badge HTML with proper styling
+    function getTypeBadge(type) {
+      const typeColors = {
+        'Classroom': { bg: '#dbeafe', color: '#1d4ed8' },    // Light blue bg, dark blue text
+        'Lab': { bg: '#f3f4f6', color: '#374151' },          // Gray
+        'Seminar Hall': { bg: '#dcfce7', color: '#166534' }, // Light green bg, dark green text
+        'Auditorium': { bg: '#fef3c7', color: '#92400e' },   // Light yellow bg, dark yellow text
+        'Conference Room': { bg: '#e0e7ff', color: '#3730a3' } // Light indigo bg, dark indigo text
+      };
+      const colors = typeColors[type] || { bg: '#f3f4f6', color: '#374151' };
+      return `<span style="background: ${colors.bg}; color: ${colors.color}; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.75rem; font-weight: 500; display: inline-block; line-height: 1;">${type}</span>`;
+    }
+
+    // Render rooms table
+    function renderRoomsTable() {
+      // Use the specific tbody ID we just added
+      const tbody = document.getElementById('roomsTableBody');
+      
+      if (!tbody) {
+        console.error('Could not find tbody element with ID roomsTableBody');
+        return;
+      }
+
+      tbody.innerHTML = '';
+
+      if (rooms.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--gray-400); padding: 2rem;">No rooms found. Add your first room!</td></tr>';
+        return;
+      }
+
+      rooms.forEach((room, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><strong>${room.id}</strong></td>
+          <td>${room.building}</td>
+          <td>${getTypeBadge(room.type)}</td>
+          <td>${room.capacity}</td>
+          <td>${getStatusBadge(room.status)}</td>
+          <td>
+            <div style="display: flex; gap: 0.5rem;">
+              <button class="action-btn edit-btn" onclick="editRoom(${index})" title="Edit Room">
+                <svg style="width: 0.75rem; height: 0.75rem;" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                </svg>
+                Edit
+              </button>
+              <button class="action-btn delete-btn" onclick="deleteRoom(${index})" title="Delete Room">
+                <svg style="width: 0.75rem; height: 0.75rem;" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z"/>
+                </svg>
+                Delete
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Add new room with enhanced validation and persistence
+    function addRoom(event) {
+      event.preventDefault();
+      
+      const roomId = document.getElementById('roomId').value.trim().toUpperCase();
+      const building = document.getElementById('building').value;
+      const roomType = document.getElementById('roomType').value;
+      const capacity = parseInt(document.getElementById('capacity').value);
+      const status = document.getElementById('status').value;
+
+      // Enhanced validation
+      if (!roomId || !building || !roomType || !capacity || !status) {
+        showErrorNotification('Please fill in all required fields.');
+        return;
+      }
+
+      // Room ID format validation
+      if (roomId.length < 3) {
+        showErrorNotification('Room ID must be at least 3 characters long.');
+        return;
+      }
+
+      // Capacity validation
+      if (capacity < 1 || capacity > 500) {
+        showErrorNotification('Capacity must be between 1 and 500.');
+        return;
+      }
+
+      // Check for duplicate room ID
+      if (rooms.some(room => room.id.toLowerCase() === roomId.toLowerCase())) {
+        showErrorNotification('Room ID already exists. Please choose a different ID.');
+        return;
+      }
+
+      // Create new room object
+      const newRoom = {
+        id: roomId,
+        building: building,
+        type: roomType,
+        capacity: capacity,
+        status: status,
+        createdAt: new Date().toISOString()
+      };
+
+      // Add room to array
+      rooms.push(newRoom);
+
+      // Save to localStorage
+      saveRooms();
+
+      // Re-render table
+      renderRoomsTable();
+      
+      // Close modal and reset form
+      closeAddRoomModal();
+      
+      // Success notification
+      showSuccessNotification(`Room ${roomId} added successfully!`);
+    }
+    
+    // Update existing room
+    function updateRoom(event) {
+      event.preventDefault();
+      
+      const roomId = document.getElementById('roomId').value.trim().toUpperCase();
+      const building = document.getElementById('building').value;
+      const roomType = document.getElementById('roomType').value;
+      const capacity = parseInt(document.getElementById('capacity').value);
+      const status = document.getElementById('status').value;
+
+      // Enhanced validation
+      if (!roomId || !building || !roomType || !capacity || !status) {
+        showErrorNotification('Please fill in all required fields.');
+        return;
+      }
+
+      // Room ID format validation
+      if (roomId.length < 3) {
+        showErrorNotification('Room ID must be at least 3 characters long.');
+        return;
+      }
+
+      // Capacity validation
+      if (capacity < 1 || capacity > 500) {
+        showErrorNotification('Capacity must be between 1 and 500.');
+        return;
+      }
+
+      // Check for duplicate room ID (excluding current room)
+      const editIndex = window.editingRoomIndex;
+      if (rooms.some((room, index) => index !== editIndex && room.id.toLowerCase() === roomId.toLowerCase())) {
+        showErrorNotification('Room ID already exists. Please choose a different ID.');
+        return;
+      }
+
+      // Update the room
+      const originalRoom = { ...rooms[editIndex] };
+      rooms[editIndex] = {
+        ...rooms[editIndex],
+        id: roomId,
+        building: building,
+        type: roomType,
+        capacity: capacity,
+        status: status,
+        updatedAt: new Date().toISOString()
+      };
+
+      // Save to localStorage
+      saveRooms();
+
+      // Re-render table
+      renderRoomsTable();
+      
+      // Close modal and reset form
+      closeAddRoomModal();
+      
+      // Success notification
+      showSuccessNotification(`Room ${roomId} updated successfully!`);
+    }
+
+    // Edit room (enhanced functionality)
+    function editRoom(index) {
+      const room = rooms[index];
+      
+      // Populate the form with existing data
+      document.getElementById('roomId').value = room.id;
+      document.getElementById('building').value = room.building;
+      document.getElementById('roomType').value = room.type;
+      document.getElementById('capacity').value = room.capacity;
+      document.getElementById('status').value = room.status;
+      
+      // Change modal title and button text
+      document.querySelector('#addRoomModal .modal-header h3').textContent = 'Edit Room';
+      document.querySelector('#addRoomForm button[type="submit"]').innerHTML = `
+        <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+        </svg>
+        Update Room
+      `;
+      
+      // Store the index for editing
+      window.editingRoomIndex = index;
+      
+      // Open modal
+      openAddRoomModal();
+    }
+
+    // Delete room with enhanced confirmation
+    function deleteRoom(index) {
+      const room = rooms[index];
+      const confirmMessage = `Are you sure you want to delete room "${room.id}"?\n\nBuilding: ${room.building}\nType: ${room.type}\nCapacity: ${room.capacity}\n\nThis action cannot be undone.`;
+      
+      if (confirm(confirmMessage)) {
+        const deletedRoom = rooms.splice(index, 1)[0];
+        saveRooms(); // Save to localStorage
+        renderRoomsTable();
+        showSuccessNotification(`Room ${deletedRoom.id} deleted successfully!`);
+      }
+    }
+
+    // Enhanced notification system
+    function showSuccessNotification(message) {
+      showNotification(message, 'success');
+    }
+    
+    function showErrorNotification(message) {
+      showNotification(message, 'error');
+    }
+    
+    function showNotification(message, type = 'success') {
+      const notification = document.createElement('div');
+      notification.textContent = message;
+      
+      const colors = {
+        success: { bg: '#10b981', color: 'white' },
+        error: { bg: '#ef4444', color: 'white' },
+        warning: { bg: '#f59e0b', color: 'white' },
+        info: { bg: '#3b82f6', color: 'white' }
+      };
+      
+      const color = colors[type] || colors.success;
+      
+      notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; z-index: 2000;
+        background: ${color.bg}; color: ${color.color}; 
+        padding: 1rem 1.5rem; margin-bottom: 0.5rem;
+        border-radius: 8px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        font-size: 0.875rem; font-weight: 500;
+        animation: slideInRight 0.3s ease-out;
+        max-width: 400px; word-wrap: break-word;
+      `;
+      
+      // Add slide-in animation
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes slideInRight {
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+      `;
+      if (!document.querySelector('style[data-notification-styles]')) {
+        style.setAttribute('data-notification-styles', 'true');
+        document.head.appendChild(style);
+      }
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.animation = 'slideInRight 0.3s ease-out reverse';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.remove();
+          }
+        }, 300);
+      }, 3000);
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      // Load rooms from localStorage or set defaults
+      loadRooms();
+      
+      // Find and configure the Add Room button
+      const addButton = document.getElementById('addRoom');
+      if (addButton) {
+        // Button already has onclick in HTML, but ensure it works
+      }
+      
+      // Add form submit handler
+      const form = document.getElementById('addRoomForm');
+      if (form) {
+        form.addEventListener('submit', function(event) {
+          event.preventDefault();
+          
+          // Check if we're editing or adding
+          if (typeof window.editingRoomIndex !== 'undefined') {
+            updateRoom(event);
+          } else {
+            addRoom(event);
+          }
+        });
+      }
+      
+      // Wait a bit to ensure table is ready, then render
+      setTimeout(function() {
+        renderRoomsTable();
+      }, 100);
+      
+      // Also try to render immediately
+      renderRoomsTable();
+      
+      // Close modal when clicking outside
+      document.getElementById('addRoomModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeAddRoomModal();
+        }
+      });
+
+      // Input focus styles and real-time validation
+      const inputs = document.querySelectorAll('#addRoomModal input, #addRoomModal select');
+      inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+          this.style.borderColor = '#3b82f6';
+          this.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+        });
+        
+        input.addEventListener('blur', function() {
+          this.style.borderColor = '#d1d5db';
+          this.style.boxShadow = 'none';
+          
+          // Real-time validation feedback
+          if (this.hasAttribute('required') && !this.value.trim()) {
+            this.style.borderColor = '#ef4444';
+          }
+        });
+        
+        // Real-time validation for room ID
+        if (input.id === 'roomId') {
+          input.addEventListener('input', function() {
+            const value = this.value.trim().toUpperCase();
+            this.value = value;
+            
+            if (value.length > 0 && value.length < 3) {
+              this.style.borderColor = '#f59e0b';
+            } else if (value.length >= 3) {
+              // Check for duplicates
+              const editIndex = window.editingRoomIndex;
+              const isDuplicate = rooms.some((room, index) => 
+                index !== editIndex && room.id.toLowerCase() === value.toLowerCase()
+              );
+              
+              if (isDuplicate) {
+                this.style.borderColor = '#ef4444';
+              } else {
+                this.style.borderColor = '#10b981';
+              }
+            }
+          });
+        }
+        
+        // Real-time validation for capacity
+        if (input.id === 'capacity') {
+          input.addEventListener('input', function() {
+            const value = parseInt(this.value);
+            if (value < 1 || value > 500) {
+              this.style.borderColor = '#ef4444';
+            } else {
+              this.style.borderColor = '#10b981';
+            }
+          });
+        }
+      });
+      
+      // Keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        // ESC to close modal
+        if (e.key === 'Escape') {
+          const modal = document.getElementById('addRoomModal');
+          if (modal.style.display === 'flex') {
+            closeAddRoomModal();
+          }
+        }
+        
+        // Ctrl+N to add new room (when not in form)
+        if (e.ctrlKey && e.key === 'n' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'SELECT') {
+          e.preventDefault();
+          openAddRoomModal();
+        }
+      });
+    });
+  </script>
+>>>>>>> Stashed changes
 </body>
 </html>
-
-

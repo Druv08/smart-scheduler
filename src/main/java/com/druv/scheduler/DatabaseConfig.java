@@ -49,8 +49,18 @@ public class DatabaseConfig {
     }
 
     @Bean
+<<<<<<< Updated upstream
     public SchedulerService schedulerService(UserDAO userDAO, CourseDAO courseDAO,
                                            RoomDAO roomDAO, TimetableDAO timetableDAO) {
+=======
+    AuthService authService(UserDAO userDAO, Security security) {
+        return new AuthService(userDAO, security);
+    }
+
+    @Bean
+    SchedulerService schedulerService(UserDAO userDAO, CourseDAO courseDAO,
+        RoomDAO roomDAO, TimetableDAO timetableDAO) {
+>>>>>>> Stashed changes
         return new SchedulerService(userDAO, courseDAO, roomDAO, timetableDAO);
     }
 

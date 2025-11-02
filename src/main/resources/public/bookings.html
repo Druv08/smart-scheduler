@@ -3,10 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< Updated upstream
   <title>Smart Scheduler – Bookings</title>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/common.css">
   <link rel="stylesheet" href="/css/bookings.css">
+=======
+  <title>Resource Scheduler - Booking Requests</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/modern-exact-design.css">
+  <link rel="stylesheet" href="css/global-theme.css">
+>>>>>>> Stashed changes
 </head>
 
 <body>
@@ -16,11 +23,16 @@
         <svg class="icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"/>
         </svg>
+<<<<<<< Updated upstream
         <h1>Smart Scheduler</h1>
+=======
+        <h1>Resource Scheduler</h1>
+>>>>>>> Stashed changes
       </div>
 
       <nav class="nav">
         <a href="dashboard.html">Dashboard</a>
+<<<<<<< Updated upstream
         <a href="rooms.html">Rooms</a>
         <a href="bookings.html" class="active">Bookings</a>
         <a href="users.html">Users</a>
@@ -30,17 +42,35 @@
       </nav>
 
       <div class="actions">
+=======
+        <a href="bookings.html" class="active">Bookings</a>
+        <a href="rooms.html">Resources</a>
+        <a href="timetable.html">Reports</a>
+      </nav>
+
+      <div class="actions">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Switch theme">
+          <span id="themeIcon">🌙</span>
+        </button>
+>>>>>>> Stashed changes
         <button class="bell" id="notifications">
           <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
             <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06Z"/>
           </svg>
         </button>
+<<<<<<< Updated upstream
         <div class="avatar" id="profileMenu"></div>
+=======
+        <div class="avatar" id="profileMenu">
+          <img src="https://images.unsplash.com/photo-1494790108755-2616b612b647?w=32&h=32&fit=crop&crop=face" alt="User" style="width: 100%; height: 100%; border-radius: 50%;">
+        </div>
+>>>>>>> Stashed changes
       </div>
     </div>
   </header>
 
   <main class="main">
+<<<<<<< Updated upstream
     <section class="intro">
       <h2>Bookings</h2>
       <p>Manage all your room and course bookings efficiently.</p>
@@ -101,7 +131,100 @@
 
   <script src="/js/app.js"></script>
   <script src="/js/bookings.js"></script>
+=======
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1 style="font-size: var(--font-size-3xl); font-weight: 700; margin: 0;">Booking Requests</h1>
+        <button class="btn btn-primary">
+          <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+          </svg>
+          New Request
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Existing Requests</h3>
+        </div>
+        <div class="card-body" style="padding: 0;">
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Resource</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Purpose</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Conference Room A</td>
+                  <td>2024-03-15</td>
+                  <td>10:00 AM - 12:00 PM</td>
+                  <td>Team Meeting</td>
+                  <td>
+                    <span class="badge badge-success">Confirmed</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Projector 1</td>
+                  <td>2024-03-16</td>
+                  <td>02:00 PM - 03:00 PM</td>
+                  <td>Presentation</td>
+                  <td>
+                    <span class="badge badge-warning">Pending</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Training Room B</td>
+                  <td>2024-03-17</td>
+                  <td>09:00 AM - 05:00 PM</td>
+                  <td>Workshop</td>
+                  <td>
+                    <span class="badge badge-success">Confirmed</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Laptop 2</td>
+                  <td>2024-03-18</td>
+                  <td>11:00 AM - 12:00 PM</td>
+                  <td>Client Demo</td>
+                  <td>
+                    <span class="badge badge-danger">Rejected</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Studio C</td>
+                  <td>2024-03-19</td>
+                  <td>01:00 PM - 04:00 PM</td>
+                  <td>Photo Shoot</td>
+                  <td>
+                    <span class="badge badge-success">Confirmed</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Resource Scheduler</p>
+    </div>
+  </footer>
+
+  <script src="js/theme.js"></script>
+  <script src="js/simple-app.js"></script>
+>>>>>>> Stashed changes
 </body>
 </html>
+
+
 
 
