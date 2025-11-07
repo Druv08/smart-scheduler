@@ -45,14 +45,21 @@ class TimetableManager {
 
             if (!response.ok) {
                 console.warn('Session validation failed, redirecting to login');
-                window.location.href = '/login.html';
+                window.location.replace('/login.html');
                 return null;
             }
 
-            return await response.json();
+            const data = await response.json();
+            if (!data.authenticated) {
+                console.warn('Not authenticated, redirecting to login');
+                window.location.replace('/login.html');
+                return null;
+            }
+
+            return data;
         } catch (error) {
             console.error('Session validation failed:', error);
-            window.location.href = '/login.html';
+            window.location.replace('/login.html');
             return null;
         }
     }

@@ -13,7 +13,14 @@ target/
 *.db
 
 # Logs
+logs/
 *.log
+
+# Backup folders
+Safe_Backup_*/
+
+# Temporary files
+*.bak
 
 # OS specific files
 .DS_Store

@@ -10,10 +10,16 @@ class DashboardManager {
 
     async init() {
         try {
-            // Validate session
-            this.sessionInfo = await this.validateSession();
-            if (!this.sessionInfo) {
-                return; // Redirect will happen in validateSession
+            // Skip session validation if simple-app.js already did it
+            if (window.authCheckComplete) {
+                console.log('[DashboardManager] Auth already validated by simple-app.js');
+                this.sessionInfo = { authenticated: true };
+            } else {
+                // Validate session (fallback if simple-app.js didn't run)
+                this.sessionInfo = await this.validateSession();
+                if (!this.sessionInfo) {
+                    return; // Redirect will happen in validateSession
+                }
             }
 
             // Load analytics data
@@ -43,14 +49,22 @@ class DashboardManager {
             });
 
             if (!response.ok) {
-                window.location.href = '/login.html';
+                // Session invalid - redirect to login
+                window.location.replace('/login.html');
                 return null;
             }
 
-            return await response.json();
+            const data = await response.json();
+            if (!data.authenticated) {
+                // Not authenticated - redirect to login
+                window.location.replace('/login.html');
+                return null;
+            }
+
+            return data;
         } catch (error) {
             console.error('Session validation failed:', error);
-            window.location.href = '/login.html';
+            window.location.replace('/login.html');
             return null;
         }
     }

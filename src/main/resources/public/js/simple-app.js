@@ -1,23 +1,93 @@
 // Simple App Controller - Basic functionality without complex routing
-document.addEventListener('DOMContentLoaded', function() {
-    // Basic authentication check
-    const token = localStorage.getItem('authToken');
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
-    
+document.addEventListener('DOMContentLoaded', async function() {
     // Initialize based on current page
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    
+    console.log('[SimpleApp] Current page:', currentPage);
+    
+    // Check authentication for protected pages
+    const protectedPages = ['dashboard.html', 'users.html', 'rooms.html', 'courses.html', 'timetable.html', 'bookings.html', 'profile-settings.html'];
+    
+    if (protectedPages.includes(currentPage)) {
+        console.log('[SimpleApp] Protected page detected, checking auth...');
+        
+        // Add flag to prevent double-checking if another script already validated
+        if (window.authCheckInProgress) {
+            console.log('[SimpleApp] Auth check already in progress, skipping...');
+            return;
+        }
+        window.authCheckInProgress = true;
+        
+        const isAuth = await checkAuthentication();
+        console.log('[SimpleApp] Auth check result:', isAuth);
+        
+        if (!isAuth) {
+            console.warn('[SimpleApp] Not authenticated, redirecting to login');
+            // Use replace to prevent back button loops
+            window.location.replace('/login.html');
+            return;
+        }
+        console.log('[SimpleApp] Authentication successful');
+        window.authCheckComplete = true;
+    }
     
     // Initialize page-specific functionality
     initializePage(currentPage);
     
-    // Set up profile menu if user is logged in
-    if (user && token) {
-        setupProfileMenu(user);
-    }
+    // Set up profile menu
+    setupProfileMenuFromSession();
     
     // Set up navigation highlighting
     highlightCurrentNav();
 });
+
+// Check authentication via session
+async function checkAuthentication() {
+    try {
+        console.log('[SimpleApp] Fetching /api/session...');
+        const response = await fetch('/api/session', {
+            method: 'GET',
+            credentials: 'include'
+        });
+        
+        console.log('[SimpleApp] Session API response status:', response.status);
+        
+        if (response.ok) {
+            const data = await response.json();
+            console.log('[SimpleApp] Session data:', data);
+            return data.authenticated === true;
+        }
+        
+        console.warn('[SimpleApp] Session API returned non-OK status:', response.status);
+        return false;
+    } catch (error) {
+        console.error('[SimpleApp] Auth check failed with error:', error);
+        return false;
+    }
+}
+
+// Setup profile menu from session
+async function setupProfileMenuFromSession() {
+    try {
+        const response = await fetch('/api/session', {
+            method: 'GET',
+            credentials: 'include'
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            if (data.authenticated) {
+                const user = {
+                    userId: data.userId,
+                    role: data.role
+                };
+                setupProfileMenu(user);
+            }
+        }
+    } catch (error) {
+        console.log('Not authenticated');
+    }
+}
 
 function initializePage(page) {
     switch(page) {
@@ -144,15 +214,10 @@ function setupSignupForm() {
 }
 
 async function loadDashboardData() {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-        window.location.href = 'login.html';
-        return;
-    }
-    
     try {
         const response = await fetch('/api/dashboard/stats', {
-            headers: { 'Authorization': `Bearer ${token}` }
+            method: 'GET',
+            credentials: 'include'
         });
         const data = await response.json();
         
@@ -181,15 +246,10 @@ function updateDashboardStats(stats) {
 }
 
 async function loadUsersData() {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-        window.location.href = 'login.html';
-        return;
-    }
-    
     try {
         const response = await fetch('/api/users', {
-            headers: { 'Authorization': `Bearer ${token}` }
+            method: 'GET',
+            credentials: 'include'
         });
         const data = await response.json();
         
@@ -335,15 +395,10 @@ function renderTimetable(timetable) {
 }
 
 async function loadBookingsData() {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-        window.location.href = 'login.html';
-        return;
-    }
-    
     try {
         const response = await fetch('/api/bookings', {
-            headers: { 'Authorization': `Bearer ${token}` }
+            method: 'GET',
+            credentials: 'include'
         });
         const data = await response.json();
         
@@ -395,10 +450,22 @@ function toggleProfileDropdown() {
     }
 }
 
-function logout() {
+async function logout() {
+    try {
+        await fetch('/api/logout', {
+            method: 'POST',
+            credentials: 'include'
+        });
+    } catch (error) {
+        console.error('Logout error:', error);
+    }
+    
+    // Clear any localStorage remnants
     localStorage.removeItem('authToken');
     localStorage.removeItem('user');
-    window.location.href = 'index.html';
+    
+    // Redirect to login page
+    window.location.replace('/login.html');
 }
 
 function highlightCurrentNav() {

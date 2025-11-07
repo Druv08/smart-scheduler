@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Flow Debugger</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #1a1a1a; color: #0f0; }
+        .log { background: #000; padding: 10px; margin: 5px 0; border-left: 3px solid #0f0; }
+        .error { border-color: #f00; color: #f00; }
+        .success { border-color: #0f0; color: #0f0; }
+        .info { border-color: #ff0; color: #ff0; }
+        button { background: #0f0; color: #000; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; font-family: monospace; }
+        button:hover { background: #0ff; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Login Flow Debugger</h1>
+    
+    <div>
+        <button onclick="testLogin()">1. Test Login</button>
+        <button onclick="testSession()">2. Test Session</button>
+        <button onclick="testDashboard()">3. Go to Dashboard</button>
+        <button onclick="clearLogs()">Clear Logs</button>
+    </div>
+    
+    <div id="logs"></div>
+    
+    <script>
+        function log(message, type = 'info') {
+            const logs = document.getElementById('logs');
+            const div = document.createElement('div');
+            div.className = `log ${type}`;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logs.insertBefore(div, logs.firstChild);
+        }
+        
+        function clearLogs() {
+            document.getElementById('logs').innerHTML = '';
+        }
+        
+        async function testLogin() {
+            log('Starting login test...', 'info');
+            
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        username: 'admin',
+                        password: 'admin123'
+                    })
+                });
+                
+                log(`Login response status: ${response.status}`, response.ok ? 'success' : 'error');
+                
+                const data = await response.json();
+                log(`Login response: ${JSON.stringify(data)}`, data.success ? 'success' : 'error');
+                
+                // Check cookies
+                log(`Document.cookie: ${document.cookie || '(empty)'}`, 'info');
+                
+                if (data.success) {
+                    log('✓ LOGIN SUCCESSFUL - Session should be created', 'success');
+                } else {
+                    log('✗ LOGIN FAILED - ' + (data.error || 'Unknown error'), 'error');
+                }
+                
+            } catch (error) {
+                log(`✗ Login error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testSession() {
+            log('Checking session...', 'info');
+            
+            try {
+                const response = await fetch('/api/session', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                log(`Session response status: ${response.status}`, response.ok ? 'success' : 'error');
+                
+                const data = await response.json();
+                log(`Session data: ${JSON.stringify(data)}`, data.authenticated ? 'success' : 'error');
+                
+                // Check cookies again
+                log(`Document.cookie: ${document.cookie || '(empty)'}`, 'info');
+                
+                if (data.authenticated) {
+                    log('✓ SESSION VALID - User is authenticated', 'success');
+                } else {
+                    log('✗ SESSION INVALID - User is NOT authenticated', 'error');
+                }
+                
+            } catch (error) {
+                log(`✗ Session check error: ${error.message}`, 'error');
+            }
+        }
+        
+        function testDashboard() {
+            log('Navigating to dashboard...', 'info');
+            window.location.href = '/dashboard.html';
+        }
+        
+        // Log initial state
+        log('=== Login Flow Debugger Ready ===', 'success');
+        log(`Current URL: ${window.location.href}`, 'info');
+        log(`Cookies: ${document.cookie || '(empty)'}`, 'info');
+    </script>
+</body>
+</html>

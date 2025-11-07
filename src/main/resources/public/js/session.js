@@ -46,7 +46,7 @@ class SessionManager {
             !window.location.pathname.includes('index.html') &&
             window.location.pathname !== '/') {
             console.log('Redirecting to login due to invalid session');
-            window.location.href = '/login.html';
+            window.location.replace('/login.html');
         }
     }
 

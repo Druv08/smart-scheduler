@@ -3,21 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< Updated upstream
-  <title>Smart Scheduler – Courses</title>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/common.css">
-  <link rel="stylesheet" href="css/courses.css">
-=======
   <title>Smart Timetable - Courses Management</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/modern-exact-design.css">
-  <link rel="stylesheet" href="css/global-theme.css">
+  <link rel="stylesheet" href="/css/global-theme.css">
+  <link rel="stylesheet" href="/css/modern-exact-design.css">
+  <link rel="stylesheet" href="/css/courses.css">
+  <link rel="stylesheet" href="/css/overrides.dev.css?v=20251104">
   <!-- Cache busting for fresh load -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
->>>>>>> Stashed changes
 </head>
 
 <body>
@@ -32,19 +27,10 @@
 
       <nav class="nav">
         <a href="dashboard.html">Dashboard</a>
-<<<<<<< Updated upstream
-        <a href="rooms.html">Rooms</a>
-        <a href="bookings.html">Bookings</a>
-        <a href="users.html">Users</a>
-        <a href="courses.html" class="active">Courses</a>
-        <a href="timetable.html">Timetable</a>
-        <a href="profile-settings.html">Profile</a>
-=======
         <a href="timetable.html">Timetable</a>
         <a href="rooms.html">Rooms</a>
         <a href="users.html">Teachers</a>
         <a href="courses.html" class="active">Courses</a>
->>>>>>> Stashed changes
       </nav>
 
       <div class="actions">
@@ -62,23 +48,6 @@
   </header>
 
   <main class="main">
-<<<<<<< Updated upstream
-    <section class="intro">
-      <h2>Courses</h2>
-      <p>View, edit, and manage all courses offered by your department.</p>
-    </section>
-
-    <section class="card">
-      <div class="card-header">
-        <div class="header-left">
-          <h3>Course List</h3>
-          <div class="search-box">
-            <svg class="search-icon" viewBox="0 0 24 24">
-              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-            </svg>
-            <input type="search" placeholder="Search courses..." id="courseSearch">
-          </div>
-=======
     <div class="container">
       <!-- Page Header Content Box -->
       <div class="content-box">
@@ -124,6 +93,7 @@
                 <th>Hours/Week</th>
                 <th>Teacher</th>
                 <th>Batch</th>
+                <th>Enrollment</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -156,7 +126,6 @@
           <label class="form-label">Course Code *</label>
           <input type="text" id="courseCode" class="form-input" placeholder="e.g., 21CSC203J" required>
           <small class="form-help">Enter a unique course code</small>
->>>>>>> Stashed changes
         </div>
         
         <div class="form-group">
@@ -811,10 +780,6 @@
       });
     }
 
-<<<<<<< Updated upstream
-  <script src="/js/app.js"></script>
-  <script src="/js/courses.js"></script>
-=======
     // Handle form submission
     function handleFormSubmit(e) {
       e.preventDefault();
@@ -945,6 +910,5 @@
 
   <script src="js/theme.js"></script>
   <script src="js/simple-app.js"></script>
->>>>>>> Stashed changes
 </body>
 </html>

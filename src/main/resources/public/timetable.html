@@ -3,17 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< Updated upstream
   <title>Smart Scheduler – Timetable</title>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/common.css">
-  <link rel="stylesheet" href="css/timetable.css">
-=======
-  <title>Smart Timetable</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/modern-exact-design.css">
-  <link rel="stylesheet" href="css/global-theme.css">
->>>>>>> Stashed changes
+  <link rel="stylesheet" href="/css/global-theme.css">
+  <link rel="stylesheet" href="/css/modern-exact-design.css">
+  <link rel="stylesheet" href="/css/timetable.css">
+  <link rel="stylesheet" href="/css/overrides.dev.css?v=20251104">
 </head>
 
 <body>
@@ -28,25 +23,16 @@
 
       <nav class="nav">
         <a href="dashboard.html">Dashboard</a>
-        <a href="rooms.html">Rooms</a>
-        <a href="bookings.html">Bookings</a>
-        <a href="users.html">Users</a>
-        <a href="courses.html">Courses</a>
         <a href="timetable.html" class="active">Timetable</a>
-        <a href="profile-settings.html">Profile</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="users.html">Teachers</a>
+        <a href="courses.html">Courses</a>
       </nav>
 
       <div class="actions">
-<<<<<<< Updated upstream
-        <div class="view-controls">
-          <button class="view-btn active" data-view="week">Week</button>
-          <button class="view-btn" data-view="month">Month</button>
-        </div>
-=======
         <button id="themeToggle" class="theme-toggle-btn" aria-label="Switch theme">
           <span id="themeIcon">🌙</span>
         </button>
->>>>>>> Stashed changes
         <button class="bell" id="notifications">
           <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
             <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06Z"/>
@@ -89,18 +75,6 @@
         <table class="timetable" id="weeklyTimetable">
           <thead>
             <tr>
-<<<<<<< Updated upstream
-              <th class="time-header">Time</th>
-              <th>Monday</th>
-              <th>Tuesday</th>
-              <th>Wednesday</th>
-              <th>Thursday</th>
-              <th>Friday</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Time slots will be populated dynamically -->
-=======
               <th style="width: 120px;">TIME</th>
               <th>DAY ORDER-1</th>
               <th>DAY ORDER-2</th>
@@ -345,7 +319,6 @@
               <td style="color: var(--gray-400); text-align: center;">Break</td>
               <td style="color: var(--gray-400); text-align: center;">Break</td>
             </tr>
->>>>>>> Stashed changes
           </tbody>
         </table>
       </div>
@@ -367,10 +340,6 @@
     </section>
   </main>
 
-<<<<<<< Updated upstream
-  <script src="/js/app.js"></script>
-  <script src="/js/timetable.js"></script>
-=======
   <footer class="footer">
     <div class="container">
       <p>&copy; 2025 Smart Timetable</p>
@@ -379,7 +348,6 @@
 
   <script src="js/theme.js"></script>
   <script src="js/simple-app.js"></script>
->>>>>>> Stashed changes
 </body>
 </html>
 

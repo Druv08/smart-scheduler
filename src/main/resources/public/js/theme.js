@@ -137,8 +137,8 @@ class ThemeManager {
     if (!this.themeIcon) return;
     
     const icons = {
-      light: '­ƒîÖ', // Show moon when in light mode (to switch to dark)
-      dark: 'ÔÿÇ´©Å'   // Show sun when in dark mode (to switch to light)
+      light: '🌙', // Show moon when in light mode (to switch to dark)
+      dark: '🌞'   // Show sun when in dark mode (to switch to light)
     };
     
     this.themeIcon.textContent = icons[this.currentTheme];

@@ -16,12 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RestController
 public class WebServer {
 
     private final CourseDAO courseDAO;
@@ -281,7 +279,9 @@ public class WebServer {
     }
 
     // ==================== COURSES API ====================
+    // NOTE: Courses API endpoints moved to ApiController to avoid conflicts
     
+    /*
     @GetMapping("/api/courses")
     @ResponseBody
     public ResponseEntity<List<Course>> getAllCourses() {
@@ -292,10 +292,11 @@ public class WebServer {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    */
 
-    @PostMapping("/api/courses")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> createCourse(@RequestBody Map<String, Object> payload) {
+    // @PostMapping("/api/courses")  // Disabled - conflicts with ApiController
+    // @ResponseBody
+    public ResponseEntity<Map<String, Object>> createCourseDisabled(@RequestBody Map<String, Object> payload) {
         try {
             String courseCode = (String) payload.get("courseCode");
             String courseName = (String) payload.get("courseName");
@@ -325,43 +326,13 @@ public class WebServer {
         }
     }
 
-    @PutMapping("/api/courses/{id}")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> updateCourse(
-            @PathVariable int id,
-            @RequestBody Map<String, Object> payload) {
-        try {
-            // For now, return not implemented
-            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-                .body(Map.of("success", false, "message", "Update not implemented yet"));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("success", false, "message", "Error updating course"));
-        }
-    }
-
-    @DeleteMapping("/api/courses/{id}")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> deleteCourse(@PathVariable int id) {
-        try {
-            boolean success = courseDAO.deleteCourse(id);
-            if (success) {
-                return ResponseEntity.ok(Map.of("success", true, "message", "Course deleted successfully"));
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("success", false, "message", "Course not found"));
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("success", false, "message", "Error deleting course"));
-        }
-    }
+    // Note: Course update and delete endpoints moved to ApiController.java for consistency
 
     // ==================== ROOMS API ====================
     
-    @GetMapping("/api/rooms")
-    @ResponseBody
-    public ResponseEntity<List<Room>> getAllRooms() {
+    // @GetMapping("/api/rooms")  // Disabled - conflicts with ApiController
+    // @ResponseBody
+    public ResponseEntity<List<Room>> getAllRoomsDisabled() {
         try {
             List<Room> rooms = roomDAO.findAll();
             return ResponseEntity.ok(rooms);
@@ -370,9 +341,9 @@ public class WebServer {
         }
     }
 
-    @PostMapping("/api/rooms")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> createRoom(@RequestBody Map<String, Object> payload) {
+    // @PostMapping("/api/rooms")  // Disabled - conflicts with ApiController
+    // @ResponseBody
+    public ResponseEntity<Map<String, Object>> createRoomDisabled(@RequestBody Map<String, Object> payload) {
         try {
             String roomName = (String) payload.get("roomName");
             Integer capacity = (Integer) payload.get("capacity");
@@ -431,9 +402,9 @@ public class WebServer {
 
     // ==================== USERS API ====================
     
-    @GetMapping("/api/users")
-    @ResponseBody
-    public ResponseEntity<List<User>> getAllUsers() {
+    // @GetMapping("/api/users")  // Disabled - conflicts with ApiController
+    // @ResponseBody
+    public ResponseEntity<List<User>> getAllUsersDisabled() {
         try {
             List<User> users = userDAO.getAllUsers();
             return ResponseEntity.ok(users);
@@ -507,9 +478,9 @@ public class WebServer {
 
     // ==================== TIMETABLE/BOOKINGS API ====================
     
-    @GetMapping("/api/timetable")
-    @ResponseBody
-    public ResponseEntity<List<TimetableEntry>> getAllTimetableEntries() {
+    // @GetMapping("/api/timetable")  // Disabled - conflicts with ApiController
+    // @ResponseBody
+    public ResponseEntity<List<TimetableEntry>> getAllTimetableEntriesDisabled() {
         try {
             List<TimetableEntry> entries = timetableDAO.findAll();
             return ResponseEntity.ok(entries);

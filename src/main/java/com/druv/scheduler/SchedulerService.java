@@ -97,11 +97,39 @@ public class SchedulerService {
         return List.of();
     }
 
+    public Course getCourseById(String token, int id) {
+        if (validateToken(token) != null) {
+            return courseDAO.findById(id);
+        }
+        return null;
+    }
+
     public boolean addCourse(String token, String code, String name, String faculty, int maxStudents) {
         if (!isAuthorized(token, "ADMIN")) {
             return false;
         }
         return courseDAO.addCourse(code, name, faculty, maxStudents);
+    }
+    
+    public boolean updateCourse(String token, int id, String code, String name, String faculty, int maxStudents) {
+        if (!isAuthorized(token, "ADMIN")) {
+            return false;
+        }
+        return courseDAO.updateCourse(id, code, name, faculty, maxStudents);
+    }
+    
+    public boolean deleteCourse(String token, int id) {
+        if (!isAuthorized(token, "ADMIN")) {
+            return false;
+        }
+        return courseDAO.deleteCourse(id);
+    }
+    
+    public boolean toggleCourseEnrollment(String token, int id, boolean enrolled) {
+        if (validateToken(token) == null) {
+            return false;
+        }
+        return courseDAO.toggleEnrollment(id, enrolled);
     }
 
     // Room methods

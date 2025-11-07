@@ -16,11 +16,13 @@ public class CourseDAO {
             course_name TEXT NOT NULL,
             faculty_username TEXT NOT NULL,
             max_students INTEGER NOT NULL,
+            enrolled INTEGER DEFAULT 0,
             FOREIGN KEY (faculty_username) REFERENCES users(username)
         )""";
 
     public CourseDAO() {
         initializeTable();
+        migrateEnrolledColumn();
     }
 
     private void initializeTable() {
@@ -29,6 +31,31 @@ public class CourseDAO {
             stmt.execute(CREATE_TABLE);
         } catch (SQLException e) {
             throw new RuntimeException("Failed to initialize courses table", e);
+        }
+    }
+    
+    private void migrateEnrolledColumn() {
+        // Add enrolled column if it doesn't exist (for existing databases)
+        String checkColumn = "PRAGMA table_info(courses)";
+        String addColumn = "ALTER TABLE courses ADD COLUMN enrolled INTEGER DEFAULT 0";
+        
+        try (Connection conn = Database.connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(checkColumn)) {
+            
+            boolean hasEnrolledColumn = false;
+            while (rs.next()) {
+                if ("enrolled".equals(rs.getString("name"))) {
+                    hasEnrolledColumn = true;
+                    break;
+                }
+            }
+            
+            if (!hasEnrolledColumn) {
+                stmt.execute(addColumn);
+            }
+        } catch (SQLException e) {
+            // Column might already exist, ignore error
         }
     }
 
@@ -48,6 +75,7 @@ public class CourseDAO {
                     rs.getInt("max_students")
                 );
                 course.setId(rs.getInt("id"));
+                course.setEnrolled(rs.getInt("enrolled") == 1);
                 courses.add(course);
             }
         } catch (SQLException e) {
@@ -114,6 +142,7 @@ public class CourseDAO {
                         rs.getInt("max_students")
                     );
                     course.setId(rs.getInt("id"));
+                    course.setEnrolled(rs.getInt("enrolled") == 1);
                     return course;
                 }
             }
@@ -181,6 +210,21 @@ public class CourseDAO {
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting course", e);
+        }
+    }
+    
+    public boolean toggleEnrollment(int id, boolean enrolled) {
+        String sql = "UPDATE courses SET enrolled = ? WHERE id = ?";
+        
+        try (Connection conn = Database.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, enrolled ? 1 : 0);
+            stmt.setInt(2, id);
+            
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error toggling enrollment", e);
         }
     }
 

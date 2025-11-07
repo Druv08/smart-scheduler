@@ -49,11 +49,6 @@ public class DatabaseConfig {
     }
 
     @Bean
-    public AuthService authService(UserDAO userDAO, Security security) {
-        return new AuthService(userDAO, security);
-    }
-
-    @Bean
     public SchedulerService schedulerService(UserDAO userDAO, CourseDAO courseDAO,
                                            RoomDAO roomDAO, TimetableDAO timetableDAO) {
         return new SchedulerService(userDAO, courseDAO, roomDAO, timetableDAO);

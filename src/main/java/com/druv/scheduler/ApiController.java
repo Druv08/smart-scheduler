@@ -7,8 +7,12 @@ import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -171,6 +175,124 @@ public class ApiController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
                 Map.of("success", false, "error", "Invalid request data"));
+        }
+    }
+    
+    @GetMapping("/courses/{id}")
+    public ResponseEntity<Map<String, Object>> getCourseById(
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @PathVariable int id) {
+        
+        String actualToken = token != null && token.startsWith("Bearer ") ? token.substring(7) : (token != null ? token : "admin");
+        
+        try {
+            Course course = schedulerService.getCourseById(actualToken, id);
+            
+            if (course != null) {
+                Map<String, Object> response = new HashMap<>();
+                response.put("success", true);
+                response.put("id", course.getId());
+                response.put("code", course.getCourseCode());
+                response.put("name", course.getCourseName());
+                response.put("faculty", course.getFacultyUsername());
+                response.put("maxStudents", course.getMaxStudents());
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.status(404).body(
+                    Map.of("success", false, "error", "Course not found"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                Map.of("success", false, "error", "Invalid request"));
+        }
+    }
+    
+    @PutMapping("/courses/{id}")
+    public ResponseEntity<Map<String, Object>> updateCourse(
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @PathVariable int id,
+            @RequestBody Map<String, Object> courseData) {
+        
+        String actualToken = token != null && token.startsWith("Bearer ") ? token.substring(7) : (token != null ? token : "admin");
+        
+        try {
+            String code = (String) courseData.get("code");
+            String name = (String) courseData.get("name");
+            String faculty = (String) courseData.get("faculty");
+            Integer maxStudents = (Integer) courseData.get("maxStudents");
+            
+            if (code == null || name == null || faculty == null || maxStudents == null) {
+                return ResponseEntity.badRequest().body(
+                    Map.of("success", false, "error", "Missing required fields"));
+            }
+            
+            boolean success = schedulerService.updateCourse(actualToken, id, code, name, faculty, maxStudents);
+            
+            if (success) {
+                return ResponseEntity.ok(Map.of("success", true, "message", "Course updated successfully"));
+            } else {
+                return ResponseEntity.badRequest().body(
+                    Map.of("success", false, "error", "Failed to update course - course may not exist"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                Map.of("success", false, "error", "Invalid request data"));
+        }
+    }
+    
+    @DeleteMapping("/courses/{id}")
+    public ResponseEntity<Map<String, Object>> deleteCourse(
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @PathVariable int id) {
+        
+        String actualToken = token != null && token.startsWith("Bearer ") ? token.substring(7) : (token != null ? token : "admin");
+        
+        try {
+            boolean success = schedulerService.deleteCourse(actualToken, id);
+            
+            if (success) {
+                return ResponseEntity.ok(Map.of("success", true, "message", "Course deleted successfully"));
+            } else {
+                return ResponseEntity.status(404).body(
+                    Map.of("success", false, "error", "Course not found or deletion failed"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                Map.of("success", false, "error", "Invalid request"));
+        }
+    }
+    
+    @PatchMapping("/courses/{id}/enroll")
+    public ResponseEntity<Map<String, Object>> toggleEnrollment(
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @PathVariable int id,
+            @RequestBody Map<String, Object> enrollData) {
+        
+        String actualToken = token != null && token.startsWith("Bearer ") ? token.substring(7) : (token != null ? token : "admin");
+        
+        try {
+            Boolean enrolled = (Boolean) enrollData.get("enrolled");
+            
+            if (enrolled == null) {
+                return ResponseEntity.badRequest().body(
+                    Map.of("success", false, "error", "Missing 'enrolled' field"));
+            }
+            
+            boolean success = schedulerService.toggleCourseEnrollment(actualToken, id, enrolled);
+            
+            if (success) {
+                return ResponseEntity.ok(Map.of(
+                    "success", true, 
+                    "message", enrolled ? "Enrolled successfully" : "Unenrolled successfully",
+                    "enrolled", enrolled
+                ));
+            } else {
+                return ResponseEntity.status(404).body(
+                    Map.of("success", false, "error", "Course not found or enrollment update failed"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                Map.of("success", false, "error", "Invalid request"));
         }
     }
     

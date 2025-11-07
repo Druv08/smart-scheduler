@@ -3,9 +3,8 @@ package com.druv.scheduler;
 import java.util.Optional;
 
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 
-@Component
+// @Component  // Temporarily disabled to avoid database initialization errors
 public class DataInitializer implements CommandLineRunner {
     
     private final UserDAO userDAO;
@@ -47,9 +46,13 @@ public class DataInitializer implements CommandLineRunner {
         
         System.out.println("Data initialization completed");
         
-        // Print some stats
-        System.out.println("Total users: " + userDAO.getUserCount());
-        System.out.println("Total courses: " + courseDAO.getCourseCount());
-        System.out.println("Total rooms: " + roomDAO.getRoomCount());
+        // Print some stats (with error handling)
+        try {
+            System.out.println("Total users: " + userDAO.getUserCount());
+            System.out.println("Total courses: " + courseDAO.getCourseCount());
+            System.out.println("Total rooms: " + roomDAO.getRoomCount());
+        } catch (Exception e) {
+            System.out.println("Could not retrieve statistics (tables may still be initializing): " + e.getMessage());
+        }
     }
 }

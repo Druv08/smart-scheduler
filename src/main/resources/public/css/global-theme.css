@@ -385,3 +385,320 @@ td {
   color: var(--text-secondary);
   border-top-color: var(--border-primary);
 }
+
+/* ========= COURSE PAGE SPECIFIC STYLES ========= */
+
+/* Enroll Button - Light Mode */
+.btn-enroll {
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.btn-enroll:hover {
+  background-color: #1e40af;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+}
+
+.btn-enroll.enrolled {
+  background-color: #22c55e;
+  color: #ffffff;
+}
+
+.btn-enroll.enrolled:hover {
+  background-color: #16a34a;
+  box-shadow: 0 4px 6px rgba(34, 197, 94, 0.3);
+}
+
+/* Enroll Button - Dark Mode */
+[data-theme="dark"] .btn-enroll {
+  background-color: #3b82f6;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+[data-theme="dark"] .btn-enroll:hover {
+  background-color: #2563eb;
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+}
+
+[data-theme="dark"] .btn-enroll.enrolled {
+  background-color: #16a34a;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(22, 163, 74, 0.2);
+}
+
+[data-theme="dark"] .btn-enroll.enrolled:hover {
+  background-color: #15803d;
+  box-shadow: 0 4px 8px rgba(22, 163, 74, 0.4);
+}
+
+/* Edit Button - Light Mode */
+.btn-action.btn-edit {
+  background-color: #facc15;
+  color: #1e293b;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-action.btn-edit:hover {
+  background-color: #eab308;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(250, 204, 21, 0.3);
+}
+
+/* Edit Button - Dark Mode */
+[data-theme="dark"] .btn-action.btn-edit {
+  background-color: #fbbf24;
+  color: #0f172a;
+  box-shadow: 0 2px 4px rgba(251, 191, 36, 0.2);
+}
+
+[data-theme="dark"] .btn-action.btn-edit:hover {
+  background-color: #f59e0b;
+  box-shadow: 0 4px 8px rgba(251, 191, 36, 0.4);
+}
+
+[data-theme="dark"] .btn-action.btn-edit svg {
+  stroke: #0f172a;
+}
+
+/* Delete Button - Light Mode */
+.btn-action.btn-delete {
+  background-color: #ef4444;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-action.btn-delete:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(239, 68, 68, 0.3);
+}
+
+/* Delete Button - Dark Mode */
+[data-theme="dark"] .btn-action.btn-delete {
+  background-color: #dc2626;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);
+}
+
+[data-theme="dark"] .btn-action.btn-delete:hover {
+  background-color: #b91c1c;
+  box-shadow: 0 4px 8px rgba(220, 38, 38, 0.4);
+}
+
+/* Action Buttons Container */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Course Badges - Enhanced for Dark Mode */
+.course-code-badge {
+  background-color: #dbeafe;
+  color: #1e40af;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: inline-block;
+}
+
+[data-theme="dark"] .course-code-badge {
+  background-color: #1e3a8a;
+  color: #93c5fd;
+}
+
+.hours-badge {
+  background-color: #e0e7ff;
+  color: #4338ca;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: inline-block;
+}
+
+[data-theme="dark"] .hours-badge {
+  background-color: #312e81;
+  color: #a5b4fc;
+}
+
+.batch-badge {
+  background-color: #f3e8ff;
+  color: #6b21a8;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: inline-block;
+}
+
+[data-theme="dark"] .batch-badge {
+  background-color: #581c87;
+  color: #d8b4fe;
+}
+
+.course-name-text {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.teacher-name {
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+/* Enhanced table styling for dark mode */
+[data-theme="dark"] tr:hover {
+  background-color: #21262d;
+}
+
+[data-theme="dark"] td {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Modal improvements for dark mode */
+[data-theme="dark"] .modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="dark"] .modal-container {
+  background-color: #161b22;
+  border: 1px solid #30363d;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .modal-header {
+  border-bottom-color: #30363d;
+}
+
+[data-theme="dark"] .form-label {
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .form-help {
+  color: #8b949e;
+}
+
+/* Select and Input improvements for dark mode */
+[data-theme="dark"] .modern-select,
+[data-theme="dark"] .form-input {
+  background-color: #0d1117;
+  color: #e6edf3;
+  border: 1px solid #30363d;
+}
+
+[data-theme="dark"] .modern-select:hover,
+[data-theme="dark"] .form-input:hover {
+  border-color: #58a6ff;
+}
+
+[data-theme="dark"] .modern-select:focus,
+[data-theme="dark"] .form-input:focus {
+  border-color: #58a6ff;
+  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+}
+
+/* Content box improvements for dark mode */
+[data-theme="dark"] .content-box {
+  background-color: #161b22;
+  border: 1px solid #30363d;
+}
+
+[data-theme="dark"] .page-title,
+[data-theme="dark"] .section-title {
+  color: #e6edf3;
+}
+
+[data-theme="dark"] .text-muted {
+  color: #8b949e !important;
+}
+
+/* Add course button improvements */
+.add-course-btn {
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border: none;
+  border-radius: 8px;
+  padding: 0.625rem 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.add-course-btn:hover {
+  background-color: var(--btn-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+[data-theme="dark"] .add-course-btn {
+  background-color: #238636;
+  box-shadow: 0 2px 4px rgba(35, 134, 54, 0.2);
+}
+
+[data-theme="dark"] .add-course-btn:hover {
+  background-color: #2ea043;
+  box-shadow: 0 4px 8px rgba(46, 160, 67, 0.4);
+}
+
+/* Pagination improvements */
+.page-btn {
+  background-color: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border: 1px solid var(--border-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.page-btn:hover:not(:disabled) {
+  background-color: var(--btn-secondary-hover);
+  transform: translateY(-1px);
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+[data-theme="dark"] .page-btn {
+  background-color: #21262d;
+  color: #c9d1d9;
+  border-color: #30363d;
+}
+
+[data-theme="dark"] .page-btn:hover:not(:disabled) {
+  background-color: #30363d;
+  border-color: #58a6ff;
+}
+

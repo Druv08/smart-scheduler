@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .then(data => {
-                if (data.authenticated) {
+                if (data.success) {
                     // Successful login - redirect to dashboard
                     window.location.href = 'dashboard.html';
                 } else {
@@ -76,22 +76,4 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-});
-
-// Check if user is already logged in when visiting login page
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('/api/session', {
-        method: 'GET',
-        credentials: 'include'
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.authenticated && window.location.pathname.includes('login.html')) {
-            window.location.href = 'dashboard.html';
-        }
-    })
-    .catch(error => {
-        // Not logged in - stay on login page
-        console.log('No active session - showing login form');
-    });
 });
