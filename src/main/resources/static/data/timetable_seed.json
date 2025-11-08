@@ -1,0 +1,294 @@
+{
+  "entries": [
+    {
+      "dayOrder": 1,
+      "startTime": "12:30",
+      "endTime": "13:20",
+      "courseName": "Transforms and Boundary Value Problems",
+      "faculty": "Dr. P. Godhandaraman",
+      "roomName": "CLS619",
+      "slotCode": "A",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 1,
+      "startTime": "13:25",
+      "endTime": "14:15",
+      "courseName": "Transforms and Boundary Value Problems",
+      "faculty": "Dr. P. Godhandaraman",
+      "roomName": "CLS619",
+      "slotCode": "A",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 1,
+      "startTime": "14:20",
+      "endTime": "15:10",
+      "courseName": "Operating Systems",
+      "faculty": "Dr. G. Priyadharshini",
+      "roomName": "CLS619",
+      "slotCode": "F",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 1,
+      "startTime": "15:10",
+      "endTime": "16:00",
+      "courseName": "Operating Systems",
+      "faculty": "Dr. G. Priyadharshini",
+      "roomName": "CLS619",
+      "slotCode": "F",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 1,
+      "startTime": "16:00",
+      "endTime": "16:50",
+      "courseName": "UHV-II: Universal Human Values",
+      "faculty": "Dr. D. Boopathi",
+      "roomName": "To Be Allotted",
+      "slotCode": "G",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 2,
+      "startTime": "08:00",
+      "endTime": "08:50",
+      "courseName": "Data Structures and Algorithms",
+      "faculty": "Dr. Kalpana C",
+      "roomName": "CLS619",
+      "slotCode": "B",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 2,
+      "startTime": "08:50",
+      "endTime": "09:40",
+      "courseName": "Data Structures and Algorithms",
+      "faculty": "Dr. Kalpana C",
+      "roomName": "CLS619",
+      "slotCode": "B",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 2,
+      "startTime": "09:45",
+      "endTime": "10:35",
+      "courseName": "UHV-II: Universal Human Values",
+      "faculty": "Dr. D. Boopathi",
+      "roomName": "To Be Allotted",
+      "slotCode": "G",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 2,
+      "startTime": "10:40",
+      "endTime": "11:30",
+      "courseName": "UHV-II: Universal Human Values",
+      "faculty": "Dr. D. Boopathi",
+      "roomName": "To Be Allotted",
+      "slotCode": "G",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 2,
+      "startTime": "11:35",
+      "endTime": "12:25",
+      "courseName": "Transforms and Boundary Value Problems",
+      "faculty": "Dr. P. Godhandaraman",
+      "roomName": "CLS619",
+      "slotCode": "A",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 2,
+      "startTime": "13:25",
+      "endTime": "14:15",
+      "courseName": "Operating Systems Lab",
+      "faculty": "Dr. G. Priyadharshini",
+      "roomName": "UB711B",
+      "slotCode": "P11",
+      "type": "LAB"
+    },
+    {
+      "dayOrder": 2,
+      "startTime": "14:20",
+      "endTime": "15:10",
+      "courseName": "Operating Systems Lab",
+      "faculty": "Dr. G. Priyadharshini",
+      "roomName": "UB711B",
+      "slotCode": "P12",
+      "type": "LAB"
+    },
+    {
+      "dayOrder": 3,
+      "startTime": "11:35",
+      "endTime": "12:25",
+      "courseName": "Professional Ethics",
+      "faculty": "Dr. B. Monika Nair",
+      "roomName": "Online",
+      "slotCode": "E",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 3,
+      "startTime": "12:30",
+      "endTime": "13:20",
+      "courseName": "Computer Organization and Architecture",
+      "faculty": "Dr. Meenakshi M",
+      "roomName": "CLS619",
+      "slotCode": "C",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 3,
+      "startTime": "13:25",
+      "endTime": "14:15",
+      "courseName": "Computer Organization and Architecture",
+      "faculty": "Dr. Meenakshi M",
+      "roomName": "CLS619",
+      "slotCode": "C",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 3,
+      "startTime": "14:20",
+      "endTime": "15:10",
+      "courseName": "Transforms and Boundary Value Problems",
+      "faculty": "Dr. P. Godhandaraman",
+      "roomName": "CLS619",
+      "slotCode": "A",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 3,
+      "startTime": "15:10",
+      "endTime": "16:00",
+      "courseName": "Advanced Programming Practice",
+      "faculty": "Dr. Prince Chelladurai S",
+      "roomName": "CLS619",
+      "slotCode": "D",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 3,
+      "startTime": "16:00",
+      "endTime": "16:50",
+      "courseName": "Data Structures and Algorithms",
+      "faculty": "Dr. Kalpana C",
+      "roomName": "CLS619",
+      "slotCode": "B",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 4,
+      "startTime": "08:00",
+      "endTime": "08:50",
+      "courseName": "Advanced Programming Practice Lab",
+      "faculty": "Dr. Prince Chelladurai S",
+      "roomName": "CLS619",
+      "slotCode": "P31",
+      "type": "LAB"
+    },
+    {
+      "dayOrder": 4,
+      "startTime": "08:50",
+      "endTime": "09:40",
+      "courseName": "Advanced Programming Practice Lab",
+      "faculty": "Dr. Prince Chelladurai S",
+      "roomName": "CLS619",
+      "slotCode": "P32",
+      "type": "LAB"
+    },
+    {
+      "dayOrder": 4,
+      "startTime": "09:45",
+      "endTime": "10:35",
+      "courseName": "Data Structures and Algorithms",
+      "faculty": "Dr. Kalpana C",
+      "roomName": "CLS619",
+      "slotCode": "B",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 4,
+      "startTime": "10:40",
+      "endTime": "11:30",
+      "courseName": "Data Structures and Algorithms",
+      "faculty": "Dr. Kalpana C",
+      "roomName": "CLS619",
+      "slotCode": "B",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 4,
+      "startTime": "11:35",
+      "endTime": "12:25",
+      "courseName": "Computer Organization and Architecture",
+      "faculty": "Dr. Meenakshi M",
+      "roomName": "CLS619",
+      "slotCode": "C",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 5,
+      "startTime": "08:00",
+      "endTime": "08:50",
+      "courseName": "Data Structures Lab",
+      "faculty": "Dr. Kalpana C",
+      "roomName": "UB713B",
+      "slotCode": "L",
+      "type": "LAB"
+    },
+    {
+      "dayOrder": 5,
+      "startTime": "08:50",
+      "endTime": "09:40",
+      "courseName": "Data Structures Lab",
+      "faculty": "Dr. Kalpana C",
+      "roomName": "UB713B",
+      "slotCode": "L",
+      "type": "LAB"
+    },
+    {
+      "dayOrder": 5,
+      "startTime": "12:30",
+      "endTime": "13:20",
+      "courseName": "Data Structures and Algorithms",
+      "faculty": "Dr. Kalpana C",
+      "roomName": "CLS619",
+      "slotCode": "B",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 5,
+      "startTime": "14:20",
+      "endTime": "15:10",
+      "courseName": "Computer Organization and Architecture",
+      "faculty": "Dr. Meenakshi M",
+      "roomName": "CLS619",
+      "slotCode": "C",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 5,
+      "startTime": "15:10",
+      "endTime": "16:00",
+      "courseName": "Operating Systems",
+      "faculty": "Dr. G. Priyadharshini",
+      "roomName": "CLS619",
+      "slotCode": "F",
+      "type": "THEORY"
+    },
+    {
+      "dayOrder": 5,
+      "startTime": "16:00",
+      "endTime": "16:50",
+      "courseName": "Advanced Programming Practice",
+      "faculty": "Dr. Prince Chelladurai S",
+      "roomName": "CLS619",
+      "slotCode": "D",
+      "type": "THEORY"
+    }
+  ]
+}
