@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Scheduler – Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/global-theme.css">
+  <link rel="stylesheet" href="/css/modern-exact-design.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/overrides.dev.css?v=20251104">
+  <link rel="stylesheet" href="/css/dashboard-layout-fix.css?v=20251105e">
+</head>
+
+<body data-require-auth>
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <svg class="icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"/>
+        </svg>
+        <h1>Smart Scheduler</h1>
+      </div>
+
+      <nav class="nav">
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="timetable.html">Timetable</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="users.html">Teachers</a>
+        <a href="courses.html">Courses</a>
+      </nav>
+
+      <div class="actions">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Switch theme">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="bell" id="notifications">
+          <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+            <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06Z"/>
+          </svg>
+        </button>
+        <div class="avatar" id="profileMenu"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      <!-- Page Header Content Box - matches Courses page structure -->
+      <div class="content-box">
+        <h2 class="page-title">Dashboard</h2>
+        <p class="text-muted">Welcome back, Druv! Here's your SRM CSE B.Tech timetable organized by Day 1-5 format with real SRM schedule data.</p>
+        
+        <div class="intro-actions">
+          <button class="btn btn-primary" onclick="window.location.href='timetable.html'">View Timetable</button>
+          <button class="btn btn-secondary" onclick="window.location.href='courses.html'">Manage Courses</button>
+        </div>
+      </div>
+
+      <section class="stats">
+        <div class="stat-card">
+          <h3>7</h3>
+          <p>SRM Courses</p>
+          <small style="color: var(--gray-500);">Theory + Labs</small>
+        </div>
+        
+        <div class="stat-card">
+          <h3>6</h3>
+          <p>Faculty Members</p>
+          <small style="color: var(--gray-500);">Real Professors</small>
+        </div>
+        
+        <div class="stat-card">
+          <h3>5</h3>
+          <p>Academic Days</p>
+          <small style="color: var(--gray-500);">Day 1-5 Format</small>
+        </div>
+        
+        <div class="stat-card">
+          <h3>12</h3>
+          <p>Time Slots</p>
+          <small style="color: var(--gray-500);">50-min Periods</small>
+        </div>
+      </section>
+
+      <div class="stat-card">
+        <div class="stat-icon courses">
+          <svg viewBox="0 0 24 24">
+            <path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <h3 id="courseCount">12</h3>
+          <p>Active Courses</p>
+        </div>
+        <div class="stat-change increase">+3 this month</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon bookings">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <h3 id="bookingCount">37</h3>
+          <p>Bookings This Week</p>
+        </div>
+        <div class="stat-change decrease">-5 vs last week</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon users">
+          <svg viewBox="0 0 24 24">
+            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <h3 id="userCount">145</h3>
+          <p>Registered Users</p>
+        </div>
+        <div class="stat-change increase">+12 this month</div>
+      </div>
+    </section>
+
+    <!-- Analytics Section -->
+    <section class="analytics-section">
+      <div class="section-header">
+        <h3>Analytics & Reports</h3>
+        <div class="export-actions">
+          <button class="btn-export" id="exportCSV">
+            <svg class="export-icon" viewBox="0 0 24 24">
+              <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+            </svg>
+            Export CSV
+          </button>
+          <button class="btn-export" id="exportPDF">
+            <svg class="export-icon" viewBox="0 0 24 24">
+              <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+            </svg>
+            Export PDF
+          </button>
+        </div>
+      </div>
+
+      <div class="analytics-grid">
+        <!-- Room Utilization Chart -->
+        <div class="card chart-card">
+          <div class="card-header">
+            <h4>Room Utilization</h4>
+            <span class="chart-subtitle">Percentage of time rooms are booked</span>
+          </div>
+          <div class="card-body">
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
+              <div style="text-align: center; font-weight: 600; color: var(--primary-blue); font-size: var(--font-size-sm);">Day 1</div>
+              <div style="text-align: center; font-weight: 600; color: var(--primary-blue); font-size: var(--font-size-sm);">Day 2</div>
+              <div style="text-align: center; font-weight: 600; color: var(--primary-blue); font-size: var(--font-size-sm);">Day 3</div>
+              <div style="text-align: center; font-weight: 600; color: var(--primary-blue); font-size: var(--font-size-sm);">Day 4</div>
+              <div style="text-align: center; font-weight: 600; color: var(--primary-blue); font-size: var(--font-size-sm);">Day 5</div>
+            </div>
+            
+            <div style="text-align: center; margin: 1rem 0;">
+              <div style="display: flex; align-items: center; justify-content: center; gap: 1rem;">
+                <h4 style="margin: 0; font-weight: 600; color: var(--gray-700);">SRM Unified Timetable Format</h4>
+              </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem;">
+              <button class="day-button active" data-day="1" style="text-align: center; padding: 1rem 0.5rem; background: var(--primary-blue); color: white; border-radius: var(--border-radius); font-weight: 600; font-size: var(--font-size-sm); border: none; cursor: pointer; transition: all 0.2s ease;">
+                Day 1<br><small style="opacity: 0.8;">Theory + Labs</small>
+              </button>
+              <button class="day-button" data-day="2" style="text-align: center; padding: 1rem 0.5rem; background: var(--gray-100); border-radius: var(--border-radius); font-weight: 600; font-size: var(--font-size-sm); border: none; cursor: pointer; transition: all 0.2s ease;">
+                Day 2<br><small style="opacity: 0.6;">Labs Focus</small>
+              </button>
+              <button class="day-button" data-day="3" style="text-align: center; padding: 1rem 0.5rem; background: var(--gray-100); border-radius: var(--border-radius); font-weight: 600; font-size: var(--font-size-sm); border: none; cursor: pointer; transition: all 0.2s ease;">
+                Day 3<br><small style="opacity: 0.6;">Mixed Schedule</small>
+              </button>
+              <button class="day-button" data-day="4" style="text-align: center; padding: 1rem 0.5rem; background: var(--gray-100); border-radius: var(--border-radius); font-weight: 600; font-size: var(--font-size-sm); border: none; cursor: pointer; transition: all 0.2s ease;">
+                Day 4<br><small style="opacity: 0.6;">Theory + Ethics</small>
+              </button>
+              <button class="day-button" data-day="5" style="text-align: center; padding: 1rem 0.5rem; background: var(--gray-100); border-radius: var(--border-radius); font-weight: 600; font-size: var(--font-size-sm); border: none; cursor: pointer; transition: all 0.2s ease;">
+                Day 5<br><small style="opacity: 0.6;">Lab Sessions</small>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Daily Classes Chart -->
+        <div class="card chart-card">
+          <div class="card-header">
+            <h3 id="schedule-title">Day 1 Schedule</h3>
+            <small style="color: var(--gray-500);">Based on SRM Unified Timetable Format</small>
+          </div>
+          <div class="card-body">
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 1rem; font-size: var(--font-size-xs); font-weight: 600; color: var(--gray-500); text-transform: uppercase; margin-bottom: 1rem;">
+              <div>Course</div>
+              <div>Slot</div>
+              <div>Time</div>
+              <div>Room & Faculty</div>
+            </div>
+            
+            <div id="schedule-content">
+              <!-- Dynamic schedule content will be loaded here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dashboard-grid">
+      <div class="card activity-card">
+        <div class="card-header">
+          <h3>Recent Activity</h3>
+          <button class="view-all">View All</button>
+        </div>
+        <div class="activity-list">
+          <!-- Activity items will be dynamically populated -->
+        </div>
+      </div>
+
+      <div class="card schedule-card">
+        <div class="card-header">
+          <h3>Today's Schedule</h3>
+          <button class="view-all">View Calendar</button>
+        </div>
+        <div class="schedule-list">
+          <!-- Schedule items will be dynamically populated -->
+        </div>
+      </div>
+
+      <!-- Analytics Summary Card -->
+      <div class="card analytics-summary-card">
+        <div class="card-header">
+          <h3>Weekly Overview</h3>
+          <button class="refresh-btn" id="refreshAnalytics">
+            <svg viewBox="0 0 24 24">
+              <path d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"/>
+            </svg>
+          </button>
+        </div>
+        <div class="analytics-summary">
+          <div class="summary-item">
+            <span class="summary-label">Busiest Day:</span>
+            <span class="summary-value" id="busiestDay">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Peak Time:</span>
+            <span class="summary-value" id="peakTime">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Schedule Density:</span>
+            <span class="summary-value" id="scheduleDensity">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Most Used Room:</span>
+            <span class="summary-value" id="mostUsedRoom">-</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Smart Scheduler</p>
+    </div>
+  </footer>
+
+  <script src="js/theme.js"></script>
+  <script src="js/simple-app.js"></script>
+  <script>
+    function navigateToPage(page) {
+      window.location.href = page;
+    }
+
+    // Complete SRM Timetable Data - Using the exact format from requirements
+    const schedules = {
+      1: [
+        { course: "Transforms & Boundary Value Problems", slot: "A/X", time: "12:30 – 01:20", room: "CLS619", faculty: "Dr. P. Godhandaraman" },
+        { course: "Transforms & Boundary Value Problems", slot: "A/X", time: "01:25 – 02:15", room: "CLS619", faculty: "Dr. P. Godhandaraman" },
+        { course: "Operating Systems", slot: "F/X", time: "02:20 – 03:10", room: "CLS619", faculty: "Dr. G. Priyadharshini" },
+        { course: "Operating Systems", slot: "F/X", time: "03:10 – 04:00", room: "CLS619", faculty: "Dr. G. Priyadharshini" },
+        { course: "Universal Human Values – II", slot: "G", time: "04:00 – 04:50", room: "To Be Allotted", faculty: "Dr. D. Boopathi" }
+      ],
+      2: [
+        { course: "Data Structures and Algorithms", slot: "B", time: "08:00 – 08:50", room: "CLS619", faculty: "Dr. Kalpana C" },
+        { course: "Data Structures and Algorithms", slot: "B", time: "08:50 – 09:40", room: "CLS619", faculty: "Dr. Kalpana C" },
+        { course: "UHV-II", slot: "G", time: "09:45 – 11:30", room: "To Be Allotted", faculty: "Dr. D. Boopathi" },
+        { course: "Transforms & Boundary Value Problems", slot: "A", time: "11:35 – 12:25", room: "CLS619", faculty: "Dr. P. Godhandaraman" },
+        { course: "Operating Systems Lab", slot: "P17–P18", time: "01:25 – 03:10", room: "UB711B", faculty: "Dr. G. Priyadharshini" }
+      ],
+      3: [
+        { course: "Professional Ethics", slot: "E", time: "11:35 – 12:25", room: "Online", faculty: "Dr. B. Monika Nair" },
+        { course: "Computer Organization and Architecture", slot: "C", time: "12:30 – 02:15", room: "CLS619", faculty: "Dr. Meenakshi M" },
+        { course: "Transforms & Boundary Value Problems", slot: "A", time: "02:20 – 03:10", room: "CLS619", faculty: "Dr. P. Godhandaraman" },
+        { course: "Advanced Programming Practice", slot: "D", time: "03:10 – 04:00", room: "CLS619", faculty: "Dr. Prince Chelladurai S" },
+        { course: "Data Structures and Algorithms", slot: "B", time: "04:00 – 04:50", room: "CLS619", faculty: "Dr. Kalpana C" }
+      ],
+      4: [
+        { course: "Advanced Programming Practice Lab", slot: "P31–P32", time: "08:00 – 09:40", room: "CLS619", faculty: "Dr. Prince Chelladurai S" },
+        { course: "Data Structures and Algorithms", slot: "B", time: "09:45 – 11:30", room: "CLS619", faculty: "Dr. Kalpana C" },
+        { course: "Computer Organization and Architecture", slot: "C", time: "11:35 – 12:25", room: "CLS619", faculty: "Dr. Meenakshi M" }
+      ],
+      5: [
+        { course: "Data Structures Lab", slot: "P41–P42", time: "08:00 – 09:40", room: "UB713B", faculty: "Dr. Kalpana C" },
+        { course: "Data Structures and Algorithms", slot: "B", time: "12:30 – 01:20", room: "CLS619", faculty: "Dr. Kalpana C" },
+        { course: "Computer Organization and Architecture", slot: "C", time: "02:20 – 03:10", room: "CLS619", faculty: "Dr. Meenakshi M" },
+        { course: "Operating Systems", slot: "F", time: "03:10 – 04:00", room: "CLS619", faculty: "Dr. G. Priyadharshini" },
+        { course: "Advanced Programming Practice", slot: "D", time: "04:00 – 04:50", room: "CLS619", faculty: "Dr. Prince Chelladurai S" }
+      ]
+    };
+
+    // Function to render schedule for a specific day with smooth transitions
+    function renderSchedule(day) {
+      const scheduleContent = document.getElementById('schedule-content');
+      const scheduleTitle = document.getElementById('schedule-title');
+      
+      // Add fade-out effect
+      scheduleContent.style.opacity = '0.3';
+      scheduleContent.style.transition = 'opacity 0.2s ease';
+      
+      setTimeout(() => {
+        // Update title
+        scheduleTitle.textContent = `Day ${day} Schedule`;
+        
+        // Clear existing content
+        scheduleContent.innerHTML = '';
+        
+        // Get schedule for the day
+        const daySchedule = schedules[day] || [];
+        
+        if (daySchedule.length === 0) {
+          scheduleContent.innerHTML = '<div style="text-align: center; color: var(--gray-400); padding: 2rem;">No classes scheduled</div>';
+        } else {
+          // Render each class
+          daySchedule.forEach((classItem, index) => {
+            const classElement = document.createElement('div');
+            classElement.style.cssText = `
+              display: grid; 
+              grid-template-columns: 2fr 1fr 1fr 1.5fr; 
+              gap: 1rem; 
+              padding: 0.75rem 0; 
+              ${index < daySchedule.length - 1 ? 'border-bottom: 1px solid var(--gray-200);' : ''} 
+              font-size: var(--font-size-sm);
+              transition: background-color 0.2s ease;
+            `;
+            
+            classElement.innerHTML = `
+              <div><strong>${classItem.course}</strong></div>
+              <div><span style="background: var(--light-blue); color: var(--primary-blue); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 10px; font-weight: 600;">${classItem.slot}</span></div>
+              <div style="font-weight: 500;">${classItem.time}</div>
+              <div><strong>${classItem.room}</strong><br><small style="color: var(--gray-500);">${classItem.faculty}</small></div>
+            `;
+            
+            // Add hover effect for each row
+            classElement.addEventListener('mouseenter', function() {
+              this.style.backgroundColor = 'var(--gray-50)';
+            });
+            
+            classElement.addEventListener('mouseleave', function() {
+              this.style.backgroundColor = 'transparent';
+            });
+            
+            scheduleContent.appendChild(classElement);
+          });
+        }
+        
+        // Fade back in
+        scheduleContent.style.opacity = '1';
+      }, 100);
+    }
+
+    // Function to handle day button clicks with smooth transitions
+    function switchDay(day) {
+      // Update button states with animation
+      document.querySelectorAll('.day-button').forEach(btn => {
+        const btnDay = btn.getAttribute('data-day');
+        btn.style.transition = 'all 0.3s ease';
+        
+        if (btnDay === day.toString()) {
+          btn.classList.add('active');
+          btn.style.background = 'var(--primary-blue)';
+          btn.style.color = 'white';
+          btn.style.transform = 'translateY(-2px)';
+          btn.style.boxShadow = '0 4px 12px rgba(37, 99, 235, 0.3)';
+          btn.querySelector('small').style.opacity = '0.9';
+        } else {
+          btn.classList.remove('active');
+          btn.style.background = 'var(--gray-100)';
+          btn.style.color = 'var(--gray-700)';
+          btn.style.transform = 'translateY(0)';
+          btn.style.boxShadow = 'none';
+          btn.querySelector('small').style.opacity = '0.6';
+        }
+      });
+      
+      // Render schedule for selected day
+      renderSchedule(day);
+    }
+
+    // Initialize dashboard when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add click event listeners to day buttons
+      document.querySelectorAll('.day-button').forEach(button => {
+        button.addEventListener('click', function() {
+          const day = parseInt(this.getAttribute('data-day'));
+          
+          // Add click animation
+          this.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            switchDay(day);
+          }, 100);
+        });
+        
+        // Enhanced hover effects
+        button.addEventListener('mouseenter', function() {
+          if (!this.classList.contains('active')) {
+            this.style.background = 'var(--gray-200)';
+            this.style.transform = 'translateY(-1px)';
+            this.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.1)';
+          }
+        });
+        
+        button.addEventListener('mouseleave', function() {
+          if (!this.classList.contains('active')) {
+            this.style.background = 'var(--gray-100)';
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = 'none';
+          }
+        });
+      });
+      
+      // Load Day 1 schedule by default
+      switchDay(1);
+    });
+  </script>
+</body>
+</html>
+
+

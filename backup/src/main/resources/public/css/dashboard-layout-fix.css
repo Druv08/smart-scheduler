@@ -1,0 +1,181 @@
+/* ═══════════════════════════════════════════════════════════════
+   DASHBOARD LAYOUT FIX - ENFORCE FULL-WIDTH DESKTOP VIEW
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Force full-width layout for main content containers only */
+.dashboard-container,
+.main-content,
+.main .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 2rem !important;
+}
+
+/* Preserve header container flex layout */
+.header .container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 1.5rem !important;
+}
+
+/* Center navigation links */
+.nav {
+    display: flex !important;
+    align-items: center !important;
+    gap: 2rem !important;
+    flex: 1 !important;
+    justify-content: center !important;
+    margin: 0 2rem !important;
+}
+
+/* Main content area - proper top spacing for sticky header */
+.main {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 3rem 0 2rem 0 !important; /* Increased top padding to prevent overlap with sticky header */
+}
+
+/* Body overflow fix */
+body {
+    overflow-x: hidden !important;
+    background: #f9fafc !important;
+}
+
+/* Header container - full width */
+.header .container {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 2rem !important;
+}
+
+/* Footer container - full width */
+.footer .container {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 2rem !important;
+}
+
+/* Desktop layout adjustments */
+@media (min-width: 1024px) {
+    .dashboard-container,
+    .main .container {
+        padding: 0 4rem !important;
+    }
+    
+    /* Stats grid - 4 columns on desktop */
+    .stats {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 1.5rem !important;
+        width: 100% !important;
+        margin-bottom: 2rem !important;
+    }
+    
+    /* Analytics section - full width */
+    .analytics-section {
+        width: 100% !important;
+        margin: 2rem 0 !important;
+    }
+    
+    .analytics-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.5rem !important;
+        width: 100% !important;
+    }
+    
+    /* Dashboard grid - adaptive layout */
+    .dashboard-grid {
+        display: grid !important;
+        grid-template-columns: 2fr 1fr !important;
+        gap: 1.5rem !important;
+        width: 100% !important;
+    }
+    
+    /* Timetable overview - full width */
+    .timetable-overview {
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+        gap: 2rem !important;
+    }
+}
+
+/* Tablet adjustments */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    .analytics-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Mobile adjustments */
+@media (max-width: 767px) {
+    .container,
+    .main .container,
+    .header .container,
+    .footer .container {
+        padding: 0 1rem !important;
+    }
+    
+    .stats {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .analytics-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Intro actions within content-box - matches Courses page filter-bar style */
+.intro-actions {
+    margin-top: 1.5rem !important;
+    display: flex !important;
+    gap: 1rem !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+}
+
+/* Remove old intro section styles - now using content-box */
+.intro {
+    display: none; /* deprecated - using content-box instead */
+}
+
+/* Section headers */
+.section-header {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 1.5rem !important;
+}
+
+/* Card elements - ensure they fill available space */
+.card,
+.stat-card,
+.chart-card,
+.activity-card,
+.schedule-card {
+    width: 100% !important;
+}
+
+/* Override any centering */
+* {
+    box-sizing: border-box;
+}

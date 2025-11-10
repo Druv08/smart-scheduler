@@ -1,0 +1,156 @@
+:root {
+  --primary: #1173d4;
+  --bg: #f6f7f8;
+  --card: #fff;
+  --border: #e5e7eb;
+  --muted: #6b7280;
+  --text: #111418;
+  --success: #16a34a;
+  --warning: #ca8a04;
+  --error: #dc2626;
+}
+
+/* === Button Styles === */
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn.primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn.primary:hover:not(:disabled) {
+  background: #0e66bb;
+  transform: translateY(-2px);
+}
+
+.btn.secondary {
+  background: rgba(17,115,212,0.1);
+  color: var(--primary);
+}
+
+.btn.secondary:hover:not(:disabled) {
+  background: rgba(17,115,212,0.2);
+  transform: translateY(-2px);
+}
+
+.btn.border {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+}
+
+.btn.border:hover:not(:disabled) {
+  color: var(--primary);
+  background: #eef5ff;
+  transform: translateY(-2px);
+}
+
+/* === Log Section === */
+.logs {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: #f0f3f6;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status[data-status="idle"] { color: var(--muted); }
+.status[data-status="running"] { color: var(--primary); }
+.status[data-status="success"] { color: var(--success); }
+.status[data-status="error"] { color: var(--error); }
+
+textarea {
+  width: 100%;
+  height: 300px;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  resize: none;
+  font-family: "Menlo", "Monaco", "Consolas", monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  box-sizing: border-box;
+}
+
+textarea:focus {
+  outline: 2px solid var(--primary);
+  border-color: var(--primary);
+}
+
+/* === Responsive Design === */
+@media (max-width: 640px) {
+  .container {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .nav a {
+    margin: 0;
+  }
+
+  .buttons {
+    grid-template-columns: 1fr;
+  }
+}

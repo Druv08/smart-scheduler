@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Timetable Entry</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .entry {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #c82333;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Delete Day Order 1, 08:00-08:50 Entry</h1>
+    <div id="result"></div>
+    <div id="entries"></div>
+
+    <script>
+        async function loadAndDeleteEntry() {
+            const resultDiv = document.getElementById('result');
+            const entriesDiv = document.getElementById('entries');
+            
+            try {
+                // Fetch all timetable entries
+                const response = await fetch('/api/timetable');
+                const entries = await response.json();
+                
+                console.log('All entries:', entries);
+                
+                // Find the entry for Day Order 1, 08:00-08:50
+                const targetEntry = entries.find(e => 
+                    e.dayOfWeek === "1" && e.startTime === "08:00" && e.endTime === "08:50"
+                );
+                
+                console.log('Target entry:', targetEntry);
+                
+                if (targetEntry) {
+                    // Display the entry with full details
+                    entriesDiv.innerHTML = `
+                        <div class="entry">
+                            <h3>Entry Found:</h3>
+                            <p><strong>ID:</strong> ${targetEntry.id}</p>
+                            <p><strong>Course:</strong> ${targetEntry.courseName || 'N/A'}</p>
+                            <p><strong>Faculty:</strong> ${targetEntry.faculty || 'N/A'}</p>
+                            <p><strong>Room:</strong> ${targetEntry.roomName || 'N/A'}</p>
+                            <p><strong>Slot Code:</strong> ${targetEntry.slotCode || 'N/A'}</p>
+                            <p><strong>Day:</strong> ${targetEntry.dayOfWeek}, <strong>Time:</strong> ${targetEntry.startTime}-${targetEntry.endTime}</p>
+                            <p><strong>JSON:</strong> <pre>${JSON.stringify(targetEntry, null, 2)}</pre></p>
+                            <button onclick="deleteEntry(${targetEntry.id})">Delete This Entry</button>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = '<p class="error">No entry found for Day Order 1, 08:00-08:50</p>';
+                    
+                    // Show all entries for debugging
+                    entriesDiv.innerHTML = '<h3>All timetable entries (first 10):</h3>' +
+                        entries.slice(0, 10).map(e => 
+                            `<div class="entry"><p>ID: ${e.id} | Day: ${e.dayOfWeek} | ${e.startTime}-${e.endTime} | ${e.courseName || 'N/A'}</p></div>`
+                        ).join('');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+                console.error('Error loading entries:', error);
+            }
+        }
+        
+        async function deleteEntry(id) {
+            const resultDiv = document.getElementById('result');
+            
+            try {
+                // Try deleting by slot instead of ID since ID 0 is problematic
+                const response = await fetch('/api/timetable/delete-by-slot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        dayOfWeek: "1",
+                        startTime: "08:00",
+                        endTime: "08:50"
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    resultDiv.innerHTML = '<p class="success">Entry deleted successfully! Please refresh the timetable page.</p>';
+                    document.getElementById('entries').innerHTML = '';
+                } else {
+                    resultDiv.innerHTML = `<p class="error">Failed to delete entry: ${result.message}</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">Error deleting entry: ${error.message}</p>`;
+            }
+        }
+        
+        // Load entries when page loads
+        loadAndDeleteEntry();
+    </script>
+</body>
+</html>

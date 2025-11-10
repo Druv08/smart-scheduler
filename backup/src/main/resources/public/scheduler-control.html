@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Scheduler – Control Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/scheduler-control.css">
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <svg class="icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"/>
+        </svg>
+        <h1>Smart Scheduler</h1>
+      </div>
+      <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="bookings.html">Bookings</a>
+        <a href="users.html">Users</a>
+        <a href="courses.html">Courses</a>
+        <a href="timetable.html">Timetable</a>
+        <a href="profile-settings.html">Profile</a>
+      </nav>
+      <div class="actions">
+        <button class="bell" id="notifications">
+          <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+            <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06Z"/>
+          </svg>
+        </button>
+        <div class="avatar" id="profileMenu"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="intro">
+      <h2>Scheduling Engine</h2>
+      <p>Control and monitor the automated timetable generation process.</p>
+    </section>
+
+    <section class="panel">
+      <h3>Control Panel</h3>
+      <div class="buttons">
+        <button class="btn primary" id="buildDomains">
+          <svg class="btn-icon" viewBox="0 0 24 24">
+            <path d="M12 8V4l-8 8 8 8v-4c5.523 0 10-4.477 10-10 0 0-2 5-10 5z"/>
+          </svg>
+          Build Domains
+        </button>
+        <button class="btn secondary" id="runScheduler">
+          <svg class="btn-icon" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          Run Scheduler
+        </button>
+        <button class="btn border" id="resetScheduler">
+          <svg class="btn-icon" viewBox="0 0 24 24">
+            <path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+          </svg>
+          Reset
+        </button>
+      </div>
+    </section>
+
+    <section class="logs">
+      <h3>Logs</h3>
+      <div class="log-header">
+        <p>Scheduler Output</p>
+        <div class="status" data-status="idle" id="statusIndicator">
+          <span class="status-dot"></span>
+          <span class="status-text">Idle</span>
+        </div>
+      </div>
+      <textarea id="logOutput" readonly placeholder="Scheduler logs will appear here..."></textarea>
+    </section>
+  </main>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/scheduler-control.js"></script>
+</body>
+</html>

@@ -141,6 +141,24 @@ public class TimetableDAO {
     }
 
     /**
+     * Delete timetable entry by day, start time, and end time
+     */
+    public boolean deleteBySlot(String dayOfWeek, String startTime, String endTime) {
+        String sql = "DELETE FROM timetable WHERE day_of_week = ? AND start_time = ? AND end_time = ?";
+        
+        try (Connection conn = Database.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, dayOfWeek);
+            stmt.setString(2, startTime);
+            stmt.setString(3, endTime);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting timetable entry by slot", e);
+        }
+    }
+
+    /**
      * Get all timetable entries for a specific room and day
      */
     public List<TimetableEntry> getByRoomAndDay(int roomId, String day) {

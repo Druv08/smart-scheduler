@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Timetable - Faculty Members</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/global-theme.css">
+  <link rel="stylesheet" href="/css/modern-exact-design.css">
+  <link rel="stylesheet" href="/css/users.css">
+  <link rel="stylesheet" href="/css/overrides.dev.css?v=20251104">
+  <!-- Cache busting for fresh load -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <svg class="icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"/>
+        </svg>
+        <h1>Smart Timetable</h1>
+      </div>
+
+      <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="timetable.html">Timetable</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="users.html" class="active">Teachers</a>
+        <a href="courses.html">Courses</a>
+      </nav>
+
+      <div class="actions">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Switch theme">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="bell" id="notifications">
+          <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+            <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06Z"/>
+          </svg>
+        </button>
+        <div class="avatar" id="profileMenu">
+          <img src="https://images.unsplash.com/photo-1494790108755-2616b612b647?w=32&h=32&fit=crop&crop=face" alt="User" style="width: 100%; height: 100%; border-radius: 50%;">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      <!-- Page Header Content Box -->
+      <div class="content-box">
+        <h2 class="page-title">Faculty Management</h2>
+        <p class="text-muted">Manage faculty members and their information.</p>
+        
+        <div class="filter-bar">
+          <button class="add-faculty-btn" id="addFacultyBtn" onclick="openFacultyModal()">
+            <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+            Add Faculty
+          </button>
+          
+          <select id="departmentFilter" class="modern-select">
+            <option value="">All Departments</option>
+            <option value="Computer Science & Engineering">Computer Science & Engineering</option>
+            <option value="Information Technology">Information Technology</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Universal Human Values">Universal Human Values</option>
+            <option value="Professional Development">Professional Development</option>
+          </select>
+          
+          <select id="designationFilter" class="modern-select">
+            <option value="">All Designations</option>
+            <option value="Professor">Professor</option>
+            <option value="Associate Professor">Associate Professor</option>
+            <option value="Assistant Professor">Assistant Professor</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Main Faculty Table Content Box -->
+      <div class="content-box">
+        <h3 class="section-title">SRM Faculty Members</h3>
+        <p style="color: var(--text-secondary); margin: 0 0 1rem 0; font-size: 0.875rem;">Computer Science & Engineering Department</p>
+        
+        <div style="display: flex; gap: 2rem; margin-bottom: 1.5rem; color: var(--text-tertiary); font-size: 0.875rem;">
+          <p style="margin: 0;">Total Faculty: <span id="facultyCount">0</span></p>
+          <p style="margin: 0;">Active Courses: <span id="courseCount">7</span></p>
+        </div>
+
+        <!-- Faculty Table -->
+        <div class="table-wrapper">
+          <table class="faculty-table">
+            <thead>
+              <tr>
+                <th>NAME</th>
+                <th>DEPARTMENT</th>
+                <th>SPECIALIZATION</th>
+                <th>CONTACT</th>
+                <th>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="facultyTableBody">
+              <!-- Faculty will be populated here -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-faculty">
+          <button class="page-btn" id="prevPage" disabled>← Previous</button>
+          <span id="pageInfo" style="color: var(--text-secondary); font-size: 0.875rem;">Loading faculty...</span>
+          <button class="page-btn" id="nextPage" disabled>Next →</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add Faculty Modal -->
+  <div id="facultyModal" class="modal-backdrop" style="display: none;">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="modalTitle">Add New Faculty Member</h3>
+        <button onclick="closeFacultyModal()" class="modal-close">&times;</button>
+      </div>
+      
+      <form id="facultyForm" class="modal-content">
+        <div class="form-group">
+          <label class="form-label">Faculty Name *</label>
+          <input type="text" id="facultyName" class="form-input" placeholder="e.g., Dr. Kalpana C" required>
+          <small class="form-help">Enter the full name with title (Dr./Prof.)</small>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Designation *</label>
+          <select id="designation" class="form-input" required>
+            <option value="">Select Designation</option>
+            <option value="Professor">Professor</option>
+            <option value="Associate Professor">Associate Professor</option>
+            <option value="Assistant Professor">Assistant Professor</option>
+            <option value="Lecturer">Lecturer</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Department *</label>
+          <select id="department" class="form-input" required>
+            <option value="">Select Department</option>
+            <option value="Computer Science & Engineering">Computer Science & Engineering</option>
+            <option value="Information Technology">Information Technology</option>
+            <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
+            <option value="Mechanical Engineering">Mechanical Engineering</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Universal Human Values">Universal Human Values</option>
+            <option value="Professional Development">Professional Development</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Specialization *</label>
+          <input type="text" id="specialization" class="form-input" placeholder="e.g., Data Structures & Algorithms" required>
+          <small class="form-help">Primary area of expertise or subject taught</small>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Specialization Details</label>
+          <input type="text" id="specializationDetails" class="form-input" placeholder="e.g., Programming & Problem Solving">
+          <small class="form-help">Additional specialization details (optional)</small>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Contact Email *</label>
+          <input type="email" id="contactEmail" class="form-input" placeholder="e.g., name@srmist.edu.in" required>
+          <small class="form-help">Official email address</small>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" onclick="closeFacultyModal()" class="btn-secondary">Cancel</button>
+          <button type="submit" id="submitBtn" class="btn-primary">
+            <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+            Add Faculty
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <style>
+    /* CSS Variables for compatibility */
+    :root {
+      --white: #ffffff;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --font-size-xs: 0.75rem;
+      --font-size-sm: 0.875rem;
+      --font-size-base: 1rem;
+      --font-size-lg: 1.125rem;
+      --font-size-xl: 1.25rem;
+      --font-size-2xl: 1.5rem;
+      --font-size-3xl: 1.875rem;
+    }
+
+    /* Faculty Card Styles */
+    .faculty-card {
+      background: var(--theme-surface-primary);
+      border: 1px solid var(--theme-border-primary);
+      border-radius: 12px;
+      box-shadow: var(--theme-shadow-md);
+      overflow: hidden;
+    }
+
+    .card-header-faculty {
+      padding: 2rem;
+      border-bottom: 1px solid var(--theme-border-primary);
+      background: var(--theme-surface-secondary);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .header-info {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .stats-info {
+      text-align: right;
+      min-width: 150px;
+    }
+
+    .filter-controls {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .modern-select {
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--theme-border-primary);
+      border-radius: 8px;
+      background: var(--theme-input-bg);
+      font-size: 0.875rem;
+      color: var(--theme-text-primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-width: 180px;
+    }
+
+    .modern-select:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .add-faculty-btn {
+      display: flex;
+      align-items: center;
+      padding: 0.875rem 1.75rem;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
+      white-space: nowrap;
+    }
+
+    .add-faculty-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 15px -3px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Table Styles */
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    .faculty-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    .faculty-table th {
+      text-align: left;
+      padding: 1rem 1.5rem;
+      font-weight: 600;
+      color: #4b5563;
+      background: #f9fafb;
+      border-bottom: 2px solid #e5e7eb;
+      white-space: nowrap;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .faculty-table td {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid #f3f4f6;
+      color: #111827;
+      vertical-align: top;
+    }
+
+    .faculty-table tbody tr:hover {
+      background: #f9fafb;
+      transform: translateX(2px);
+      transition: all 0.2s ease;
+    }
+
+    .faculty-name {
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 0.25rem;
+    }
+
+    .faculty-designation {
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+
+    .faculty-specialization {
+      color: #374151;
+      line-height: 1.4;
+    }
+
+    .specialization-details {
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin-top: 0.25rem;
+    }
+
+    /* Pagination */
+    .pagination-faculty {
+      padding: 1.5rem 2rem;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f9fafb;
+    }
+
+    .page-btn {
+      padding: 0.5rem 1rem;
+      border: 2px solid #e5e7eb;
+      background: #ffffff;
+      color: #374151;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .page-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .page-btn:not(:disabled):hover {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+    }
+
+    /* Modal Styles */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: modalSlideIn 0.3s ease-out;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modal-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f9fafb;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      color: #9ca3af;
+      padding: 0.25rem;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close:hover {
+      background: #e5e7eb;
+      color: #4b5563;
+    }
+
+    .modal-content {
+      padding: 2rem;
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    /* Form Styles */
+    .form-group {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #374151;
+      font-size: 0.875rem;
+    }
+
+    .form-input {
+      padding: 0.875rem 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      color: #111827;
+      transition: all 0.2s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+
+    .form-help {
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      padding-top: 1rem;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .btn-secondary {
+      padding: 0.75rem 1.5rem;
+      border: 2px solid #d1d5db;
+      background: #ffffff;
+      color: #374151;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: #f9fafb;
+      border-color: #9ca3af;
+    }
+
+    .btn-primary {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .btn-view-profile {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.375rem 0.75rem;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-view-profile:hover {
+      background: #e2e8f0;
+      color: #334155;
+      transform: translateY(-1px);
+    }
+
+    .btn-edit {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.375rem 0.75rem;
+      background: #fef3c7;
+      border: 1px solid #fcd34d;
+      color: #92400e;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-edit:hover {
+      background: #fde68a;
+      color: #78350f;
+      transform: translateY(-1px);
+    }
+
+    .btn-delete {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.375rem 0.75rem;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-delete:hover {
+      background: #fee2e2;
+      color: #b91c1c;
+      transform: translateY(-1px);
+    }
+
+    /* Notification */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 2000;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      animation: slideInRight 0.3s ease-out;
+      max-width: 400px;
+    }
+
+    .notification.success {
+      background: #10b981;
+      color: white;
+    }
+
+    .notification.error {
+      background: #ef4444;
+      color: white;
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+
+  <script>
+    // Faculty management system with localStorage
+    let facultyData = [];
+    let isEditMode = false;
+    let editingIndex = -1;
+
+    // Default faculty members
+    const defaultFaculty = [
+      {
+        name: 'Dr. P. Godhandaraman',
+        designation: 'Professor',
+        department: 'Computer Science & Engineering',
+        specialization: 'Transforms & Boundary Value Problems',
+        specializationDetails: 'Mathematics for CSE',
+        contactEmail: 'p.godhandaraman@srmist.edu.in'
+      },
+      {
+        name: 'Dr. G. Priyadharshini',
+        designation: 'Associate Professor',
+        department: 'Computer Science & Engineering',
+        specialization: 'Operating Systems',
+        specializationDetails: 'Systems Programming',
+        contactEmail: 'g.priyadharshini@srmist.edu.in'
+      },
+      {
+        name: 'Dr. Kalpana C',
+        designation: 'Associate Professor',
+        department: 'Computer Science & Engineering',
+        specialization: 'Data Structures & Algorithms',
+        specializationDetails: 'Programming & Problem Solving',
+        contactEmail: 'kalpana.c@srmist.edu.in'
+      },
+      {
+        name: 'Dr. Meenakshi M',
+        designation: 'Assistant Professor',
+        department: 'Computer Science & Engineering',
+        specialization: 'Computer Organization & Architecture',
+        specializationDetails: 'Hardware Systems',
+        contactEmail: 'meenakshi.m@srmist.edu.in'
+      },
+      {
+        name: 'Dr. Prince Chelladurai S',
+        designation: 'Assistant Professor',
+        department: 'Computer Science & Engineering',
+        specialization: 'Advanced Programming Practice',
+        specializationDetails: 'Software Development',
+        contactEmail: 'prince.chelladurai@srmist.edu.in'
+      },
+      {
+        name: 'Dr. B. Monika Nair',
+        designation: 'Associate Professor',
+        department: 'Computer Science & Engineering',
+        specialization: 'Professional Ethics',
+        specializationDetails: 'Ethics & Social Responsibility',
+        contactEmail: 'b.monikanair@srmist.edu.in'
+      },
+      {
+        name: 'Dr. D. Boopathi',
+        designation: 'Professor',
+        department: 'Universal Human Values',
+        specialization: 'Universal Human Values - II',
+        specializationDetails: 'Philosophy & Ethics',
+        contactEmail: 'd.boopathi@srmist.edu.in'
+      }
+    ];
+
+    // Initialize application
+    function init() {
+      loadFaculty();
+      setupEventListeners();
+      renderFacultyTable();
+      updateStats();
+    }
+
+    // Load faculty from localStorage or use defaults
+    function loadFaculty() {
+      try {
+        const stored = localStorage.getItem('smart-timetable-faculty');
+        if (stored) {
+          facultyData = JSON.parse(stored);
+        } else {
+          facultyData = [...defaultFaculty];
+          saveFaculty();
+        }
+      } catch (error) {
+        console.error('Error loading faculty:', error);
+        facultyData = [...defaultFaculty];
+        saveFaculty();
+      }
+    }
+
+    // Save faculty to localStorage
+    function saveFaculty() {
+      try {
+        localStorage.setItem('smart-timetable-faculty', JSON.stringify(facultyData));
+      } catch (error) {
+        console.error('Error saving faculty:', error);
+      }
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+      // Form submission
+      document.getElementById('facultyForm').addEventListener('submit', handleFormSubmit);
+      
+      // Modal close on backdrop click
+      document.getElementById('facultyModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeFacultyModal();
+        }
+      });
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeFacultyModal();
+        }
+        if (e.ctrlKey && e.key === 'n') {
+          e.preventDefault();
+          openFacultyModal();
+        }
+      });
+
+      // Real-time validation
+      setupFormValidation();
+
+      // Filter handlers
+      document.getElementById('departmentFilter').addEventListener('change', applyFilters);
+      document.getElementById('designationFilter').addEventListener('change', applyFilters);
+    }
+
+    // Setup form validation
+    function setupFormValidation() {
+      const inputs = document.querySelectorAll('.form-input');
+      inputs.forEach(input => {
+        input.addEventListener('input', function() {
+          validateField(this);
+        });
+      });
+    }
+
+    // Validate individual field
+    function validateField(input) {
+      const value = input.value.trim();
+      
+      // Reset styles
+      input.style.borderColor = '#d1d5db';
+      
+      if (input.hasAttribute('required') && !value) {
+        input.style.borderColor = '#ef4444';
+        return false;
+      }
+
+      if (input.type === 'email' && value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+          input.style.borderColor = '#ef4444';
+          return false;
+        }
+      }
+
+      if (value) {
+        input.style.borderColor = '#10b981';
+      }
+      
+      return true;
+    }
+
+    // Apply filters
+    function applyFilters() {
+      const departmentFilter = document.getElementById('departmentFilter').value;
+      const designationFilter = document.getElementById('designationFilter').value;
+      
+      let filteredData = facultyData;
+      
+      if (departmentFilter) {
+        filteredData = filteredData.filter(faculty => faculty.department === departmentFilter);
+      }
+      
+      if (designationFilter) {
+        filteredData = filteredData.filter(faculty => faculty.designation === designationFilter);
+      }
+      
+      renderFacultyTable(filteredData);
+      document.getElementById('pageInfo').textContent = `Showing ${filteredData.length} of ${facultyData.length} faculty member${filteredData.length !== 1 ? 's' : ''}`;
+    }
+
+    // Update statistics
+    function updateStats() {
+      document.getElementById('facultyCount').textContent = facultyData.length;
+      document.getElementById('courseCount').textContent = '7'; // This could be dynamic
+    }
+
+    // Render faculty table
+    function renderFacultyTable(dataToRender = null) {
+      const tbody = document.getElementById('facultyTableBody');
+      const data = dataToRender || facultyData;
+      
+      if (data.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align: center; padding: 3rem; color: #9ca3af;">
+              <div style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">No faculty members found</div>
+              <div>Click "Add Faculty" to get started</div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = data.map((faculty, index) => `
+        <tr style="animation: fadeInUp 0.3s ease-out ${index * 0.05}s both;">
+          <td>
+            <div class="faculty-name">${faculty.name}</div>
+            <div class="faculty-designation">${faculty.designation}</div>
+          </td>
+          <td style="color: #6b7280;">${faculty.department}</td>
+          <td>
+            <div class="faculty-specialization">${faculty.specialization}</div>
+            ${faculty.specializationDetails ? `<div class="specialization-details">${faculty.specializationDetails}</div>` : ''}
+          </td>
+          <td style="color: #6b7280;">${faculty.contactEmail}</td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn-view-profile" title="View Profile">
+                <svg style="width: 0.75rem; height: 0.75rem;" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                View Profile
+              </button>
+              <button class="btn-edit" onclick="editFaculty(${facultyData.indexOf(faculty)})" title="Edit Faculty">
+                <svg style="width: 0.75rem; height: 0.75rem;" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                </svg>
+                Edit
+              </button>
+              <button class="btn-delete" onclick="deleteFaculty(${facultyData.indexOf(faculty)})" title="Delete Faculty">
+                <svg style="width: 0.75rem; height: 0.75rem;" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z"/>
+                </svg>
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+
+      if (!dataToRender) {
+        document.getElementById('pageInfo').textContent = `Showing ${data.length} faculty member${data.length !== 1 ? 's' : ''}`;
+      }
+    }
+
+    // Open modal for adding/editing
+    function openFacultyModal() {
+      document.getElementById('facultyModal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      
+      if (!isEditMode) {
+        document.getElementById('facultyForm').reset();
+        document.getElementById('modalTitle').textContent = 'Add New Faculty Member';
+        document.getElementById('submitBtn').innerHTML = `
+          <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </svg>
+          Add Faculty
+        `;
+      }
+
+      // Focus first input
+      setTimeout(() => {
+        document.getElementById('facultyName').focus();
+      }, 300);
+    }
+
+    // Close modal
+    function closeFacultyModal() {
+      document.getElementById('facultyModal').style.display = 'none';
+      document.body.style.overflow = 'auto';
+      
+      // Reset form and state
+      document.getElementById('facultyForm').reset();
+      isEditMode = false;
+      editingIndex = -1;
+      
+      // Reset input styles
+      document.querySelectorAll('.form-input').forEach(input => {
+        input.style.borderColor = '#d1d5db';
+      });
+    }
+
+    // Handle form submission
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      
+      const formData = {
+        name: document.getElementById('facultyName').value.trim(),
+        designation: document.getElementById('designation').value,
+        department: document.getElementById('department').value,
+        specialization: document.getElementById('specialization').value.trim(),
+        specializationDetails: document.getElementById('specializationDetails').value.trim(),
+        contactEmail: document.getElementById('contactEmail').value.trim()
+      };
+
+      // Validate required fields
+      if (!formData.name || !formData.designation || !formData.department || !formData.specialization || !formData.contactEmail) {
+        showNotification('Please fill in all required fields.', 'error');
+        return;
+      }
+
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.contactEmail)) {
+        showNotification('Please enter a valid email address.', 'error');
+        return;
+      }
+
+      // Check for duplicate email (excluding current faculty in edit mode)
+      const isDuplicate = facultyData.some((faculty, index) => 
+        index !== editingIndex && faculty.contactEmail.toLowerCase() === formData.contactEmail.toLowerCase()
+      );
+      
+      if (isDuplicate) {
+        showNotification('Email address already exists. Please use a different email.', 'error');
+        return;
+      }
+
+      // Add or update faculty
+      if (isEditMode) {
+        facultyData[editingIndex] = { ...formData, updatedAt: new Date().toISOString() };
+        showNotification(`Faculty member ${formData.name} updated successfully!`, 'success');
+      } else {
+        facultyData.push({ ...formData, createdAt: new Date().toISOString() });
+        showNotification(`Faculty member ${formData.name} added successfully!`, 'success');
+      }
+
+      // Save and refresh
+      saveFaculty();
+      renderFacultyTable();
+      updateStats();
+      closeFacultyModal();
+      
+      // Reset filters
+      document.getElementById('departmentFilter').value = '';
+      document.getElementById('designationFilter').value = '';
+    }
+
+    // Edit faculty
+    function editFaculty(index) {
+      const faculty = facultyData[index];
+      isEditMode = true;
+      editingIndex = index;
+
+      // Populate form
+      document.getElementById('facultyName').value = faculty.name;
+      document.getElementById('designation').value = faculty.designation;
+      document.getElementById('department').value = faculty.department;
+      document.getElementById('specialization').value = faculty.specialization;
+      document.getElementById('specializationDetails').value = faculty.specializationDetails || '';
+      document.getElementById('contactEmail').value = faculty.contactEmail;
+
+      // Update modal
+      document.getElementById('modalTitle').textContent = 'Edit Faculty Member';
+      document.getElementById('submitBtn').innerHTML = `
+        <svg style="width: 1rem; height: 1rem; margin-right: 0.5rem;" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+        </svg>
+        Update Faculty
+      `;
+
+      openFacultyModal();
+    }
+
+    // Delete faculty
+    function deleteFaculty(index) {
+      const faculty = facultyData[index];
+      const message = `Are you sure you want to delete "${faculty.name}"?\n\nDesignation: ${faculty.designation}\nDepartment: ${faculty.department}\nEmail: ${faculty.contactEmail}\n\nThis action cannot be undone.`;
+      
+      if (confirm(message)) {
+        facultyData.splice(index, 1);
+        saveFaculty();
+        renderFacultyTable();
+        updateStats();
+        showNotification(`Faculty member ${faculty.name} deleted successfully!`, 'success');
+        
+        // Reset filters
+        document.getElementById('departmentFilter').value = '';
+        document.getElementById('designationFilter').value = '';
+      }
+    }
+
+    // Show notification
+    function showNotification(message, type = 'success') {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.animation = 'slideInRight 0.3s ease-out reverse';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.remove();
+          }
+        }, 300);
+      }, 3000);
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+
+  <script src="js/theme.js"></script>
+  <script src="js/simple-app.js"></script>
+</body>
+</html>
